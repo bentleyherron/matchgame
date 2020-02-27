@@ -1,7 +1,13 @@
 import React from 'react';
 import { Container, Header, Content, Form, Item, Input, Label, Left, Right, Radio, Button, Text } from 'native-base';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function SignupPageOne({onChange, onClick}) {
+export default function SignupPageOne({onChange, onTermsClick, onNextClick, agreedToTerms}) {
+
+    function handleTermsClick() {
+      onClick();
+      this.state.selected = true;
+    }
 
     return (
       <Container>
@@ -16,7 +22,7 @@ export default function SignupPageOne({onChange, onClick}) {
             <Item fixedLabel>
               <Input
                 name="username"
-                placeholder='User Name'
+                placeholder='User Blame'
                 onChange={onChange}/>
             </Item>
             <Item fixedLabel>
@@ -36,7 +42,8 @@ export default function SignupPageOne({onChange, onClick}) {
                 <Radio
                   color={"#f0ad4e"}
                   selectedColor={"#5cb85c"}
-                  selected={true}
+                  selected={agreedToTerms}
+                  onPress={onTermsClick}
                 />
               </Left>
               <Right>
@@ -44,8 +51,9 @@ export default function SignupPageOne({onChange, onClick}) {
               </Right>
           </Item>
           </Form>
-          <Button 
-            rounded>
+          <Button
+            rounded
+            onPress={onNextClick}>
             <Text>SIGN UP</Text>
           </Button>
         </Content>

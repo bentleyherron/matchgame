@@ -41,19 +41,21 @@ export default class App extends Component {
     }
 
     return (
-      <Container>
-        <Header/>
-        <SignupContainer/>
-      </Container>
-      // <View style={styles.container}>
-      //   <Nav styles={styles} />
-      //   <Profile styles={styles} />
-      //   <Feed styles={styles} />
-      //   <Loading styles={styles} />
-      //   <Text style={styles.welcome}>Welcome to React Native!</Text>
-      //   <Text style={styles.instructions}>To get started, edit App.js</Text>
-      //   <Text style={styles.instructions}>{instructions}</Text>
-      // </View>
+      
+      <View style={styles.container}>
+        <Nav styles={styles} />
+        <Profile styles={styles} />
+        <Feed styles={styles} />
+        <Loading styles={styles} />
+        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.instructions}>To get started, edit App.js</Text>
+        <Text style={styles.instructions}>{instructions}</Text>
+      </View>
+
+    //   <Container>
+    //      <Header/>
+    //      <SignupContainer/>
+    //  </Container>
     );
   }
 }

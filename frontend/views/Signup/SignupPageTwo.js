@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Radio, Text, Button, H1, Thumbnail } from 'native-base';
-import * as ImagePicker from 'expo-image-picker';
 
-export default function SignupPageTwo({openImagePicker, selectedImage}) {
+export default function SignupPageTwo({openImagePicker, selectedImage, onNextClick}) {
 
       let photoContent;
 
@@ -21,6 +20,11 @@ export default function SignupPageTwo({openImagePicker, selectedImage}) {
                 {photoContent}
                 <Button primary onPress={openImagePicker}>
                     <Text>Pick a photo</Text>
+                </Button>
+                <Button onPress={onNextClick}>
+                    <Text>
+                        Next
+                    </Text>
                 </Button>
             </Content>
         </Container>
