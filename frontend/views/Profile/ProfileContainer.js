@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import ProfilePage from './ProfilePage';
+import UserProfile from './UserProfile';
+import TeamProfile from './TeamProfile';
 
 export default function ProfileContainer({styles}) {
     return (
         <View style={styles.container}>
             <Text style={styles.instructions}>This is the Profile Container</Text>
-            <ProfilePage styles={styles} />
+            <UserProfile styles={styles} />
+            <TeamProfile styles={styles} />
         </View>
     );
 }
