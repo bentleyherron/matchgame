@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,12 +8,7 @@ import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Loading';
 import SignupContainer from './views/SignUp/SignupContainer';
-import { Container, Content, H1, Header }  from 'native-base';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu',
-});
+import { Container, Content, Header }  from 'native-base';
 
 export default class App extends Component {
 
@@ -22,7 +16,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-      currentPage: 'pageOne'
+      currentPage: 'profile',
+      hasSignedUp: false
     };
   }
 
@@ -37,11 +32,10 @@ export default class App extends Component {
   
   render() {
     const {_setCurrentPage, _setLastPage} = this;
-    const { currentPage, isReady } = this.state;
+    const { currentPage, isReady, hasSignedUp } = this.state;
     if (!isReady) {
       return <AppLoading />;
     }
-
     return (
         <Container>
           <Header/>
@@ -49,7 +43,7 @@ export default class App extends Component {
             {currentPage === 'profile' ? <Profile /> : null}
             {currentPage === "feed" ? <Feed /> : null }
             {currentPage === "loading" ? <Loading /> : null}
-            {/* {currentPage === "pageOne" || "pageTwo" || "pageThree" ? <SignupContainer/> : null} */}
+            {/* {!hasSignedUp ? <SignupContainer/> : null} */}
           </Content>
           <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
         </Container>
