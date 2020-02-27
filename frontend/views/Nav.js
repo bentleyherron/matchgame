@@ -1,10 +1,19 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-
-export default function Nav({styles}) {
+import { Footer, FooterTab, Button, Text, Icon } from 'native-base';
+export default function Nav({setPage, setLastPage, currentPage}) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>Here is the nav bar.</Text>
-        </View>
+        <Footer>
+          <FooterTab>
+            <Button onPress={() => {setLastPage(currentPage);setPage('profile')}}>
+              <Text>Profile</Text>
+            </Button>
+            <Button>
+              <Icon type="AntDesign" name="pluscircle" />
+            </Button>
+            <Button onPress={() => {setLastPage(currentPage);setPage('feed')}}>
+              <Text>Feed</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
     );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Content, Text } from 'native-base';
 
-export default function TeamProfile({styles}) {
+export default function TeamProfile() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>Here is the team profile.</Text>
-        </View>
+        <Content>
+            <Text>Here is the team profile.</Text>
+        </Content>
     );
 }

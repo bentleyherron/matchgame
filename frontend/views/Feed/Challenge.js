@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Content, Text } from 'native-base';
 
-export default function Challenge({styles}) {
+export default function Challenge() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is a challenge!</Text>
-        </View>
+        <Content>
+            <Text>This is a challenge!</Text>
+        </Content>
     );
 }
