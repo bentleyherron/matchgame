@@ -6,7 +6,7 @@ export default function ChallengesContainer({styles}) {
     return (
         <View style={styles.container}>
             <Text style={styles.instructions}>This is the Challenges Container!</Text>
-            <Challenge style={styles} />
+            <Challenge styles={styles} />
         </View>
     );
 }
