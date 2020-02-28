@@ -3,14 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-<<<<<<< HEAD
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null,
-=======
-  "expoServerNgrokUrl": "https://up-rnr.anonymous.frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.up-rnr.anonymous.frontend.exp.direct",
-  "ngrokPid": 68706,
->>>>>>> 692788a3a6e1fc8b99ebbe8e54d312e8cd8894f5
   "webpackServerPort": null
 }
