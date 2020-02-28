@@ -8,7 +8,7 @@ import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Loading';
 import SignupContainer from './views/SignUp/SignupContainer';
-import { Container, Content, Header, Body, Title }  from 'native-base';
+import { Container, Content, Header, Left, Body, Right, Title }  from 'native-base';
 
 export default class App extends Component {
 
@@ -39,14 +39,16 @@ export default class App extends Component {
     return (
         <Container>
           <Header>
+            <Left />
             <Body>
               <Title>{currentPage}</Title>
             </Body>
+            <Right />
           </Header>
           <Content>
-            {currentPage === 'profile' ? <Profile /> : null}
-            {currentPage === "feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-            {currentPage === "loading" ? <Loading /> : null}
+            {currentPage === 'Profile' ? <Profile /> : null}
+            {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
+            {currentPage === "Loading" ? <Loading /> : null}
             {/* {!hasSignedUp ? <SignupContainer/> : null} */}
           </Content>
           <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
