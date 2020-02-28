@@ -52,7 +52,8 @@ export default class App extends Component {
       // </View>
 
       <Container>
-         <SignupContainer/>
+         {/* <SignupContainer/> */}
+         <Profile/>
      </Container>
     );
   }
