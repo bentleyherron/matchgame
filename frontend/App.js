@@ -16,12 +16,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-<<<<<<< HEAD
-      currentPage: 'pageOne'
-=======
       currentPage: 'profile',
       hasSignedUp: false
->>>>>>> 97d45714efde345bb95ca74f59130eb90b4122f6
     };
   }
 
