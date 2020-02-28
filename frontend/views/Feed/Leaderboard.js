@@ -11,7 +11,6 @@ export default function Leaderboard() {
     }
     return (
         <Content>
-
             <Picker
             note
             mode="dropdown"

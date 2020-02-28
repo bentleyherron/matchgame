@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React from 'react';
 import UserProfile from './UserProfile';
 import TeamProfile from './TeamProfile';
 import Inbox from './Inbox/InboxContainer';

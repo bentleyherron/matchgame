@@ -52,6 +52,8 @@ export default function SignupContainer() {
             setCurrentPage('pageThree');
         } else if (currentPage === 'pageThree') {
             setCurrentPage('pageFour');
+        } else if (currentPage === 'pageFour') {
+            setCurrentPage('feed');
         }
     }
 

@@ -3,12 +3,14 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
-import Nav from './views/Nav';
+import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
-import Loading from './views/Loading';
+import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/SignUp/SignupContainer';
+import DisplayHeader from './views/Navigation/DisplayHeader';
 import { Container, Content, Header, Left, Body, Right, Title }  from 'native-base';
+import {SafeAreaView} from 'react-native';
 
 export default class App extends Component {
 
@@ -16,7 +18,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-      currentPage: null,
+      currentPage: 'pageOne',
       hasSignedUp: false
     };
   }
@@ -37,22 +39,16 @@ export default class App extends Component {
       return <AppLoading />;
     }
     return (
-        <Container>
-          <Header>
-            <Left />
-            <Body>
-              <Title>{currentPage}</Title>
-            </Body>
-            <Right />
-          </Header>
+      <SafeAreaView style={{flex: 1}}>
+          {/* <DisplayHeader currentPage={currentPage} /> */}
           <Content>
+            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer/> : null}
             {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
             {currentPage === "Loading" ? <Loading /> : null}
-            {/* {!hasSignedUp ? <SignupContainer/> : null} */}
           </Content>
           <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
-        </Container>
+      </SafeAreaView>
     );
   }
 
