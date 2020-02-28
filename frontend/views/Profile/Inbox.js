@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Text, Content} from 'native-base';
 
-export default function Inbox({styles}) {
+export default function Inbox() {
     return (
-        <View style={styles.container} >
-            <Text style={styles.instructions}>This is the inbox.</Text>
-        </View>
+        <Content>
+            <Text>This is the inbox.</Text>
+        </Content>
     );
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Content, Text } from 'native-base';
 import Event from './Event';
 
-export default function EventsContainer({styles}) {
+export default function EventsContainer() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is the Events Container!</Text>
-            <Event styles={styles} />
-        </View>
+        <Content>
+            <Text>This is the Events Container!</Text>
+            <Event />
+        </Content>
     );
 }

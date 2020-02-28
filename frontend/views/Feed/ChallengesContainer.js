@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Content, Text } from 'native-base'; 
 import Challenge from './Challenge';
 
-export default function ChallengesContainer({styles}) {
+export default function ChallengesContainer() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is the Challenges Container!</Text>
-            <Challenge styles={styles} />
-        </View>
+        <Content>
+            <Text>This is the Challenges Container!</Text>
+            <Challenge />
+        </Content>
     );
 }

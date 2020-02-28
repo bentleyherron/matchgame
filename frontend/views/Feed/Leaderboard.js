@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Content, Text } from 'native-base';
 
-export default function Leaderboard({styles}) {
+export default function Leaderboard() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is the leaderboard!</Text>
-        </View>
+        <Content>
+            <Text>This is the leaderboard!</Text>
+        </Content>
     );
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Text, Content } from 'native-base';
 
-export default function ProfilePage({styles}){
+export default function ProfilePage(){
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is your profile page</Text>
-        </View>
+        <Content>
+            <Text>This is your profile page</Text>
+        </Content>
     );
 }
