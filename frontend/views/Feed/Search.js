@@ -1,10 +1,10 @@
 import React from 'react';
-import { Header, Text} from 'native-base';
+import { Content, Text } from 'native-base';
 
 export default function Search() {
     return (
-        <Header>
+        <Content>
             <Text>This is the search bar!</Text>
-        </Header>
-    );
+        </Content>
+      );
 }
