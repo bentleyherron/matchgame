@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Header, Content, Form, Item, Input, Label, Left, Right, Radio, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function SignupPageOne({onChange, onTermsClick, onNextClick, agreedToTerms}) {
+export default function SignupPageOne({onChange, onTermsClick, onNextClick, agreedToTerms, setUsername, setEmail, setPassword, setSports, setTeams, setAgreed}) {
 
     function handleTermsClick() {
       onClick();
@@ -17,27 +17,22 @@ export default function SignupPageOne({onChange, onTermsClick, onNextClick, agre
               <Input 
                 placeholder='Email'
                 name="email"
-                onChange={onChange}/>
+                onChangeText={text => setEmail(text)}/>
             </Item>
             <Item fixedLabel>
               <Input
                 name="username"
-                placeholder='User Blame'
-                onChange={onChange}/>
+                placeholder='User Name'
+                onChangeText={text => setUsername(text)}/>
             </Item>
             <Item fixedLabel>
               <Input 
                 placeholder='Password'
                 name="password"
-                onChange={onChange}/>
+                onChangeText={text => setPassword(text)}/>
             </Item>
-            <Item fixedLabel>
-              <Input 
-                placeholder='Confirm Password'
-                name="password"
-                onChange={onChange}/>
-            </Item>
-            <Item selected={true}>
+            <Item selected={true}
+                  onPress={onTermsClick}>
               <Left>
                 <Radio
                   color={"#f0ad4e"}
@@ -51,12 +46,13 @@ export default function SignupPageOne({onChange, onTermsClick, onNextClick, agre
               </Right>
           </Item>
           </Form>
-          <Button
+          
+        </Content>
+        <Button
             rounded
             onPress={onNextClick}>
             <Text>SIGN UP</Text>
           </Button>
-        </Content>
       </Container>
     );
 }
