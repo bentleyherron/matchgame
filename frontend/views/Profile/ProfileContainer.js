@@ -1,19 +1,25 @@
-import React, { useState} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
 import UserProfile from './UserProfile';
 import TeamProfile from './TeamProfile';
 import Inbox from './Inbox/InboxContainer';
-import { Container, Header } from 'native-base';
+import { Container, Header, Tab, Tabs } from 'native-base';
 
 export default function ProfileContainer() {
 
     return (
         <Container>
-            <Header/>
-            {/* <Text>This is the Profile Container</Text> */}
-            {/* <UserProfile/> */}
-            {/* <TeamProfile/> */}
-            <Inbox/>
+            <Header hasTabs />
+            <Tabs>
+                <Tab heading="User Profile">
+                    <UserProfile/>
+                </Tab>
+                <Tab heading="Team Profile">
+                    <TeamProfile/>
+                </Tab>
+                <Tab heading="Inbox">
+                    <Inbox/>
+                </Tab>
+            </Tabs>
         </Container>
     );
 }
