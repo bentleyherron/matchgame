@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { Header, Text} from 'native-base';
 
-export default function Search({styles}) {
+export default function Search() {
     return (
-        <View style={styles.container}>
-            <Text style={styles.instructions}>This is the search bar!</Text>
-        </View>
+        <Header>
+            <Text>This is the search bar!</Text>
+        </Header>
     );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-// import {View, Text} from 'react-native';
 import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Thumbnail, Body, Text, H1, Accordion } from 'native-base';
 
 const dataArray = [

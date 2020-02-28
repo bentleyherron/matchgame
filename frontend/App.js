@@ -8,8 +8,8 @@ import Nav from './views/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Loading';
-import SignupContainer from './views/Signup/SignupContainer'
-import { Container, Content, H1, Header }  from 'native-base'
+import SignupContainer from './views/SignUp/SignupContainer';
+import { Container, Content, H1, Header }  from 'native-base';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -21,7 +21,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isReady: false
+      isReady: false,
+      currentPage: 'pageOne'
     };
   }
 
@@ -35,45 +36,35 @@ export default class App extends Component {
   }
   
   render() {
-    if (!this.state.isReady) {
+    const {_setCurrentPage, _setLastPage} = this;
+    const { currentPage, isReady } = this.state;
+    if (!isReady) {
       return <AppLoading />;
     }
 
     return (
-      
-      <View style={styles.container}>
-        <Nav styles={styles} />
-        <Profile styles={styles} />
-        <Feed styles={styles} />
-        <Loading styles={styles} />
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-
-    //   <Container>
-    //      <SignupContainer/>
-    //      <Profile/>
-    //  </Container>
+        <Container>
+          <Header/>
+          <Content>
+            {currentPage === 'profile' ? <Profile /> : null}
+            {currentPage === "feed" ? <Feed /> : null }
+            {currentPage === "loading" ? <Loading /> : null}
+            {/* {currentPage === "pageOne" || "pageTwo" || "pageThree" ? <SignupContainer/> : null} */}
+          </Content>
+          <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
+        </Container>
     );
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  _setCurrentPage = (text) => {
+    this.setState({
+      currentPage: text
+    })
+  }
+
+  _setLastPage = (text) => {
+    this.setState({
+      lastPage: text
+    })
+  }
+}
