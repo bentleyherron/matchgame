@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Content, Header, Tab, Tabs, TabHeading, Text } from 'native-base';
+import { Content, Header, Tab, Tabs } from 'native-base';
 import Leaderboard from './Leaderboard';
 import ChallengesContainer from './ChallengesContainer';
 import EventsContainer from './EventsContainer';
