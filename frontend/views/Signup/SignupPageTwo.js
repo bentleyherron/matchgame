@@ -21,12 +21,13 @@ export default function SignupPageTwo({openImagePicker, selectedImage, onNextCli
                 <Button primary onPress={openImagePicker}>
                     <Text>Pick a photo</Text>
                 </Button>
-                <Button onPress={onNextClick}>
+                
+            </Content>
+            <Button onPress={onNextClick}>
                     <Text>
                         Next
                     </Text>
                 </Button>
-            </Content>
         </Container>
     );
 

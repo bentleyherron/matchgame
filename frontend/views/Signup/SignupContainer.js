@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
-import {View, Text} from 'react-native';
-import { AppLoading } from 'expo';
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Content, List, ListItem, Thumbnail, H1 } from 'native-base';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Container, Header, Body, Left, Right, Title } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 
 import SignupPageOne from './SignupPageOne';
 import SignupPageTwo from './SignupPageTwo';
 import SignupPageThree from './SignupPageThree';
+import SignupPageFour from './SignupPageFour';
 
 export default function SignupContainer() {
 
-    const [inputValues, setInputValues] = useState({
-        username: '',
-        email: '',
-        password: '',
-        sports: '',
-        photo: '',
-        team: '',
-        agreedToTerms: false
-    })
-
-    const [currentPage, setCurrentPage] = useState('pageOne');
-
+    const [username, setUsername] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [sports, setSports] = useState([]);
+    const [agreedToTerms, setAgreed] = useState(false);
     const [selectedImage, setSelectedImage] = React.useState(null);
+    const [currentPage, setCurrentPage] = useState('pageOne');
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -36,7 +26,6 @@ export default function SignupContainer() {
         }
     
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        console.log(pickerResult);
 
         if (pickerResult.cancelled === true) {
             return;
@@ -45,55 +34,77 @@ export default function SignupContainer() {
           setSelectedImage({ localUri: pickerResult.uri });
     }
 
-    const handleOnChange = event => {
-        const { name, value } = event.target;
-        setInputValues({...inputValues, [name]: value})
-    }
-
     const handleTermsClick = () => {
-        console.log('radio clicked');
-        if (inputValues.agreedToTerms === false) {
-            setInputValues({agreedToTerms: true})
+        if (agreedToTerms === false) {
+            setAgreed(true)
         } else {
-            setInputValues({agreedToTerms: false})
+            setAgreed(false)
         }
     }
 
     const handleNextPageClick = () => {
-        console.table(inputValues);
-        console.log(inputValues.agreedTerms);
+        console.log({username}, {email}, {password}, {agreedToTerms});
         console.log(selectedImage);
+        console.log('next button clicked');
         if (currentPage === 'pageOne') {
             setCurrentPage('pageTwo');
         } else if (currentPage === 'pageTwo') {
-            setCurrentPage('pageThree')
+            setCurrentPage('pageThree');
+        } else if (currentPage === 'pageThree') {
+            setCurrentPage('pageFour');
+        }
+    }
+
+    const handleSportSelect = (sportName) => {
+        if (sports.includes(sportName)) {
+            setSports(sports.filter(item => item !== sportName))
+        } else {
+            setSports([...sports, sportName]);
+            
         }
     }
 
     let content;
+    let headerTitle;
     if (currentPage === 'pageOne') {
+        headerTitle = 'Create Profile'
         content = <SignupPageOne
-        email={inputValues.email}
-        username={inputValues.username}
-        password={inputValues.password}
-        sports={inputValues.password}
-        photo={inputValues.photo}
-        team={inputValues.team}
-        agreedToTerms={inputValues.agreedToTerms}
-        onChange={handleOnChange}
+        setUsername={setUsername}
+        setEmail={setEmail}
+        email={email}
+        setPassword={setPassword}
+        setSports={setSports}
+        setAgreed={setAgreed}
+        agreedToTerms={agreedToTerms}
         onTermsClick={handleTermsClick}
         onNextClick={handleNextPageClick}/>
     }  else if (currentPage === 'pageTwo') {
+        headerTitle = 'Create Profile'
         content = <SignupPageTwo
         selectedImage={selectedImage}
         openImagePicker={openImagePickerAsync}
         onNextClick={handleNextPageClick}/>
-    } else {
-        content = <SignupPageThree/>
+    } else if (currentPage === 'pageThree') {
+        headerTitle = 'Create Profile'
+        content = <SignupPageThree
+        onSportSelect={handleSportSelect}
+        topSports={sports}
+        onNextClick={handleNextPageClick}/>
+    } else if (currentPage === 'pageFour') {
+        headerTitle = 'Complete'
+        content = <SignupPageFour
+        />
     }
 
     return (
         <Container>
+            <Header>
+                <Left/>
+                <Body>
+                    <Title>{headerTitle}</Title>
+                </Body>
+                <Right/>
+            </Header>
             {content}
         </Container>
     );
