@@ -33,9 +33,9 @@ export default function ChallengesContainer() {
         isAccepted: false
     };
 
-    // expandChallenge = () => {
-    //     console.log('you clicked the challenge');
-    // }
+    expandChallenge = () => {
+        console.log('you clicked the challenge');
+    }
 
     return (
         <FlatList
@@ -44,6 +44,7 @@ export default function ChallengesContainer() {
             <Challenge
             keyExtractor={item.id}
             challenge={item}
+            expandChallenge={expandChallenge}
             />
         )}
         />

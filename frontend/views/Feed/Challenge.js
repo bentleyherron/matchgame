@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardItem, H1, Text } from 'native-base';
 
-export default function Challenge({ challenge }) {
+export default function Challenge({ challenge, expandChallenge }) {
     const { teamFrom,
             teamTo,
             date,
@@ -9,7 +9,7 @@ export default function Challenge({ challenge }) {
             message } = challenge;
     const formattedDate = `Date: ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} at ${date.getHours()}:00`
     return (
-        <Card>
+        <Card onPress={() => expandChallenge()}>
             <CardItem header>
                 <H1>Team {teamFrom} has issued a challenge to Team {teamTo}</H1>
             </CardItem>
