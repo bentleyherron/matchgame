@@ -31,7 +31,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
             return;
           }
       
-          setSelectedImage({ localUri: "data:image/png;base64," + pickerResult.base64 });
+          setSelectedImage("data:image/png;base64," + pickerResult.base64);
     }
 
     const handleTermsClick = () => {
