@@ -18,7 +18,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-      currentPage: 'Profile',
+      currentPage: 'pageOne',
       hasSignedUp: false
     };
   }
@@ -40,11 +40,10 @@ export default class App extends Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-          {/* <DisplayHeader currentPage={currentPage} /> */}
-            {/* {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer/> : null} */}
-            {currentPage === 'Profile' ? <Profile /> : null}
+            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer setCurrentPage={_setCurrentPage} currentPage={currentPage} /> : null}
+            {/* {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-            {currentPage === "Loading" ? <Loading /> : null}
+            {currentPage === "Loading" ? <Loading /> : null} */}
           <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
       </SafeAreaView>
     );

@@ -1,32 +1,33 @@
 import React from 'react';
 import {Text, Card, CardItem, Left, Body, Right, Title, Thumbnail} from 'native-base';
+import {Image} from 'react-native';
 
 export default function PlayerTeamCard({cardData}) {
-    const { photo, name, sports, rating } = cardData;
+    const { photo, username, sports, player_rating } = cardData;
     return (
         <Card>
             <CardItem>
                 <Left>
-                    <Thumbnail source={{uri: photo}} />
+                    <Image style={{width: 66, height: 58}} source={{uri: photo}} />
                 </Left>
                 <Right>
-                    <Text>{name}</Text>
+                    <Text>{username}</Text>
                 </Right>
             </CardItem>
-            <CardItem>
+            {/* <CardItem>
                 <Left>
                     <Text>Sports:</Text>
                 </Left>
                 <Body>
                     {sports.map((item, i) => <Text key={i + "J"}>{item}</Text>)}
                 </Body>
-            </CardItem>
+            </CardItem> */}
             <CardItem>
                 <Left>
                     <Text>Rating:</Text>
                 </Left>
                 <Body>
-                    <Text>{rating}</Text>
+                    <Text>{player_rating}</Text>
                 </Body>
             </CardItem>
         </Card>

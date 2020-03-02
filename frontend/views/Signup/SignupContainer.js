@@ -7,7 +7,7 @@ import SignupPageTwo from './SignupPageTwo';
 import SignupPageThree from './SignupPageThree';
 import SignupPageFour from './SignupPageFour';
 
-export default function SignupContainer() {
+export default function SignupContainer({ currentPage, setCurrentPage }) {
 
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
@@ -15,7 +15,7 @@ export default function SignupContainer() {
     const [sports, setSports] = useState([]);
     const [agreedToTerms, setAgreed] = useState(false);
     const [selectedImage, setSelectedImage] = React.useState(null);
-    const [currentPage, setCurrentPage] = useState('pageOne');
+    // const [currentPage, setCurrentPage] = useState('pageOne');
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();

@@ -1,18 +1,27 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import { Content, Text, Header, Input, Body, Item, Icon, Button, Segment } from 'native-base';
+import { Content, Text, Header, Input, Left, Right, Item, Icon, Button, Segment } from 'native-base';
 import { FlatList } from 'react-native';
 import PlayerTeamCard from './PlayerTeamCard';
 
 export default function SearchContainer() {
     const [input, setInput] = useState(null);
+    const [isSearching, setIsSearching] = useState(false);
     const [searchResults, setSearchResults] = useState(null);
     const [currentPlayerTeam, setPlayerTeam] = useState(null);
-    // getSearchItems = async () => {
-    //     const result = await axios.get('url');
-    //     setSearchResults(result.data);
-    // };
-
+    const sports = ['Football', 'Basketball', 'Kubb', 'Darts', 'Ultimate Frisbee', 'Soccer', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Beer Pong', 'Cornhole', 'Volleyball', 'Bocce Ball', 'Ping Pong', 'Golf', 'Tennis'];
+    // const getUsers = async () => {
+    //     const url = `https://62f4056c.ngrok.io`;
+    //     const userResults = axios.get(url + '/users')
+    //         .then(results => {
+    //             results.forEach(item => {
+    //                 item.sports = axios.get(`${url}/favorite-sports/`)
+    //             })
+    //         })
+    //     const favoriteSports = await axios.get(url + 'favorite-sports/player');
+    //     setSearchResults(results.data)
+    // }
+    
     const fakeUserData = [
         {
             id: 1,
@@ -97,30 +106,41 @@ export default function SearchContainer() {
     ];
 
     const getFakeSearch = (text) => {
-        const filteredResults = fakeSearchData.filter((item) => item.name.includes(text))
+        const filteredResults = searchResults.filter((item) => item.name.includes(text))
         setSearchResults(filteredResults);
+        setIsSearching(false);
     }
 
     return (
         <Content>
-            <Header hasSegment>
-                <Body>
-                    <Segment>
-                        <Button first onPress={() => setSearchResults(fakeUserData)}><Text>Players</Text></Button>
-                        <Button last onPress={() => setSearchResults(fakeTeamData)}><Text>Teams</Text></Button>
-                    </Segment>
-                </Body>
-            </Header>
-            <Header searchBar rounded>
-                <Item>
-                    <Icon name="ios-search" />
-                    <Input placeholder="Search" value={input} onChangeText={setInput} />
-                </Item>
-                <Button transparent onPress={() => getFakeSearch(input)}>
-                    <Text>Search</Text>
-                </Button>
-            </Header>
-
+            {isSearching ? (
+                <Header searchBar rounded>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input placeholder="Search" value={input} onChangeText={setInput} />
+                        <Button transparent onPress={() => getFakeSearch(input)}>
+                            <Text>Search</Text>
+                        </Button>
+                    </Item>
+                </Header>
+            ) :
+            (
+                <Header hasSegment>
+                    <Left>
+                        <Segment>
+                            <Button first onPress={() => setSearchResults(fakeUserData)}><Text>Players</Text></Button>
+                            <Button last onPress={() => setSearchResults(fakeTeamData)}><Text>Teams</Text></Button>
+                        </Segment>
+                    </Left>
+                    <Right>
+                        <Button transparent onPress={() => setIsSearching(true)}>
+                            <Icon name="search" />
+                        </Button>
+                    </Right>
+                </Header>
+            )
+            
+        }
             <FlatList
                 data={searchResults}
                 renderItem={ ({ item }) => (
@@ -130,7 +150,7 @@ export default function SearchContainer() {
                     />
                 )} />
 
-            {/* {searchResults ? <Text>{searchResults[0].name}</Text> : null} */}
+            {/* {searchResults ? <Text>{searchResults[0].username}</Text> : null} */}
             {/* {currentPlayerTeam ? <ProfilePage  /> : null} */}
         </Content>
       );

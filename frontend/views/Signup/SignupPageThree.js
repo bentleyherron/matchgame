@@ -6,33 +6,27 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
 
     const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
 
-    function sportElement(sportName) {
+    function sportElement(sportName, index) {
         return(
-            <ListItem>
-                <Button 
-                    onPress={() => {
-                        onSportSelect(sportName);
-                    }}>
-                        
-                        <Text>{sportName}</Text>
-                </Button>
+            <ListItem onPress={() => onSportSelect(sportName)} key={index + 'r'}>
+                <Left>
+                    <Text>{sportName}</Text>
+                </Left>
+                <Right>
+                    <Radio selected={topSports.includes(sportName)} />
+                </Right>
           </ListItem>
         );
-    }
-
-    function handleSportClick() {
-
     }
 
     return(
         <Container>
             <H1>Select Favorite Sports</H1>
-            <H1>{topSports}</H1>
             <Content>
             {
-                sportsList.map(sport => {
+                sportsList.map((sport, i) => {
                     return(
-                        sportElement(sport)
+                        sportElement(sport, i)
                     )
                 })
             }
