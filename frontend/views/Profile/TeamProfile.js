@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import {View, Text} from 'react-native';
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Thumbnail, Body, Text, H1, Accordion } from 'native-base';
+import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion } from 'native-base';
+
+import { YellowBox } from 'react-native'
+
+
+
+// YellowBox.ignoreWarnings([
+//   'VirtualizedLists should never be nested', // TODO: Remove when fixed
+// ])
 
 const dataArray = [
     { title: "All Sports", content: "Games" },
@@ -9,6 +17,15 @@ const dataArray = [
   ];
 
 export default function TeamProfile(){
+
+    const [isCaptain, setCaptain] = useState(false);
+
+    const captainAdd = <Col>
+    <Button rounded>
+        <Text>Add Team Member</Text>
+    </Button>
+</Col>;
+
     return (
         <Container padder>
             <Content padder>
@@ -36,7 +53,12 @@ export default function TeamProfile(){
                 <Content padder>
                     <Accordion dataArray={dataArray} expanded={0}/>
                 </Content>
-                <H1>Roster</H1>
+                <Grid>
+                    <Col>
+                        <H1>Roster</H1>
+                    </Col>
+                    {isCaptain ? captainAdd : null}
+                </Grid>
                 <Card>
                     <CardItem bordered> 
                         <Left>
