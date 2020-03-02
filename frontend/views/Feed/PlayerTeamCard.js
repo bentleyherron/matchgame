@@ -2,16 +2,16 @@ import React from 'react';
 import {Text, Card, CardItem, Left, Body, Right, Title, Thumbnail} from 'native-base';
 
 export default function PlayerTeamCard({cardData}) {
-    const { image, name, sports, rating } = cardData;
+    const { photo, name, sports, rating } = cardData;
     return (
         <Card>
             <CardItem>
                 <Left>
-                    <Thumbnail source={{uri: image}} />
+                    <Thumbnail source={{uri: photo}} />
                 </Left>
-                <Body>
-                    <Title>{name}</Title>
-                </Body>
+                <Right>
+                    <Text>{name}</Text>
+                </Right>
             </CardItem>
             <CardItem>
                 <Left>
