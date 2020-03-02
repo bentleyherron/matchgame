@@ -1,6 +1,7 @@
 import React from 'react';
 import Event from './Event';
 import { FlatList } from 'react-native';
+import { Content, Header, Tab, Tabs } from 'native-base';
 
 export default function EventsContainer() {
     const event1 = {
@@ -69,6 +70,7 @@ export default function EventsContainer() {
 
     return (
         <FlatList
+        style={{padding: 10}}
         data={[event1, event2, event3, event4]}
         renderItem={ ({ item }) => (
             <Event
