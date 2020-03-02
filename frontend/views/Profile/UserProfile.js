@@ -1,5 +1,7 @@
 import React from 'react';
+import {View}  from 'react-native';
 import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Thumbnail, Body, Text, H1, Accordion } from 'native-base';
+
 
 const dataArray = [
     { title: "Individual", content: "Games" },
@@ -9,7 +11,7 @@ const dataArray = [
 
 export default function ProfilePage(){
     return (
-        <Container padder>
+        <Container>
             <Content padder>
                 <Card>
                     <CardItem>
@@ -23,18 +25,22 @@ export default function ProfilePage(){
                         </Left>
                     </CardItem>
                 </Card>
-                <H1>Sports</H1>
-                    <Grid>
-                        <Row>
-                            <Thumbnail source={require("./soccer.png")} />
-                            <Thumbnail source={require("./soccer.png")} />
-                            <Thumbnail source={require("./soccer.png")} />
-                        </Row>
-                    </Grid>
-                    
-                <H1>Teams</H1>
-                    <Card>
-                        <CardItem bordered>
+
+                
+                <Card>
+                    <H1 style={{padding: 20}}>Sports</H1>
+                    <CardItem bordered>
+                        <Grid>
+                            <Row>
+                                <Thumbnail source={require("./soccer.png")} />
+                                <Thumbnail source={require("./soccer.png")} />
+                                <Thumbnail source={require("./soccer.png")} />
+                            </Row>
+                        </Grid>
+                    </CardItem>
+                    <H1 style={{padding: 20}}>Teams</H1>
+                    <CardItem>
+                        
                         <Left>
                             <Body>
                             <Text>Weekend Warriors</Text>
@@ -42,10 +48,8 @@ export default function ProfilePage(){
                             <Text note>Region: Marietta</Text>
                             </Body>
                         </Left>
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem bordered>
+                    </CardItem>
+                    <CardItem bordered>
                         <Left>
                             <Body>
                             <Text>Mighty Ducks</Text>
@@ -53,12 +57,13 @@ export default function ProfilePage(){
                             <Text note>Region: Marietta</Text>
                             </Body>
                         </Left>
-                        </CardItem>
-                    </Card>
-                <H1>Record</H1>
-                <Content padder>
+                    </CardItem>
+
+                <H1 style={{padding: 20}}>Record</H1>
+                <CardItem>
                     <Accordion dataArray={dataArray} expanded={0}/>
-                </Content>
+                </CardItem>
+            </Card>
             </Content>
         </Container>
     );
