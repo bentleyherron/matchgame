@@ -106,7 +106,8 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         username={username}
         email={email}
         sports={sports}
-        image={selectedImage.localUri}
+        image={selectedImage}
+        locationId={locationId}
         />
     }
 
