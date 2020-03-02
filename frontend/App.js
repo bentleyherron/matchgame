@@ -7,9 +7,9 @@ import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Navigation/Loading';
-import SignupContainer from './views/SignUp/SignupContainer';
+import SignupContainer from './views/Signup/SignupContainer';
 import DisplayHeader from './views/Navigation/DisplayHeader';
-import { Container, Content, Header, Left, Body, Right, Title }  from 'native-base';
+import { Container, Content, Header, Left, Body, Right, Title, Footer }  from 'native-base';
 import {SafeAreaView} from 'react-native';
 
 export default class App extends Component {
@@ -18,7 +18,11 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
+<<<<<<< HEAD
       currentPage: 'Feed',
+=======
+      currentPage: 'Profile',
+>>>>>>> 5979dcbc97438c44218aca0c60f088c2a1cbd8a9
       hasSignedUp: false
     };
   }
@@ -62,3 +66,5 @@ export default class App extends Component {
     })
   }
 }
+
+
