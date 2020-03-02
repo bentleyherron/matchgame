@@ -1,23 +1,9 @@
 import React from 'react';
-import { View, Image } from 'react-native';
-import { Container, Header, Content, ListItem, Text, Radio, Button, Right, Left, H1 } from 'native-base';
+import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1 } from 'native-base';
 
 export default function SignupPageThree({ onSportSelect, topSports, onNextClick }) {
 
     const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
-
-    function sportElement(sportName, index) {
-        return(
-            <ListItem onPress={() => onSportSelect(sportName)} key={index + 'r'}>
-                <Left>
-                    <Text>{sportName}</Text>
-                </Left>
-                <Right>
-                    <Radio selected={topSports.includes(sportName)} />
-                </Right>
-          </ListItem>
-        );
-    }
 
     return(
         <Container>
@@ -25,8 +11,15 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
             <Content>
             {
                 sportsList.map((sport, i) => {
-                    return(
-                        sportElement(sport, i)
+                    return (
+                        <ListItem onPress={() => onSportSelect(sport)} key={i + 'r'}>
+                            <Left>
+                                <Text>{sport}</Text>
+                            </Left>
+                            <Right>
+                                <Radio selected={topSports.includes(sport)} />
+                            </Right>
+                        </ListItem>
                     )
                 })
             }

@@ -25,13 +25,13 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
           return;
         }
     
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true});
 
         if (pickerResult.cancelled === true) {
             return;
           }
       
-          setSelectedImage({ localUri: pickerResult.uri });
+          setSelectedImage({ localUri: "data:image/png;base64," + pickerResult.base64 });
     }
 
     const handleTermsClick = () => {
@@ -53,7 +53,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         } else if (currentPage === 'pageThree') {
             setCurrentPage('pageFour');
         } else if (currentPage === 'pageFour') {
-            setCurrentPage('feed');
+            setCurrentPage('Feed');
         }
     }
 
@@ -95,6 +95,11 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
     } else if (currentPage === 'pageFour') {
         headerTitle = 'Complete'
         content = <SignupPageFour
+        onNextClick={handleNextPageClick}
+        username={username}
+        email={email}
+        sports={sports}
+        image={selectedImage.localUri}
         />
     }
 
