@@ -18,11 +18,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-<<<<<<< HEAD
-      currentPage: 'Feed',
-=======
       currentPage: 'Profile',
->>>>>>> 5979dcbc97438c44218aca0c60f088c2a1cbd8a9
       hasSignedUp: false
     };
   }
