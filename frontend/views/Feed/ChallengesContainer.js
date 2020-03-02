@@ -39,6 +39,7 @@ export default function ChallengesContainer() {
 
     return (
         <FlatList
+        style={{padding: 5}}
         data={[challenge1, challenge2, challenge3]}
         renderItem={ ({ item }) => (
             <Challenge

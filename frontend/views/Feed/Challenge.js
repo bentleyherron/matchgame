@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardItem, H1, Text } from 'native-base';
+import { Card, CardItem, H1, Text, Body, Right, Button } from 'native-base';
 
 export default function Challenge({ challenge, expandChallenge }) {
     const { teamFrom,
@@ -7,20 +7,27 @@ export default function Challenge({ challenge, expandChallenge }) {
             date,
             wager,
             message } = challenge;
-    const formattedDate = `Date: ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} at ${date.getHours()}:00`
+    const formattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} at ${date.getHours()}:00`
     return (
-        <Card onPress={() => expandChallenge()}>
-            <CardItem header>
-                <H1>Team {teamFrom} has issued a challenge to Team {teamTo}</H1>
+        <Card 
+            style={{padding: 5}}
+            onPress={() => expandChallenge()}>
+            <CardItem header bordered>
+                <Body>
+                    <Text>Team {teamFrom} challenged Team {teamTo}</Text>
+                </Body>
             </CardItem>
-            <CardItem cardBody>
-                    {wager ? <Text>Wager: {wager}</Text> : null}
-            </CardItem>
-            <CardItem cardBody>
-                    <Text>{formattedDate}</Text>
-            </CardItem>
-            <CardItem cardBody>
-                    <Text>{message}</Text>
+            <CardItem>
+                <Body>
+                    {wager ? <Text note>{wager} Points Wagered</Text> : null}
+                    <Text note>{formattedDate}</Text>
+                    <Text note>{message}</Text>
+                </Body>
+                <Right>
+                    <Button rounded>
+                        <Text>Game On</Text>
+                    </Button>
+                </Right>
             </CardItem>
         </Card>
     );
