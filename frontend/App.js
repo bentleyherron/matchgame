@@ -42,7 +42,7 @@ export default class App extends Component {
       <SafeAreaView style={{flex: 1}}>
           {/* <DisplayHeader currentPage={currentPage} /> */}
           <Content>
-            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer/> : null}
+            {/* {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer/> : null} */}
             {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
             {currentPage === "Loading" ? <Loading /> : null}
