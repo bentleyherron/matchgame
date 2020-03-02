@@ -5,11 +5,6 @@ import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbn
 import { YellowBox } from 'react-native'
 
 
-
-// YellowBox.ignoreWarnings([
-//   'VirtualizedLists should never be nested', // TODO: Remove when fixed
-// ])
-
 const dataArray = [
     { title: "All Sports", content: "Games" },
     { title: "Ice Hockey", content: "Games" },
@@ -41,25 +36,27 @@ export default function TeamProfile(){
                         </Left>
                     </CardItem>
                 </Card>
-                <H1>Sports</H1>
-                    <Grid>
-                        <Row>
-                            <Thumbnail source={require("./soccer.png")} />
-                            <Thumbnail source={require("./soccer.png")} />
-                            <Thumbnail source={require("./soccer.png")} />
-                        </Row>
-                    </Grid>
-                <H1>Record</H1>
-                <Content padder>
-                    <Accordion dataArray={dataArray} expanded={0}/>
-                </Content>
-                <Grid>
-                    <Col>
-                        <H1>Roster</H1>
-                    </Col>
-                    {isCaptain ? captainAdd : null}
-                </Grid>
                 <Card>
+                    <H1 style={{padding: 20}}>Sports</H1>
+                    <CardItem>
+                        <Grid>
+                            <Row>
+                                <Thumbnail source={require("./soccer.png")} />
+                                <Thumbnail source={require("./soccer.png")} />
+                                <Thumbnail source={require("./soccer.png")} />
+                            </Row>
+                        </Grid>
+                    </CardItem>
+                    <H1 style={{padding: 20}}>Record</H1>
+                    <CardItem>
+                        <Accordion dataArray={dataArray} expanded={0}/>
+                    </CardItem>
+                    <Grid>
+                        <Col>
+                            <H1 style={{padding: 20}}>Roster</H1>
+                        </Col>
+                        {isCaptain ? captainAdd : null}
+                    </Grid>
                     <CardItem bordered> 
                         <Left>
                             <Thumbnail large source={require("./trailrunner.jpg")} />
