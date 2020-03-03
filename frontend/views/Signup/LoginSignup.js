@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms, setUsername, setEmail, setPassword }) {
+export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms, setUsername, setNickname, setEmail, setPassword }) {
 
     return (
       <Container>
@@ -18,6 +18,12 @@ export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms
                 name="username"
                 placeholder='User Name'
                 onChangeText={text => setUsername(text)}/>
+            </Item>
+            <Item fixedLabel>
+              <Input
+                name="nickname"
+                placeholder='Nickname'
+                onChangeText={text => setNickname(text)}/>
             </Item>
             <Item fixedLabel>
               <Input 

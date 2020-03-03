@@ -1,9 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Image } from 'react-native';
 import { Container, List, ListItem, Left, Body, Text, Button } from 'native-base';
+import axios from 'axios';
 
-export default function SignupPageFour({onNextClick, username, email, sports, image, locationId}) {
-    console.log(locationId);
+export default function SignupPageFour({onNextClick, username, password, email, sports, image, locationId}) {
+    const [userObject, setUserObject] = useState({});
+    const [sportsArray, setSportsArray] = useState([]);
+    const postUser = () => {
+        setUserObject({
+            username,
+            email,
+            password,
+            photo: image,
+            city_id: locationId,
+            player_rating: 5,
+            nickname
+        });
+    };
+    const postSports = () => {};
     return(
         <Container>
             <List>

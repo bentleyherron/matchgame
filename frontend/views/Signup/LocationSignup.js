@@ -11,9 +11,7 @@ export default function LocationSignup({onNextClick, locationId, setLocationId})
         async function fetchStateData() {
             const url = `https://8ab0e3a4.ngrok.io/states/`;
             const results = await axios.get(url);
-            console.log(results.data);
             setStateList(results.data);
-            console.log(stateList);
         }
         fetchStateData();
     }, []);
@@ -22,7 +20,6 @@ export default function LocationSignup({onNextClick, locationId, setLocationId})
         async function fetchCityData() {
             const url = `https://8ab0e3a4.ngrok.io/states/${state}`;
             const results = await axios.get(url);
-            console.log(results.data);
             setCityList(results.data);
         }
         if (state) {

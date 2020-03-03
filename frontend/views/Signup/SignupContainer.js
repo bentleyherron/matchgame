@@ -18,6 +18,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
     const [locationId, setLocationId] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [sports, setSports] = useState([]);
+    const [nickname, setNickname] = useState(null);
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -73,6 +74,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         headerTitle = 'Create Profile'
         content = <LoginSignup
         setUsername={setUsername}
+        setNickname={setNickname}
         setEmail={setEmail}
         email={email}
         setPassword={setPassword}
@@ -104,6 +106,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         content = <ReviewSignup
         onNextClick={handleNextPageClick}
         username={username}
+        password={password}
         email={email}
         sports={sports}
         image={selectedImage}
