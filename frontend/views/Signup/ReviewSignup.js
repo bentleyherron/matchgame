@@ -21,7 +21,7 @@ export default function SignupPageFour({
             username,
             email,
             password,
-            // photo: image,
+            photo: image,
             city_id: locationId.id,
             player_rating: 5,
             nickname}

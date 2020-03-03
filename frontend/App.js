@@ -18,7 +18,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-      currentPage: 'Feed',
+      currentPage: 'pageOne',
       hasSignedUp: false,
       userData: null,
       favoriteSports: null

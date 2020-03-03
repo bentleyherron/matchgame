@@ -49,7 +49,9 @@ export default function SignupPageOne({ onNextClick, onPrevClick, setUsername, s
                 onChangeText={text => setPassword(text)}/>
             </Item>
             <Item selected={true}
-                  onPress={() => setAgreedToTerms(!agreedToTerms)}>
+                  onPress={() => setAgreedToTerms(!agreedToTerms)}
+                  style={{padding:10}}
+                  >
               <Left>
                 <Radio
                   color={"#f0ad4e"}
