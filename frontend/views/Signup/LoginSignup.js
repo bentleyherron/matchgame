@@ -1,13 +1,7 @@
 import React from 'react';
-import { Container, Header, Content, Form, Item, Input, Label, Left, Right, Radio, Button, Text } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({onChange, onTermsClick, onNextClick, agreedToTerms, setUsername, setEmail, setPassword, setSports, setTeams, setAgreed}) {
-
-    function handleTermsClick() {
-      onClick();
-      this.state.selected = true;
-    }
+export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms, setUsername, setEmail, setPassword }) {
 
     return (
       <Container>

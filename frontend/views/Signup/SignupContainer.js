@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { Container, Header, Body, Left, Right, Title } from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 
-import SignupPageOne from './SignupPageOne';
-import SignupPageTwo from './SignupPageTwo';
-import SignupPageThree from './SignupPageThree';
-import SignupPageFour from './SignupPageFour';
+import LoginSignup from './LoginSignup';
+import LocationSignup from './LocationSignup';
+import ProfilePicSignup from './ProfilePicSignup';
+import FavoriteSportsSignup from './FavoriteSportsSignup';
+import ReviewSignup from './ReviewSignup';
 
-export default function SignupContainer() {
+
+export default function SignupContainer({ currentPage, setCurrentPage }) {
 
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const [sports, setSports] = useState([]);
     const [agreedToTerms, setAgreed] = useState(false);
-    const [selectedImage, setSelectedImage] = React.useState(null);
-    const [currentPage, setCurrentPage] = useState('pageOne');
+    const [locationId, setLocationId] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [sports, setSports] = useState([]);
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -25,13 +27,13 @@ export default function SignupContainer() {
           return;
         }
     
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true});
 
         if (pickerResult.cancelled === true) {
             return;
           }
       
-          setSelectedImage({ localUri: pickerResult.uri });
+          setSelectedImage("data:image/png;base64," + pickerResult.base64);
     }
 
     const handleTermsClick = () => {
@@ -43,9 +45,6 @@ export default function SignupContainer() {
     }
 
     const handleNextPageClick = () => {
-        console.log({username}, {email}, {password}, {agreedToTerms});
-        console.log(selectedImage);
-        console.log('next button clicked');
         if (currentPage === 'pageOne') {
             setCurrentPage('pageTwo');
         } else if (currentPage === 'pageTwo') {
@@ -53,7 +52,9 @@ export default function SignupContainer() {
         } else if (currentPage === 'pageThree') {
             setCurrentPage('pageFour');
         } else if (currentPage === 'pageFour') {
-            setCurrentPage('feed');
+            setCurrentPage('pageFive');
+        } else if (currentPage === 'pageSix') {
+            setCurrentPage('Feed');
         }
     }
 
@@ -70,31 +71,43 @@ export default function SignupContainer() {
     let headerTitle;
     if (currentPage === 'pageOne') {
         headerTitle = 'Create Profile'
-        content = <SignupPageOne
+        content = <LoginSignup
         setUsername={setUsername}
         setEmail={setEmail}
         email={email}
         setPassword={setPassword}
-        setSports={setSports}
         setAgreed={setAgreed}
         agreedToTerms={agreedToTerms}
         onTermsClick={handleTermsClick}
         onNextClick={handleNextPageClick}/>
     }  else if (currentPage === 'pageTwo') {
-        headerTitle = 'Create Profile'
-        content = <SignupPageTwo
+        headerTitle = 'Select Location';
+        content = <LocationSignup
+        locationId={locationId}
+        setLocationId={setLocationId}
+        onNextClick={handleNextPageClick}
+        />
+    } else if (currentPage === 'pageThree') {
+        headerTitle = 'Select Profile Picture'
+        content = <ProfilePicSignup
         selectedImage={selectedImage}
         openImagePicker={openImagePickerAsync}
         onNextClick={handleNextPageClick}/>
-    } else if (currentPage === 'pageThree') {
-        headerTitle = 'Create Profile'
-        content = <SignupPageThree
+    } else if (currentPage === 'pageFour') {
+        headerTitle = 'Select Favorite Sports'
+        content = <FavoriteSportsSignup
         onSportSelect={handleSportSelect}
         topSports={sports}
         onNextClick={handleNextPageClick}/>
-    } else if (currentPage === 'pageFour') {
-        headerTitle = 'Complete'
-        content = <SignupPageFour
+    } else if (currentPage === 'pageFive') {
+        headerTitle = 'Review'
+        content = <ReviewSignup
+        onNextClick={handleNextPageClick}
+        username={username}
+        email={email}
+        sports={sports}
+        image={selectedImage}
+        locationId={locationId}
         />
     }
 

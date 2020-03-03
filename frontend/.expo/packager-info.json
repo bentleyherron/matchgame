@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19004,
-  "packagerPid": 54429,
-  "expoServerNgrokUrl": "https://m8-eim.anonymous.frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.m8-eim.anonymous.frontend.exp.direct",
-  "ngrokPid": 54438,
+  "packagerPort": 19001,
+  "packagerPid": 5390,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
