@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Content, Text, Button, H1, Thumbnail } from 'native-base';
+import { Container, Content, Text, Button, H1, Thumbnail, Footer, FooterTab } from 'native-base';
 
-export default function SignupPageTwo({openImagePicker, selectedImage, onNextClick}) {
+export default function SignupPageTwo({ openImagePicker, selectedImage, onNextClick, onPrevClick }) {
 
       let photoContent;
 
@@ -22,11 +22,22 @@ export default function SignupPageTwo({openImagePicker, selectedImage, onNextCli
                 </Button>
                 
             </Content>
-            <Button onPress={onNextClick}>
-                    <Text>
-                        Next
-                    </Text>
-                </Button>
+            <Footer>
+                <FooterTab>
+                    <Button
+                    onPress={onPrevClick}
+                    >
+                    <Text>PREV</Text>
+                    </Button>
+                </FooterTab>
+                <FooterTab>
+                    <Button
+                    onPress={onNextClick}
+                    >
+                    <Text>NEXT</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         </Container>
     );
 

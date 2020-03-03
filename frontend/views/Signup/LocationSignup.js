@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, ListItem} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, ListItem, Footer, FooterTab} from 'native-base';
 import axios from 'axios';
 
-export default function LocationSignup({onNextClick, locationId, setLocationId}) {
-    const [state, setState] = useState(null);
+export default function LocationSignup({onNextClick, onPrevClick, locationId, setLocationId}) {
+    const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
@@ -61,11 +61,22 @@ export default function LocationSignup({onNextClick, locationId, setLocationId})
                     null}
                 </Form>
             </Content>
-            <Button
-                rounded
-                onPress={onNextClick}>
-                <Text>NEXT</Text>
-            </Button>
+            <Footer>
+                <FooterTab>
+                    <Button
+                    onPress={onPrevClick}
+                    >
+                    <Text>PREV</Text>
+                    </Button>
+                </FooterTab>
+                <FooterTab>
+                    <Button
+                    onPress={onNextClick}
+                    >
+                    <Text>NEXT</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         </Container>
 );
 }

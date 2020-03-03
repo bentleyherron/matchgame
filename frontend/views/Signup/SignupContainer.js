@@ -52,8 +52,20 @@ export default function SignupContainer({
             setCurrentPage('pageFour');
         } else if (currentPage === 'pageFour') {
             setCurrentPage('pageFive');
-        } else if (currentPage === 'pageSix') {
+        } else if (currentPage === 'pageFive') {
             setCurrentPage('Feed');
+        }
+    }
+
+    const handlePrevPageClick = () => {
+        if (currentPage === 'pageTwo') {
+            setCurrentPage('pageOne');
+        } else if (currentPage === 'pageThree') {
+            setCurrentPage('pageTwo');
+        } else if (currentPage === 'pageFour') {
+            setCurrentPage('pageThree');
+        } else if (currentPage === 'pageFive') {
+            setCurrentPage('pageFour');
         }
     }
     // get the sports objects from the database
@@ -83,30 +95,35 @@ export default function SignupContainer({
         nickname={nickname}
         username={username}
         setPassword={setPassword}
-        onNextClick={handleNextPageClick}/>
+        onNextClick={handleNextPageClick}
+        />
     }  else if (currentPage === 'pageTwo') {
         headerTitle = 'Select Location';
         content = <LocationSignup
         locationId={locationId}
         setLocationId={setLocationId}
         onNextClick={handleNextPageClick}
+        onPrevClick={handlePrevPageClick}
         />
     } else if (currentPage === 'pageThree') {
         headerTitle = 'Select Profile Picture'
         content = <ProfilePicSignup
         selectedImage={selectedImage}
         openImagePicker={openImagePickerAsync}
-        onNextClick={handleNextPageClick}/>
+        onNextClick={handleNextPageClick}
+        onPrevClick={handlePrevPageClick}
+        />
     } else if (currentPage === 'pageFour') {
         headerTitle = 'Select Favorite Sports'
         content = <FavoriteSportsSignup
         onSportSelect={handleSportSelect}
         topSports={sports}
-        onNextClick={handleNextPageClick}/>
+        onNextClick={handleNextPageClick}
+        onPrevClick={handlePrevPageClick}
+        />
     } else if (currentPage === 'pageFive') {
         headerTitle = 'Review'
         content = <ReviewSignup
-        onNextClick={handleNextPageClick}
         username={username}
         nickname={nickname}
         password={password}
@@ -116,6 +133,8 @@ export default function SignupContainer({
         locationId={locationId}
         setUserData={setUserData}
         setFavoriteSports={setFavoriteSports}
+        onNextClick={handleNextPageClick}
+        onPrevClick={handlePrevPageClick}
         />
     }
 

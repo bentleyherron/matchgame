@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 3684,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "packagerPid": 4022,
+  "expoServerNgrokUrl": "https://e2-xpq.anonymous.frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.e2-xpq.anonymous.frontend.exp.direct",
+  "ngrokPid": 4039,
   "webpackServerPort": null
 }
