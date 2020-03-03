@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Content, Header, Tab, Tabs } from 'native-base';
+import { Container, Content, Header, Tab, Tabs } from 'native-base';
 import Leaderboard from './Leaderboard';
 import ChallengesContainer from './ChallengesContainer';
 import EventsContainer from './EventsContainer';
@@ -7,7 +7,7 @@ import Search from './Search';
 
 export default function FeedContainer(){
     return (
-        <Content>
+        <Container>
             <Header hasTabs/>
             <Tabs>
                 <Tab heading="Leaderboard">
@@ -20,6 +20,6 @@ export default function FeedContainer(){
                     <EventsContainer />
                 </Tab>
             </Tabs>
-        </Content>
+        </Container>
     );
 }

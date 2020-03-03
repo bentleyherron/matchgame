@@ -70,7 +70,7 @@ export default function EventsContainer() {
 
     return (
         <FlatList
-        style={{padding: 10}}
+        style={{padding: 5}}
         data={[event1, event2, event3, event4]}
         renderItem={ ({ item }) => (
             <Event
