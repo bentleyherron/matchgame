@@ -42,7 +42,7 @@ export default class App extends Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ?
+            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' || 'pageFive' ?
             <SignupContainer
             setCurrentPage={_setCurrentPage}
             currentPage={currentPage}
@@ -53,10 +53,14 @@ export default class App extends Component {
             />
             :
             null}
-            {/* {currentPage === 'Profile' ? <Profile /> : null}
+            {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-            {currentPage === "Loading" ? <Loading /> : null} */}
-          <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
+            {currentPage === "Loading" ? <Loading /> : null}
+            {currentPage !== 'pageOne' && 'pageTwo' && 'pageThree' && 'pageFour' && 'pageFive' ?
+            <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
+            :
+            null
+            }
       </SafeAreaView>
     );
   }
