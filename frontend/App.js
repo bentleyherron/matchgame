@@ -18,7 +18,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isReady: false,
-      currentPage: 'pageOne',
+      currentPage: 'Feed',
       hasSignedUp: false,
       userData: null,
       favoriteSports: null
@@ -42,7 +42,7 @@ export default class App extends Component {
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' || 'pageFive' ?
+            {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
             <SignupContainer
             setCurrentPage={_setCurrentPage}
             currentPage={currentPage}
