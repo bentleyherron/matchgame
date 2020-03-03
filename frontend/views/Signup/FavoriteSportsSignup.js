@@ -14,7 +14,6 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
         }
         fetchSportsData();
     }, [])
-
     return(
         <Container>
             <H1>Select Favorite Sports</H1>

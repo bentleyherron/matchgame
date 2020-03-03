@@ -1,7 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms, setUsername, setNickname, setEmail, setPassword }) {
+export default function SignupPageOne({ onNextClick, setUsername, setNickname, setEmail, setPassword, username, email, password, nickname }) {
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+    function validateUsername() {
+      return username.length > 0 && email.length > 0;
+    }
+
+    function validateEmail() {
+
+    }
+
+    function validateNickname() {
+
+    }
+
+    function validatePassword() {
+
+    }
 
     return (
       <Container>
@@ -32,13 +49,12 @@ export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms
                 onChangeText={text => setPassword(text)}/>
             </Item>
             <Item selected={true}
-                  onPress={onTermsClick}>
+                  onPress={() => setAgreedToTerms(!agreedToTerms)}>
               <Left>
                 <Radio
                   color={"#f0ad4e"}
                   selectedColor={"#5cb85c"}
                   selected={agreedToTerms}
-                  onPress={onTermsClick}
                 />
               </Left>
               <Right>

@@ -21,7 +21,6 @@ export default function SignupContainer({
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const [agreedToTerms, setAgreed] = useState(false);
     const [locationId, setLocationId] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [sports, setSports] = useState([]);
@@ -44,14 +43,6 @@ export default function SignupContainer({
           setSelectedImage("data:image/png;base64," + pickerResult.base64);
     }
 
-    const handleTermsClick = () => {
-        if (agreedToTerms === false) {
-            setAgreed(true)
-        } else {
-            setAgreed(false)
-        }
-    }
-
     const handleNextPageClick = () => {
         if (currentPage === 'pageOne') {
             setCurrentPage('pageTwo');
@@ -72,7 +63,7 @@ export default function SignupContainer({
     // update selected by checking if sport object is in favorite sports
     // 
     const handleSportSelect = (sport) => {
-        if (sports.filter(item => item.name === sport.name)) {
+        if (sports.filter(item => item.name === sport.name).length) {
             setSports(sports.filter(item => item.name !== sport.name))
         } else {
             setSports([...sports, sport]);
@@ -88,10 +79,10 @@ export default function SignupContainer({
         setNickname={setNickname}
         setEmail={setEmail}
         email={email}
+        password={password}
+        nickname={nickname}
+        username={username}
         setPassword={setPassword}
-        setAgreed={setAgreed}
-        agreedToTerms={agreedToTerms}
-        onTermsClick={handleTermsClick}
         onNextClick={handleNextPageClick}/>
     }  else if (currentPage === 'pageTwo') {
         headerTitle = 'Select Location';
