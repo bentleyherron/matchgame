@@ -124,7 +124,6 @@ export default function SignupContainer({
         image={selectedImage}
         locationId={locationId}
         setUserData={setUserData}
-        userData={userData}
         setFavoriteSports={setFavoriteSports}
         />
     }

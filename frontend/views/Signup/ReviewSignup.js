@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { Image } from 'react-native';
 import { Container, List, ListItem, Left, Body, Text, Button } from 'native-base';
 import axios from 'axios';
@@ -13,7 +13,6 @@ export default function SignupPageFour({
     image,
     locationId,
     setUserData,
-    userData,
     setFavoriteSports
 }) {
     const [userObject, setUserObject] = useState({
@@ -25,19 +24,27 @@ export default function SignupPageFour({
             player_rating: 5,
             nickname}
         });
-    const [sportsArray, setSportsArray] = useState(sports);
+    const [sportsArray, setSportsArray] = useState(sports.map(sport => sport.id));
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const postUser = async () => {
         const url = `https://8ab0e3a4.ngrok.io/users`
         const response = await axios.post(url, userObject);
         setUserData(response.data);
+        return response.data.id;
     };
     const postSports = async (id) => {
         const url = `https://8ab0e3a4.ngrok.io/favorite-sports/player/${id}`;
-        const response = await axios.post(url, sports);
+        const response = await axios.post(url, sportsArray);
         setFavoriteSports(response.data);
     };
+
+    const postSignupData = async () => {
+        const id = await postUser();
+        postSports(id);
+        return false; // change this for error handling
+    }
+
     return(
         <Container>
             <List>
@@ -112,9 +119,11 @@ export default function SignupPageFour({
                     </Body>
                 </ListItem>
             </List>
-            <Button rounded onPress={() => {
-                onNextClick();
-                postUser();
+            <Button rounded onPress={async () => {
+                setIsSubmitting(true);
+                const wasSubmitted = await postSignupData();
+                setIsSubmitting(wasSubmitted);
+                !wasSubmitted ? onNextClick() : console.log('error posting data');
                 }}>
                 <Text>
                     Submit
