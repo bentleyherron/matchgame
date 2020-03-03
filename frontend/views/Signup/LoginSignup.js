@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
+import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms, setUsername, setEmail, setPassword }) {
+export default function SignupPageOne({ onTermsClick, onNextClick, onSigninClick, agreedToTerms, setUsername, setEmail, setPassword }) {
 
     return (
       <Container>
@@ -35,18 +35,21 @@ export default function SignupPageOne({ onTermsClick, onNextClick, agreedToTerms
                   onPress={onTermsClick}
                 />
               </Left>
-              <Right>
-                <Text>I agree to the terms of service</Text>
-              </Right>
-          </Item>
+              <Body>
+                <Text note>I agree to the terms of service</Text>
+              </Body>
+            </Item>
+                <Button
+                rounded
+                onPress={onNextClick}
+                style={{margin: 20}}>
+                <Text>Create your account</Text>
+              </Button>
           </Form>
+          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={onSigninClick}>Sign in</Text></Text>
           
         </Content>
-        <Button
-            rounded
-            onPress={onNextClick}>
-            <Text>SIGN UP</Text>
-          </Button>
+        
       </Container>
     );
 }
