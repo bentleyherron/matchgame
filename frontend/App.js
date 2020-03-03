@@ -9,8 +9,15 @@ import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/Signup/SignupContainer';
 import DisplayHeader from './views/Navigation/DisplayHeader';
-import { Container, Content, Header, Left, Body, Right, Title, Footer }  from 'native-base';
+import { Container, Content, Header, Left, Body, Right, Title, Footer, Root }  from 'native-base';
+import { StackNavigator } from 'react-navigator';
 import {SafeAreaView} from 'react-native';
+
+const AppNavigator = StackNavigator(
+  {
+    Page: { screen: Page },
+  }
+);
 
 export default class App extends Component {
 
@@ -41,27 +48,31 @@ export default class App extends Component {
       return <AppLoading />;
     }
     return (
-      <SafeAreaView style={{flex: 1}}>
-            {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
-            <SignupContainer
-            setCurrentPage={_setCurrentPage}
-            currentPage={currentPage}
-            setUserData={_setUserData}
-            userData={userData}
-            setFavoriteSports={_setFavoriteSports}
-            favoriteSports={favoriteSports}
-            />
-            :
-            null}
-            {currentPage === 'Profile' ? <Profile /> : null}
-            {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-            {currentPage === "Loading" ? <Loading /> : null}
-            {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
-            <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
-            :
-            null
-            }
-      </SafeAreaView>
+      <Root>
+        <AppNavigator>
+          <SafeAreaView style={{flex: 1}}>
+                {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
+                <SignupContainer
+                setCurrentPage={_setCurrentPage}
+                currentPage={currentPage}
+                setUserData={_setUserData}
+                userData={userData}
+                setFavoriteSports={_setFavoriteSports}
+                favoriteSports={favoriteSports}
+                />
+                :
+                null}
+                {currentPage === 'Profile' ? <Profile /> : null}
+                {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
+                {currentPage === "Loading" ? <Loading /> : null}
+                {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
+                <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
+                :
+                null
+                }
+          </SafeAreaView>
+        </AppNavigator>
+      </Root>
     );
   }
 
