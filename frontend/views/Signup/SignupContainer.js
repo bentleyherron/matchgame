@@ -7,6 +7,7 @@ import LocationSignup from './LocationSignup';
 import ProfilePicSignup from './ProfilePicSignup';
 import FavoriteSportsSignup from './FavoriteSportsSignup';
 import ReviewSignup from './ReviewSignup';
+import UserLogin from './UserLogin';
 
 
 export default function SignupContainer({ currentPage, setCurrentPage }) {
@@ -34,6 +35,14 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
           }
       
           setSelectedImage("data:image/png;base64," + pickerResult.base64);
+    }
+
+    const handleLoginClick = () => {
+        setCurrentPage('Feed');
+    }
+
+    const handleSigninClick = () => {
+        setCurrentPage('Login');
     }
 
     const handleTermsClick = () => {
@@ -79,7 +88,8 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         setAgreed={setAgreed}
         agreedToTerms={agreedToTerms}
         onTermsClick={handleTermsClick}
-        onNextClick={handleNextPageClick}/>
+        onNextClick={handleNextPageClick}
+        onSigninClick={handleSigninClick}/>
     }  else if (currentPage === 'pageTwo') {
         headerTitle = 'Select Location';
         content = <LocationSignup
@@ -109,6 +119,9 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         image={selectedImage}
         locationId={locationId}
         />
+    } else {
+        content = <UserLogin
+        onLoginClick = {handleLoginClick}/>
     }
 
     return (
