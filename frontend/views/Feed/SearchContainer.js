@@ -11,7 +11,7 @@ export default function SearchContainer() {
     const [currentPlayerTeam, setPlayerTeam] = useState(null);
     const sports = ['Football', 'Basketball', 'Kubb', 'Darts', 'Ultimate Frisbee', 'Soccer', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Beer Pong', 'Cornhole', 'Volleyball', 'Bocce Ball', 'Ping Pong', 'Golf', 'Tennis'];
     // const getUsers = async () => {
-    //     const url = `https://62f4056c.ngrok.io`;
+    //     const url = `https://8ab0e3a4.ngrok.io`;
     //     const userResults = axios.get(url + '/users')
     //         .then(results => {
     //             results.forEach(item => {

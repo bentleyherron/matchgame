@@ -9,20 +9,17 @@ export default function LocationSignup({onNextClick, locationId, setLocationId})
 
     useEffect(() => {
         async function fetchStateData() {
-            const url = `https://62f4056c.ngrok.io/states/`;
+            const url = `https://8ab0e3a4.ngrok.io/states/`;
             const results = await axios.get(url);
-            console.log(results.data);
             setStateList(results.data);
-            console.log(stateList);
         }
         fetchStateData();
     }, []);
 
     useEffect(() => {
         async function fetchCityData() {
-            const url = `https://62f4056c.ngrok.io/states/${state}`;
+            const url = `https://8ab0e3a4.ngrok.io/states/${state}`;
             const results = await axios.get(url);
-            console.log(results.data);
             setCityList(results.data);
         }
         if (state) {

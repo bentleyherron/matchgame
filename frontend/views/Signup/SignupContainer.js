@@ -10,7 +10,14 @@ import ReviewSignup from './ReviewSignup';
 import UserLogin from './UserLogin';
 
 
-export default function SignupContainer({ currentPage, setCurrentPage }) {
+export default function SignupContainer({
+    currentPage,
+    setCurrentPage,
+    setUserData,
+    userData,
+    setFavoriteSports,
+    favoriteSports
+}) {
 
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
@@ -19,6 +26,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
     const [locationId, setLocationId] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [sports, setSports] = useState([]);
+    const [nickname, setNickname] = useState(null);
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -66,13 +74,17 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
             setCurrentPage('Feed');
         }
     }
-
-    const handleSportSelect = (sportName) => {
-        if (sports.includes(sportName)) {
-            setSports(sports.filter(item => item !== sportName))
+    // get the sports objects from the database
+    // show the sports objects
+    // when user clicks on each sport,
+    // add sport object to favorite sports
+    // update selected by checking if sport object is in favorite sports
+    // 
+    const handleSportSelect = (sport) => {
+        if (sports.includes(sport.name)) {
+            setSports(sports.filter(item => item.name !== sport.name))
         } else {
-            setSports([...sports, sportName]);
-            
+            setSports([...sports, sport]);
         }
     }
 
@@ -82,6 +94,7 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         headerTitle = 'Create Profile'
         content = <LoginSignup
         setUsername={setUsername}
+        setNickname={setNickname}
         setEmail={setEmail}
         email={email}
         setPassword={setPassword}
@@ -114,10 +127,14 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         content = <ReviewSignup
         onNextClick={handleNextPageClick}
         username={username}
+        nickname={nickname}
+        password={password}
         email={email}
         sports={sports}
         image={selectedImage}
         locationId={locationId}
+        setUserData={setUserData}
+        setFavoriteSports={setFavoriteSports}
         />
     } else {
         content = <UserLogin
