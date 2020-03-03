@@ -21,7 +21,7 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
             <H1>Select Favorite Sports</H1>
             <Content>
             {
-                sportsList.map((sport) => {
+                sportsList ? sportsList.map((sport) => {
                     return (
                         <ListItem onPress={() => onSportSelect(sport)} key={sport.id + 'r'}>
                             <Left>
@@ -32,7 +32,8 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
                             </Right>
                         </ListItem>
                     )
-                })
+                }) :
+                null
             }
             </Content>
             <Button

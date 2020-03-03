@@ -20,11 +20,12 @@ export default function SignupPageFour({
             username,
             email,
             password,
+            // photo: image,
             city_id: locationId.id,
             player_rating: 5,
             nickname}
         });
-    const [sportsArray, setSportsArray] = useState(sports.map(sport => sport.id));
+    const [sportsArray, setSportsArray] = useState(sports.map(sport => {return {sport_id: sport.id}}));
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const postUser = async () => {
@@ -34,8 +35,10 @@ export default function SignupPageFour({
         return response.data.id;
     };
     const postSports = async (id) => {
-        const url = `https://8ab0e3a4.ngrok.io/favorite-sports/player/${id}`;
-        const response = await axios.post(url, sportsArray);
+        const url = `https://8ab0e3a4.ngrok.io/favorite-sports/`;
+        const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
+        console.log(sportsArrayObject);
+        const response = await axios.post(url, sportsArrayObject);
         setFavoriteSports(response.data);
     };
 
@@ -104,8 +107,8 @@ export default function SignupPageFour({
                     </Left>
                     <Body>
                         <List>
-                            {sports.map((name, i) => (
-                                    <Text key={i+"sport"}>{name}</Text>
+                            {sports.map((sport) => (
+                                    <Text key={sport.id+"sport"}>{sport.name}</Text>
                             ))}
                         </List>
                     </Body>
