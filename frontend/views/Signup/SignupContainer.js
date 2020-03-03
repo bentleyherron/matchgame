@@ -9,7 +9,14 @@ import FavoriteSportsSignup from './FavoriteSportsSignup';
 import ReviewSignup from './ReviewSignup';
 
 
-export default function SignupContainer({ currentPage, setCurrentPage }) {
+export default function SignupContainer({
+    currentPage,
+    setCurrentPage,
+    setUserData,
+    userData,
+    setFavoriteSports,
+    favoriteSports
+}) {
 
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
@@ -106,11 +113,15 @@ export default function SignupContainer({ currentPage, setCurrentPage }) {
         content = <ReviewSignup
         onNextClick={handleNextPageClick}
         username={username}
+        nickname={nickname}
         password={password}
         email={email}
         sports={sports}
         image={selectedImage}
         locationId={locationId}
+        setUserData={setUserData}
+        userData={userData}
+        setFavoriteSports={setFavoriteSports}
         />
     }
 

@@ -19,7 +19,9 @@ export default class App extends Component {
     this.state = {
       isReady: false,
       currentPage: 'pageOne',
-      hasSignedUp: false
+      hasSignedUp: false,
+      userData: null,
+      favoriteSports: null
     };
   }
 
@@ -33,14 +35,24 @@ export default class App extends Component {
   }
   
   render() {
-    const {_setCurrentPage, _setLastPage} = this;
-    const { currentPage, isReady, hasSignedUp } = this.state;
+    const {_setCurrentPage, _setLastPage, _setUserData, _setFavoriteSports} = this;
+    const { currentPage, isReady, hasSignedUp, userData, favoriteSports} = this.state;
     if (!isReady) {
       return <AppLoading />;
     }
     return (
       <SafeAreaView style={{flex: 1}}>
-            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ? <SignupContainer setCurrentPage={_setCurrentPage} currentPage={currentPage} /> : null}
+            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' ?
+            <SignupContainer
+            setCurrentPage={_setCurrentPage}
+            currentPage={currentPage}
+            setUserData={_setUserData}
+            userData={userData}
+            setFavoriteSports={_setFavoriteSports}
+            favoriteSports={favoriteSports}
+            />
+            :
+            null}
             {/* {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
             {currentPage === "Loading" ? <Loading /> : null} */}
@@ -58,6 +70,18 @@ export default class App extends Component {
   _setLastPage = (text) => {
     this.setState({
       lastPage: text
+    })
+  }
+
+  _setUserData = (data) => {
+    this.setState({
+      userData: data
+    })
+  }
+
+  _setFavoriteSports = (sports) => {
+    this.setState({
+      favoriteSports: sports
     })
   }
 }
