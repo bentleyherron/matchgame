@@ -65,13 +65,17 @@ export default function SignupContainer({
             setCurrentPage('Feed');
         }
     }
-
-    const handleSportSelect = (sportName) => {
-        if (sports.includes(sportName)) {
-            setSports(sports.filter(item => item !== sportName))
+    // get the sports objects from the database
+    // show the sports objects
+    // when user clicks on each sport,
+    // add sport object to favorite sports
+    // update selected by checking if sport object is in favorite sports
+    // 
+    const handleSportSelect = (sport) => {
+        if (sports.includes(sport.name)) {
+            setSports(sports.filter(item => item.name !== sport.name))
         } else {
-            setSports([...sports, sportName]);
-            
+            setSports([...sports, sport]);
         }
     }
 
