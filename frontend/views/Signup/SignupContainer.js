@@ -72,7 +72,7 @@ export default function SignupContainer({
     // update selected by checking if sport object is in favorite sports
     // 
     const handleSportSelect = (sport) => {
-        if (sports.includes(sport.name)) {
+        if (sports.filter(item => item.name === sport.name)) {
             setSports(sports.filter(item => item.name !== sport.name))
         } else {
             setSports([...sports, sport]);

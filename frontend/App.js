@@ -56,7 +56,7 @@ export default class App extends Component {
             {currentPage === 'Profile' ? <Profile /> : null}
             {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
             {currentPage === "Loading" ? <Loading /> : null}
-            {currentPage !== 'pageOne' && 'pageTwo' && 'pageThree' && 'pageFour' && 'pageFive' ?
+            {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
             <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
             :
             null

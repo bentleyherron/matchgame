@@ -10,7 +10,6 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
         async function fetchSportsData() {
             const url = `https://8ab0e3a4.ngrok.io/sports`;
             const response = await axios.get(url);
-            console.log(response.data);
             setSportsList(response.data);
         }
         fetchSportsData();
