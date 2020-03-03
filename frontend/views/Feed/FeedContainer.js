@@ -10,14 +10,14 @@ export default function FeedContainer(){
         <Container>
             <Header hasTabs/>
             <Tabs>
-                <Tab heading="Leaderboard">
-                    <Leaderboard />
-                </Tab>
                 <Tab heading="Challenges">
                     <ChallengesContainer />
                 </Tab>
                 <Tab heading="Events">
                     <EventsContainer />
+                </Tab>
+                <Tab heading="Leaders">
+                    <Leaderboard />
                 </Tab>
                 <Tab heading="Search">
                     <Search />
