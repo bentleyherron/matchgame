@@ -1,42 +1,51 @@
-import React, { Component } from 'react';
-import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Card, CardItem, Item, Left, Right } from 'native-base';
+import React, { Component, useState, useEffect } from 'react';
+import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Card, CardItem, Item, Left, Right, Spinner } from 'native-base';
+import { Linking } from 'expo';
+import axios from 'axios'
 
-export default class EventContainer extends Component {
-  render() {
+import EventPage from './EventPage'
+
+export default function EventContainer() {
+
+  const [eventData, setEventData] = useState(null);
+  const [sportName, setSportName] = useState(null);
+
+  useEffect(() => {
+    const EventUrl = `https://e0dbe29f.ngrok.io/events/1`;
+    axios.get(EventUrl)
+      .then((response) => {
+        setEventData(response.data)
+        return response.data
+      })
+      .then((r) => {
+        console.log(r.sport_id);
+        axios.get(`https://e0dbe29f.ngrok.io/sports/${r.sport_id}`)
+          .then((response) => {
+            console.log(response.data[0].name);
+            setSportName(response.data[0].name);
+          })
+
+      })
+  }, [])
+
+
+
+  const handleMapClick = () => {
+    Linking.openURL('https://www.google.com/maps/search/?api=1&query=dave+busters+marietta');
+  }
+
     return (
       <Container>
         <Header />
-        <Content padder>
-          <Card>
-            <CardItem header bordered>
-              <Body>
-                <Text>Piedmont Park Soccer</Text>
-                <Text note>March 15, 3:30pm</Text>
-              </Body>
-              <Right><Thumbnail source={require("../Profile/soccer.png")}></Thumbnail></Right>
-            </CardItem>
-            <CardItem bordered>
-              <Body>
-                <Text>Points Wagered:</Text>
-              </Body>
-              <Right><H2>100</H2></Right>
-            </CardItem>
-            <CardItem header>
-              <Text>Teams</Text>
-            </CardItem>
-            <CardItem bordered> 
-              <Left><Thumbnail large source={require("../Profile/MightyDucks.png")}></Thumbnail></Left>
-              <Right><Thumbnail large source={require("../Profile/MightyDucks.png")}></Thumbnail></Right>
-            </CardItem>
-            <CardItem>
-              <Text>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-              </Text>
-            </CardItem>
-          </Card>
-          <Button rounded><Text>Cancel</Text></Button>
-        </Content>
+        {eventData && sportName ? (
+          <EventPage
+            eventData={eventData}
+            sportName={sportName}
+            handleMapClick={handleMapClick} />
+        ) : (
+          <Spinner />
+        )}
+        
       </Container>
     );
-  }
 }
