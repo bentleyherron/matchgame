@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,95 +10,54 @@ import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/Signup/SignupContainer';
 import DisplayHeader from './views/Navigation/DisplayHeader';
 import { Container, Content, Header, Left, Body, Right, Title, Footer, Root }  from 'native-base';
-import { StackNavigator } from 'react-navigator';
 import {SafeAreaView} from 'react-native';
 
-const AppNavigator = StackNavigator(
-  {
-    Page: { screen: Page },
-  }
-);
+export default function App() {
 
-export default class App extends Component {
+  const [isReady, setIsReady] = useState(false);
+  const [currentPage, setCurrentPage] = useState('pageOne');
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [favoriteSports, setFavoriteSports] = useState(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isReady: false,
-      currentPage: 'pageOne',
-      hasSignedUp: false,
-      userData: null,
-      favoriteSports: null
-    };
-  }
-
-  async componentDidMount() {
-    await Font.loadAsync({
+  useEffect(() => {
+    Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
-    });
-    this.setState({ isReady: true });
-  }
-  
-  render() {
-    const {_setCurrentPage, _setLastPage, _setUserData, _setFavoriteSports} = this;
-    const { currentPage, isReady, hasSignedUp, userData, favoriteSports} = this.state;
-    if (!isReady) {
-      return <AppLoading />;
+    }).then(() => {
+      setIsReady(true)
     }
-    return (
-      <Root>
-        <AppNavigator>
-          <SafeAreaView style={{flex: 1}}>
-                {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
-                <SignupContainer
-                setCurrentPage={_setCurrentPage}
-                currentPage={currentPage}
-                setUserData={_setUserData}
-                userData={userData}
-                setFavoriteSports={_setFavoriteSports}
-                favoriteSports={favoriteSports}
-                />
-                :
-                null}
-                {currentPage === 'Profile' ? <Profile /> : null}
-                {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-                {currentPage === "Loading" ? <Loading /> : null}
-                {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
-                <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
-                :
-                null
-                }
-          </SafeAreaView>
-        </AppNavigator>
-      </Root>
-    );
+    )
+  }, [])
+  
+  if (!isReady) {
+    return <AppLoading />;
   }
-
-  _setCurrentPage = (text) => {
-    this.setState({
-      currentPage: text
-    })
-  }
-
-  _setLastPage = (text) => {
-    this.setState({
-      lastPage: text
-    })
-  }
-
-  _setUserData = (data) => {
-    this.setState({
-      userData: data
-    })
-  }
-
-  _setFavoriteSports = (sports) => {
-    this.setState({
-      favoriteSports: sports
-    })
-  }
+  return (
+    <Container>
+          {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
+          <SignupContainer
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          setUserData={setUserData}
+          userData={userData}
+          setFavoriteSports={setFavoriteSports}
+          favoriteSports={favoriteSports}
+          />
+          :
+          null}
+          {currentPage === 'Profile' ? <Profile /> : null}
+          {currentPage === "Feed" ? <Feed setPage={setCurrentPage} setLastPage={setLastPage} currentPage={currentPage} /> : null }
+          {currentPage === "Loading" ? <Loading /> : null}
+          {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
+          <Nav setPage={setCurrentPage} setLastPage={setLastPage} currentPage={currentPage} />
+          :
+          null
+          }
+          </Container>
+  );
 }
+
 
 
