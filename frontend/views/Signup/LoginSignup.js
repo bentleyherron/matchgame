@@ -29,8 +29,6 @@ export default function SignupPageOne({ navigation }) {
     }
 
     async function validateEmail() {
-      console.log('Email string validation:')
-      console.log((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)));
       if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
         Toast.show({
           text: 'Invalid email address',
@@ -41,8 +39,6 @@ export default function SignupPageOne({ navigation }) {
         return;
       }
       const result = await axios.post(`${URL}/users/check`, {"user":{"email":email}});
-      console.log('This is the result of the api call')
-      console.log(result.data.emailFound);
       if (result.data.emailFound) {
         Toast.show({
           text: 'Email address has been used',
@@ -117,7 +113,18 @@ export default function SignupPageOne({ navigation }) {
         <Footer>
           <FooterTab>
             <Button
-            onPress={() => {navigation.navigate('Location')}}
+            onPress={() => {
+              if(emailError && usernameError) {
+                navigation.navigate('Location');
+              } else {
+                Toast.show({
+                  text:"Valid Username and Email Required",
+                  buttonText:"Okay",
+                  position:"top"
+                })
+              }
+              
+            }}
             >
               <Text>NEXT</Text>
             </Button>
