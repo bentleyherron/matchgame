@@ -20,7 +20,6 @@ const Stack = createStackNavigator();
 export default function App() {
 
   const [isReady, setIsReady] = useState(false);
-  const [currentPage, setCurrentPage] = useState('pageOne');
   const [hasSignedUp, setHasSignedUp] = useState(false);
   const [userData, setUserData] = useState(null);
   const [favoriteSports, setFavoriteSports] = useState(null);
@@ -42,7 +41,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Root>
-        <Stack.Navigator initialRouteName="Signup">
+        <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
           <Stack.Screen name="Signup" component={SignupContainer} options={{headerShown: false}} initialParams={{
             setCurrentPage,
             currentPage,
