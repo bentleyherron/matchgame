@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import SignupContext from './SignupContext';
 
-export default function LocationSignup({ route , navigation }) {
-    const { locationId, setLocationId } = route.params;
+export default function LocationSignup({ navigation }) {
+    const context = useContext(SignupContext);
+    const { locationId } = context.state;
+    const { setLocationId } = context.actions;
     const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);

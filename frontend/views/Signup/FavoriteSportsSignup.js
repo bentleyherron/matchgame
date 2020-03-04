@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Footer, FooterTab } from 'native-base';
+import React, { useState, useEffect, useContext } from 'react';
+import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import SignupContext from './SignupContext';
 
-export default function SignupPageThree({ route, navigation }) {
-    const { onSportSelect, topSports } = route.params;
+export default function SignupPageThree({ navigation }) {
 
+    const context = useContext(SignupContext);
+    const {sports} = context.state;
+    const {onSportSelect} = context.actions;
     const [sportsList, setSportsList] = useState(null);
 
     useEffect(() => {
@@ -19,7 +22,6 @@ export default function SignupPageThree({ route, navigation }) {
     
     return(
         <Container>
-            <H1>Select Favorite Sports</H1>
             <Content>
             {
                 sportsList ? sportsList.map((sport) => {
@@ -29,7 +31,7 @@ export default function SignupPageThree({ route, navigation }) {
                                 <Text>{sport.name}</Text>
                             </Left>
                             <Right>
-                                <Radio selected={topSports.filter(item => item.name === sport.name).length > 0} />
+                                <Radio selected={sports.filter(item => item.name === sport.name).length > 0} />
                             </Right>
                         </ListItem>
                     )

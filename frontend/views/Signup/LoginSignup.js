@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
+import SignupContext from './SignupContext';
 
-export default function SignupPageOne({  route, navigation }) {
-    const { setUsername, setNickname, setEmail, setPassword, username, email, nickname, password } = route.params;
+export default function SignupPageOne({ navigation }) {
+    const context = useContext(SignupContext);
+    const { setUsername, setNickname, setEmail, setPassword } = context.actions;
+    const { username, email } = context.state;
     const [agreedToTerms, setAgreedToTerms] = useState(false);
     function validateUsername() {
       return username.length > 0 && email.length > 0;

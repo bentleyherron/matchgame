@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
+import SignupContext from './SignupContext';
 
-export default function SignupPageOne({ route, navigation }) {
-    const { setUsername, setEmail, setPassword } = route.params;
+export default function SignupPageOne({ navigation }) {
+
+    const { setUsername, setEmail, setPassword } = useContext(SignupContext).actions;
     return (
       <Container>
         <Content>

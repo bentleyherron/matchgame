@@ -1,24 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Image } from 'react-native';
 import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import SignupContext from './SignupContext';
+import UserContext from '../../UserContext';
 
-export default function SignupPageFour({
-    route,
-    navigation
-}) {
-    const {
-        username,
-        nickname,
-        password,
-        email,
-        sports,
-        image,
-        locationId,
-        setUserData,
-        setFavoriteSports,
-        setHasSignedUp } = route.params;
+export default function SignupPageFour({ navigation }) {
+    const { username, nickname, password, email, sports, image, locationId } = useContext(SignupContext).state;
+    const { setUserData, setFavoriteSports, setHasSignedUp } = useContext(UserContext).actions;
+
     const [userObject, setUserObject] = useState({
         user: {
             username,
@@ -29,6 +20,7 @@ export default function SignupPageFour({
             player_rating: 5,
             nickname}
         });
+
     const [sportsArray, setSportsArray] = useState(sports.map(sport => {return {sport_id: sport.id}}));
     const [isSubmitting, setIsSubmitting] = useState(false);
     

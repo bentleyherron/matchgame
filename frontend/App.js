@@ -1,18 +1,19 @@
 // GESTURE HANDLER MUST BE FIRST IMPORT
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Root } from "native-base";
+import { Root, Text, Container } from "native-base";
 
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
+import UserContext from './UserContext';
 
 const Stack = createStackNavigator();
 
@@ -33,27 +34,37 @@ export default function App() {
     }
     )
   }, [])
+
+  const userContextValue = {
+    state: {
+      userData,
+      hasSignedUp,
+      favoriteSports
+    },
+    actions: {
+      setHasSignedUp,
+      setUserData,
+      setFavoriteSports
+    }
+  }
   
   if (!isReady) {
     return <AppLoading />;
   }
   return (
-    <NavigationContainer>
-      <Root>
-        <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
-          <Stack.Screen name="Signup" component={SignupContainer} options={{headerShown: false}} initialParams={{
-            setUserData,
-            userData,
-            setFavoriteSports,
-            favoriteSports,
-            setHasSignedUp
-          }} />
-          <Stack.Screen name="Profile" options={{headerShown: false}} component={Profile} />
-          <Stack.Screen name="Feed" options={{headerShown: false}} component={Feed} />
-          {hasSignedUp ? <Nav /> : null}
-        </Stack.Navigator>
-      </Root>
-    </NavigationContainer>
+    <Container>
+      <NavigationContainer>
+        <Root>
+          <UserContext.Provider value={userContextValue}>
+            <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
+              <Stack.Screen name="Signup" options={{headerShown: false}} component={SignupContainer} />
+              <Stack.Screen name="Profile" options={{headerShown: false}} component={Profile} />
+              <Stack.Screen name="Feed" options={{headerShown: false}} component={Feed} />
+            </Stack.Navigator>
+          </UserContext.Provider>
+        </Root>
+      </NavigationContainer>
+    </Container>
   );
 }
 

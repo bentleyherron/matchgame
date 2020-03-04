@@ -1,24 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab } from 'native-base';
+import SignupContext from './SignupContext';
 
-export default function SignupPageTwo({  route, navigation }) {
-    
-    const { openImagePicker, selectedImage } = route.params;
-
-    let photoContent;
-
-    if (selectedImage !== null) {
-        photoContent = <Thumbnail large
-        source={{ uri: selectedImage }}
-        />;
-
-    }
+export default function SignupPageTwo({ navigation }) {
+    const { openImagePicker } = useContext(SignupContext).actions;
+    const { selectedImage } = useContext(SignupContext).state;
 
     return(
         <Container>
             <Content>
                 <Content />
-                {photoContent}
+                {selectedImage ? <Thumbnail large source={{ uri: selectedImage }} /> : null}
                 <Button primary onPress={openImagePicker}>
                     <Text>Pick a photo</Text>
                 </Button>
