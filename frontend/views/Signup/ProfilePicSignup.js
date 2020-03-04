@@ -2,8 +2,10 @@ import React, {useState, useContext, useEffect} from 'react';
 import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab, Spinner } from 'native-base';
 import SignupContext from './SignupContext';
 
+// figure out how to set default image if user doesn't select one
+
 export default function SignupPageTwo({ navigation }) {
-    const { openImagePicker } = useContext(SignupContext).actions;
+    const { openImagePicker, setSelectedImage } = useContext(SignupContext).actions;
     const { selectedImage } = useContext(SignupContext).state;
     const [showSpinner, setShowSpinner] = useState(false);
 
@@ -34,7 +36,9 @@ export default function SignupPageTwo({ navigation }) {
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => navigation.navigate('Favorite Sports')}
+                    onPress={() => {
+                        navigation.navigate('Favorite Sports');
+                    }}
                     >
                     <Text>NEXT</Text>
                     </Button>

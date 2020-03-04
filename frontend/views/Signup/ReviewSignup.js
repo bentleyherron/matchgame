@@ -1,21 +1,20 @@
 import React, { useState, useContext } from 'react';
 import { Image } from 'react-native';
-import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content } from 'native-base';
+import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import SignupContext from './SignupContext';
 import UserContext from '../../UserContext';
 
 export default function SignupPageFour({ navigation }) {
-    const { username, nickname, password, email, sports, image, locationId } = useContext(SignupContext).state;
+    const { username, nickname, password, email, sports, selectedImage, locationId } = useContext(SignupContext).state;
     const { setUserData, setFavoriteSports, setHasSignedUp } = useContext(UserContext).actions;
-
     const [userObject, setUserObject] = useState({
         user: {
             username,
             email,
             password,
-            photo: image,
+            photo: selectedImage,
             city_id: locationId.id,
             player_rating: 5,
             nickname}
@@ -114,10 +113,11 @@ export default function SignupPageFour({ navigation }) {
                             <Text>Picture:</Text>
                         </Left>
                         <Body>
-                            <Image style={{width: 100, height: 100}} source={{uri: image}} />
+                            <Image style={{width: 100, height: 100}} source={{uri: selectedImage}} />
                         </Body>
                     </ListItem>
                 </List>
+                {isSubmitting ? <Spinner /> : null}
             </Content>
             <Footer>
                 <FooterTab>
