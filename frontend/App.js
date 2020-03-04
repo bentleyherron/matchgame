@@ -12,7 +12,6 @@ import { Root } from "native-base";
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
-import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/Signup/SignupContainer';
 
 const Stack = createStackNavigator();
