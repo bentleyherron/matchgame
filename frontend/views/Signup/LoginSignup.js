@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Footer, FooterTab } from 'native-base';
+import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
 
 export default function SignupPageOne({ setUsername, setNickname, setEmail, setPassword, username, email, nickname, password, navigation }) {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -65,12 +65,12 @@ export default function SignupPageOne({ setUsername, setNickname, setEmail, setP
             </Item>
                 <Button
                 rounded
-                onPress={onNextClick}
+                onPress={() => {navigation.navigate('User Login')}}
                 style={{margin: 20}}>
                 <Text>Create your account</Text>
               </Button>
           </Form>
-          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={onSigninClick}>Sign in</Text></Text>
+          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={() => {navigation.navigate('User Login')}}>Sign in</Text></Text>
           
         </Content>
         <Footer>

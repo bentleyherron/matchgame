@@ -42,8 +42,6 @@ export default function App() {
       <Root>
         <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
           <Stack.Screen name="Signup" component={SignupContainer} options={{headerShown: false}} initialParams={{
-            setCurrentPage,
-            currentPage,
             setUserData,
             userData,
             setFavoriteSports,

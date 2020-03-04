@@ -90,6 +90,11 @@ export default function SignupContainer({
                 setFavoriteSports,
                 setHasSignedUp
             }} />
+            <Tab.Screen name="User Login" component={UserLogin} initialParams={{
+                setUsername,
+                setEmail,
+                setPassword
+            }} />
         </Tab.Navigator>
     );
 }

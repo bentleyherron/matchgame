@@ -15,7 +15,7 @@ export default function SignupPageTwo({ openImagePicker, selectedImage, navigati
     return(
         <Container>
             <Content>
-                <H1>Upload Profile Photo</H1>
+                <Content />
                 {photoContent}
                 <Button primary onPress={openImagePicker}>
                     <Text>Pick a photo</Text>

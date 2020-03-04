@@ -134,7 +134,7 @@ export default function SignupPageFour({
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => {
+                    onPress={async () => {
                         setIsSubmitting(true);
                         const wasSubmitted = await postSignupData();
                         setIsSubmitting(wasSubmitted);
