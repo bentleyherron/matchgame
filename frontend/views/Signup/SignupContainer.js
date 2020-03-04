@@ -7,6 +7,7 @@ import LocationSignup from './LocationSignup';
 import ProfilePicSignup from './ProfilePicSignup';
 import FavoriteSportsSignup from './FavoriteSportsSignup';
 import ReviewSignup from './ReviewSignup';
+import UserLogin from './UserLogin';
 
 const Tab = createStackNavigator();
 
@@ -43,32 +44,6 @@ export default function SignupContainer({
           }
       
           setSelectedImage("data:image/png;base64," + pickerResult.base64);
-    }
-
-    const handleNextPageClick = () => {
-        if (currentPage === 'pageOne') {
-            setCurrentPage('pageTwo');
-        } else if (currentPage === 'pageTwo') {
-            setCurrentPage('pageThree');
-        } else if (currentPage === 'pageThree') {
-            setCurrentPage('pageFour');
-        } else if (currentPage === 'pageFour') {
-            setCurrentPage('pageFive');
-        } else if (currentPage === 'pageFive') {
-            setCurrentPage('Feed');
-        }
-    }
-
-    const handlePrevPageClick = () => {
-        if (currentPage === 'pageTwo') {
-            setCurrentPage('pageOne');
-        } else if (currentPage === 'pageThree') {
-            setCurrentPage('pageTwo');
-        } else if (currentPage === 'pageFour') {
-            setCurrentPage('pageThree');
-        } else if (currentPage === 'pageFive') {
-            setCurrentPage('pageFour');
-        }
     }
 
     const handleSportSelect = (sport) => {

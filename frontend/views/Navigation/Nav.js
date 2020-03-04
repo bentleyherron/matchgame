@@ -6,14 +6,16 @@ export default function Nav() {
   return (
       <Footer>
         <FooterTab>
-          <Button onPress={() => {navigation.navigate('Profile')}}>
-            <Text>Profile</Text>
+          <Button onPress={() => {navigation.navigate('Feed')}}>
+            <Icon type="FontAwesome" name="fire"/>
+            <Text>Feed</Text>
           </Button>
           <Button>
             <Icon type="AntDesign" name="pluscircle" />
           </Button>
-          <Button onPress={() => {navigation.navigate('Feed')}}>
-            <Text>Feed</Text>
+          <Button onPress={() => {navigation.navigate('Profile')}}>
+            <Icon type="FontAwesome" name='user'/>
+            <Text>Profile</Text>
           </Button>
         </FooterTab>
       </Footer>

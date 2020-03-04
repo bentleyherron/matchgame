@@ -59,11 +59,18 @@ export default function SignupPageOne({ setUsername, setNickname, setEmail, setP
                   selected={agreedToTerms}
                 />
               </Left>
-              <Right>
-                <Text>I agree to the terms of service</Text>
-              </Right>
-          </Item>
+              <Body>
+                <Text note>I agree to the terms of service</Text>
+              </Body>
+            </Item>
+                <Button
+                rounded
+                onPress={onNextClick}
+                style={{margin: 20}}>
+                <Text>Create your account</Text>
+              </Button>
           </Form>
+          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={onSigninClick}>Sign in</Text></Text>
           
         </Content>
         <Footer>
