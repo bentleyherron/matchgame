@@ -3,7 +3,8 @@ import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, Foot
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 
-export default function LocationSignup({ locationId, setLocationId, navigation }) {
+export default function LocationSignup({ route , navigation }) {
+    const { locationId, setLocationId } = route.params;
     const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);

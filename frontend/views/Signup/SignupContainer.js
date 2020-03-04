@@ -12,15 +12,18 @@ import UserLogin from './UserLogin';
 const Tab = createStackNavigator();
 
 export default function SignupContainer({
-    currentPage,
-    setCurrentPage,
-    setUserData,
-    userData,
-    setFavoriteSports,
-    favoriteSports,
-    setHasSignedUp
+    route
 }) {
     // Need to refactor sports and favorite sports
+    const {    
+        currentPage,
+        setCurrentPage,
+        setUserData,
+        userData,
+        setFavoriteSports,
+        favoriteSports,
+        setHasSignedUp } = route.params;
+
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);

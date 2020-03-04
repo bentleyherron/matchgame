@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({ setUsername, setEmail, setPassword, navigation }) {
-
+export default function SignupPageOne({ route, navigation }) {
+    const { setUsername, setEmail, setPassword } = route.params;
     return (
       <Container>
         <Content>

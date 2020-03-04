@@ -3,10 +3,11 @@ import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Foo
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 
-export default function SignupPageThree({ onSportSelect, topSports, navigation }) {
+export default function SignupPageThree({ route, navigation }) {
+    const { onSportSelect, topSports } = route.params;
 
-    // const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
     const [sportsList, setSportsList] = useState(null);
+
     useEffect(() => {
         async function fetchSportsData() {
             const url = `${URL}/sports`;
@@ -15,6 +16,7 @@ export default function SignupPageThree({ onSportSelect, topSports, navigation }
         }
         fetchSportsData();
     }, [])
+    
     return(
         <Container>
             <H1>Select Favorite Sports</H1>

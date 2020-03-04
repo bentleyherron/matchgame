@@ -5,18 +5,20 @@ import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 
 export default function SignupPageFour({
-    username,
-    nickname,
-    password,
-    email,
-    sports,
-    image,
-    locationId,
-    setUserData,
-    setFavoriteSports,
-    setHasSignedUp,
+    route,
     navigation
 }) {
+    const {
+        username,
+        nickname,
+        password,
+        email,
+        sports,
+        image,
+        locationId,
+        setUserData,
+        setFavoriteSports,
+        setHasSignedUp } = route.params;
     const [userObject, setUserObject] = useState({
         user: {
             username,

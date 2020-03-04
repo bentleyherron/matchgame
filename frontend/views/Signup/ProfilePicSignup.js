@@ -1,16 +1,18 @@
 import React from 'react';
-import { Container, Content, Text, Button, H1, Thumbnail, Footer, FooterTab } from 'native-base';
+import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab } from 'native-base';
 
-export default function SignupPageTwo({ openImagePicker, selectedImage, navigation }) {
+export default function SignupPageTwo({  route, navigation }) {
+    
+    const { openImagePicker, selectedImage } = route.params;
 
-      let photoContent;
+    let photoContent;
 
-      if (selectedImage !== null) {
-          photoContent = <Thumbnail large
-          source={{ uri: selectedImage }}
-          />;
+    if (selectedImage !== null) {
+        photoContent = <Thumbnail large
+        source={{ uri: selectedImage }}
+        />;
 
-      }
+    }
 
     return(
         <Container>

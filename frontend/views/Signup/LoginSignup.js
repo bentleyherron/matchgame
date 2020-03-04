@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
 
-export default function SignupPageOne({ setUsername, setNickname, setEmail, setPassword, username, email, nickname, password, navigation }) {
+export default function SignupPageOne({  route, navigation }) {
+    const { setUsername, setNickname, setEmail, setPassword, username, email, nickname, password } = route.params;
     const [agreedToTerms, setAgreedToTerms] = useState(false);
-
     function validateUsername() {
       return username.length > 0 && email.length > 0;
     }
