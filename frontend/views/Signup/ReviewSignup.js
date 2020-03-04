@@ -4,8 +4,6 @@ import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab,
 import axios from 'axios';
 
 export default function SignupPageFour({
-    onNextClick,
-    onPrevClick,
     username,
     nickname,
     password,
@@ -14,7 +12,9 @@ export default function SignupPageFour({
     image,
     locationId,
     setUserData,
-    setFavoriteSports
+    setFavoriteSports,
+    setHasSignedUp,
+    navigation
 }) {
     const [userObject, setUserObject] = useState({
         user: {
@@ -38,7 +38,6 @@ export default function SignupPageFour({
     const postSports = async (id) => {
         const url = `https://8ab0e3a4.ngrok.io/favorite-sports/`;
         const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
-        console.log(sportsArrayObject);
         const response = await axios.post(url, sportsArrayObject);
         setFavoriteSports(response.data);
     };
@@ -52,7 +51,6 @@ export default function SignupPageFour({
     return(
         <Container>
             <Content>
-
                 <List>
                     <ListItem>
                         <Left>
@@ -129,18 +127,19 @@ export default function SignupPageFour({
             <Footer>
                 <FooterTab>
                     <Button
-                    onPress={onPrevClick}
+                    onPress={() => {navigation.goBack()}}
                     >
                         <Text>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={async () => {
+                    onPress={() => {
                         setIsSubmitting(true);
                         const wasSubmitted = await postSignupData();
                         setIsSubmitting(wasSubmitted);
-                        !wasSubmitted ? onNextClick() : console.log('error posting data');
+                        setHasSignedUp(true);
+                        !wasSubmitted ? navigation.navigate('Feed') : console.log('error in submission');
                     }}
                     >
                         <Text>Submit</Text>

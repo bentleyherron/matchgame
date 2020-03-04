@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Text, Button, H1, Thumbnail, Footer, FooterTab } from 'native-base';
 
-export default function SignupPageTwo({ openImagePicker, selectedImage, onNextClick, onPrevClick }) {
+export default function SignupPageTwo({ openImagePicker, selectedImage, navigation }) {
 
       let photoContent;
 
@@ -25,14 +25,14 @@ export default function SignupPageTwo({ openImagePicker, selectedImage, onNextCl
             <Footer>
                 <FooterTab>
                     <Button
-                    onPress={onPrevClick}
+                    onPress={() => navigation.goBack()}
                     >
                     <Text>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={onNextClick}
+                    onPress={() => navigation.navigate('Favorite Sports')}
                     >
                     <Text>NEXT</Text>
                     </Button>

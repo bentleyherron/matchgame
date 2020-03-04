@@ -1,16 +1,21 @@
+// GESTURE HANDLER MUST BE FIRST IMPORT
+import 'react-native-gesture-handler';
+
 import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Root } from "native-base";
 
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/Signup/SignupContainer';
-import DisplayHeader from './views/Navigation/DisplayHeader';
-import { Container, Content, Header, Left, Body, Right, Title, Footer, Root }  from 'native-base';
-import {SafeAreaView} from 'react-native';
+
+const Stack = createStackNavigator();
 
 export default function App() {
 
@@ -35,27 +40,24 @@ export default function App() {
     return <AppLoading />;
   }
   return (
-    <Container>
-          {currentPage === 'pageOne' || currentPage === 'pageTwo' || currentPage === 'pageThree' || currentPage === 'pageFour' || currentPage === 'pageFive' ?
-          <SignupContainer
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          setUserData={setUserData}
-          userData={userData}
-          setFavoriteSports={setFavoriteSports}
-          favoriteSports={favoriteSports}
-          />
-          :
-          null}
-          {currentPage === 'Profile' ? <Profile /> : null}
-          {currentPage === "Feed" ? <Feed setPage={setCurrentPage} setLastPage={setLastPage} currentPage={currentPage} /> : null }
-          {currentPage === "Loading" ? <Loading /> : null}
-          {currentPage !== 'pageOne' && currentPage !== 'pageTwo' && currentPage !== 'pageThree' && currentPage !== 'pageFour' && currentPage !== 'pageFive' ?
-          <Nav setPage={setCurrentPage} setLastPage={setLastPage} currentPage={currentPage} />
-          :
-          null
-          }
-          </Container>
+    <NavigationContainer>
+      <Root>
+        <Stack.Navigator initialRouteName="Signup">
+          <Stack.Screen name="Signup" component={SignupContainer} options={{headerShown: false}} initialParams={{
+            setCurrentPage,
+            currentPage,
+            setUserData,
+            userData,
+            setFavoriteSports,
+            favoriteSports,
+            setHasSignedUp
+          }} />
+          <Stack.Screen name="Profile" options={{headerShown: false}} component={Profile} />
+          <Stack.Screen name="Feed" options={{headerShown: false}} component={Feed} />
+          {hasSignedUp ? <Nav /> : null}
+        </Stack.Navigator>
+      </Root>
+    </NavigationContainer>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Footer, FooterTab } from 'native-base';
 import axios from 'axios'
 
-export default function SignupPageThree({ onSportSelect, topSports, onNextClick, onPrevClick }) {
+export default function SignupPageThree({ onSportSelect, topSports, navigation }) {
 
     // const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
     const [sportsList, setSportsList] = useState(null);
@@ -37,14 +37,14 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick,
             <Footer>
                 <FooterTab>
                     <Button
-                    onPress={onPrevClick}
+                    onPress={() => {navigation.goBack()}}
                     >
                     <Text>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={onNextClick}
+                    onPress={() => {navigation.navigate('Review')}}
                     >
                     <Text>NEXT</Text>
                     </Button>

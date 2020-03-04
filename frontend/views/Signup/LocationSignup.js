@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, ListItem, Footer, FooterTab} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
 import axios from 'axios';
 
-export default function LocationSignup({onNextClick, onPrevClick, locationId, setLocationId}) {
+export default function LocationSignup({ locationId, setLocationId, navigation }) {
     const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
@@ -64,14 +64,14 @@ export default function LocationSignup({onNextClick, onPrevClick, locationId, se
             <Footer>
                 <FooterTab>
                     <Button
-                    onPress={onPrevClick}
+                    onPress={() => {navigation.goBack()}}
                     >
                     <Text>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={onNextClick}
+                    onPress={() => {navigation.navigate('Profile Pic')}}
                     >
                     <Text>NEXT</Text>
                     </Button>

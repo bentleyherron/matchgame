@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Footer, FooterTab } from 'native-base';
 
-export default function SignupPageOne({ onNextClick, onPrevClick, setUsername, setNickname, setEmail, setPassword, username, email, password, nickname }) {
+export default function SignupPageOne({ setUsername, setNickname, setEmail, setPassword, username, email, nickname, password, navigation }) {
     const [agreedToTerms, setAgreedToTerms] = useState(false);
 
     function validateUsername() {
@@ -69,7 +69,7 @@ export default function SignupPageOne({ onNextClick, onPrevClick, setUsername, s
         <Footer>
           <FooterTab>
             <Button
-            onPress={onNextClick}
+            onPress={() => {navigation.navigate('Location')}}
             >
               <Text>NEXT</Text>
             </Button>
