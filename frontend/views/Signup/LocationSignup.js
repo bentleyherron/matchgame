@@ -14,7 +14,7 @@ export default function LocationSignup({ navigation }) {
 
     useEffect(() => {
         async function fetchStateData() {
-            const url = `${URL}/states/`;
+            const url = `${URL}/states`;
             const results = await axios.get(url);
             setStateList(results.data);
         }
