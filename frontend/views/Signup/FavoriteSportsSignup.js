@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1 } from 'native-base';
+import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Footer, FooterTab } from 'native-base';
 import axios from 'axios'
 
-export default function SignupPageThree({ onSportSelect, topSports, onNextClick }) {
+export default function SignupPageThree({ onSportSelect, topSports, navigation }) {
 
     // const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
     const [sportsList, setSportsList] = useState(null);
@@ -10,12 +10,10 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
         async function fetchSportsData() {
             const url = `https://8ab0e3a4.ngrok.io/sports`;
             const response = await axios.get(url);
-            console.log(response.data);
             setSportsList(response.data);
         }
         fetchSportsData();
     }, [])
-
     return(
         <Container>
             <H1>Select Favorite Sports</H1>
@@ -36,13 +34,22 @@ export default function SignupPageThree({ onSportSelect, topSports, onNextClick 
                 null
             }
             </Content>
-            <Button
-                rounded
-                onPress={onNextClick}>
-                <Text>
-                    NEXT
-                </Text>
-            </Button>
+            <Footer>
+                <FooterTab>
+                    <Button
+                    onPress={() => {navigation.goBack()}}
+                    >
+                    <Text>PREV</Text>
+                    </Button>
+                </FooterTab>
+                <FooterTab>
+                    <Button
+                    onPress={() => {navigation.navigate('Review')}}
+                    >
+                    <Text>NEXT</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         </Container>
 
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
 
-export default function SignupPageOne({ onTermsClick, onNextClick, onLoginClick, agreedToTerms, setUsername, setEmail, setPassword }) {
+export default function SignupPageOne({ setUsername, setEmail, setPassword, navigation }) {
 
     return (
       <Container>
@@ -23,7 +23,7 @@ export default function SignupPageOne({ onTermsClick, onNextClick, onLoginClick,
         </Content>
         <Button
             rounded
-            onPress={onLoginClick}>
+            onPress={() => {navigation.navigate('Feed')}}>
             <Text>LOGIN</Text>
           </Button>
       </Container>

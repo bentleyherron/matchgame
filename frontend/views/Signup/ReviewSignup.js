@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Image } from 'react-native';
-import { Container, List, ListItem, Left, Body, Text, Button } from 'native-base';
+import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content } from 'native-base';
 import axios from 'axios';
 
 export default function SignupPageFour({
-    onNextClick,
     username,
     nickname,
     password,
@@ -13,14 +12,16 @@ export default function SignupPageFour({
     image,
     locationId,
     setUserData,
-    setFavoriteSports
+    setFavoriteSports,
+    setHasSignedUp,
+    navigation
 }) {
     const [userObject, setUserObject] = useState({
         user: {
             username,
             email,
             password,
-            // photo: image,
+            photo: image,
             city_id: locationId.id,
             player_rating: 5,
             nickname}
@@ -37,7 +38,6 @@ export default function SignupPageFour({
     const postSports = async (id) => {
         const url = `https://8ab0e3a4.ngrok.io/favorite-sports/`;
         const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
-        console.log(sportsArrayObject);
         const response = await axios.post(url, sportsArrayObject);
         setFavoriteSports(response.data);
     };
@@ -50,88 +50,102 @@ export default function SignupPageFour({
 
     return(
         <Container>
-            <List>
-                <ListItem>
-                    <Left>
-                        <Text>
-                            Username:
-                        </Text>
-                    </Left>
-                    <Body>
-                        <Text>
-                            {username}
-                        </Text>
-                    </Body>
-                </ListItem>
-                <ListItem>
-                    <Left>
-                        <Text>
-                            Nickname:
-                        </Text>
-                    </Left>
-                    <Body>
-                        <Text>
-                            {nickname}
-                        </Text>
-                    </Body>
-                </ListItem>
-                <ListItem>
-                    <Left>
-                        <Text>
-                            Email:
-                        </Text>
-                    </Left>
-                    <Body>
-                        <Text>
-                            {email}
-                        </Text>
-                    </Body>
-                </ListItem>
-                <ListItem>
-                    <Left>
-                        <Text>
-                            City:
-                        </Text>
-                    </Left>
-                    <Body>
-                        <Text>
-                            {locationId.city}
-                        </Text>
-                    </Body>
-                </ListItem>
-                <ListItem>
-                    <Left>
-                        <Text>
-                            Favorite Sports:
-                        </Text>
-                    </Left>
-                    <Body>
-                        <List>
-                            {sports.map((sport) => (
-                                    <Text key={sport.id+"sport"}>{sport.name}</Text>
-                            ))}
-                        </List>
-                    </Body>
-                </ListItem>
-                <ListItem>
-                    <Left>
-                        <Text>Picture:</Text>
-                    </Left>
-                    <Body>
-                        <Image style={{width: 100, height: 100}} source={{uri: image}} />
-                    </Body>
-                </ListItem>
-            </List>
-            <Button rounded onPress={async () => {
-                setIsSubmitting(true);
-                const wasSubmitted = await postSignupData();
-                setIsSubmitting(wasSubmitted);
-                !wasSubmitted ? onNextClick() : console.log('error posting data');
-                }}>
-                <Text>
-                    Submit
-                </Text>
-            </Button>
+            <Content>
+                <List>
+                    <ListItem>
+                        <Left>
+                            <Text>
+                                Username:
+                            </Text>
+                        </Left>
+                        <Body>
+                            <Text>
+                                {username}
+                            </Text>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Text>
+                                Nickname:
+                            </Text>
+                        </Left>
+                        <Body>
+                            <Text>
+                                {nickname}
+                            </Text>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Text>
+                                Email:
+                            </Text>
+                        </Left>
+                        <Body>
+                            <Text>
+                                {email}
+                            </Text>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Text>
+                                City:
+                            </Text>
+                        </Left>
+                        <Body>
+                            <Text>
+                                {locationId.city}
+                            </Text>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Text>
+                                Favorite Sports:
+                            </Text>
+                        </Left>
+                        <Body>
+                            <List>
+                                {sports.map((sport) => (
+                                        <Text key={sport.id+"sport"}>{sport.name}</Text>
+                                ))}
+                            </List>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Text>Picture:</Text>
+                        </Left>
+                        <Body>
+                            <Image style={{width: 100, height: 100}} source={{uri: image}} />
+                        </Body>
+                    </ListItem>
+                </List>
+            </Content>
+            <Footer>
+                <FooterTab>
+                    <Button
+                    onPress={() => {navigation.goBack()}}
+                    >
+                        <Text>PREV</Text>
+                    </Button>
+                </FooterTab>
+                <FooterTab>
+                    <Button
+                    onPress={async () => {
+                        setIsSubmitting(true);
+                        const wasSubmitted = await postSignupData();
+                        setIsSubmitting(wasSubmitted);
+                        setHasSignedUp(true);
+                        !wasSubmitted ? navigation.navigate('Feed') : console.log('error in submission');
+                    }}
+                    >
+                        <Text>Submit</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
         </Container>
     );
 

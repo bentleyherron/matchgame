@@ -1,8 +1,24 @@
-import React from 'react';
-import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text } from 'native-base';
+import React, {useState} from 'react';
+import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
 
+export default function SignupPageOne({ setUsername, setNickname, setEmail, setPassword, username, email, nickname, password, navigation }) {
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-export default function SignupPageOne({ onTermsClick, onNextClick, onSigninClick, agreedToTerms, setUsername, setEmail, setPassword }) {
+    function validateUsername() {
+      return username.length > 0 && email.length > 0;
+    }
+
+    function validateEmail() {
+
+    }
+
+    function validateNickname() {
+
+    }
+
+    function validatePassword() {
+
+    }
 
     return (
       <Container>
@@ -33,13 +49,14 @@ export default function SignupPageOne({ onTermsClick, onNextClick, onSigninClick
                 onChangeText={text => setPassword(text)}/>
             </Item>
             <Item selected={true}
-                  onPress={onTermsClick}>
+                  onPress={() => setAgreedToTerms(!agreedToTerms)}
+                  style={{padding:10}}
+                  >
               <Left>
                 <Radio
                   color={"#f0ad4e"}
                   selectedColor={"#5cb85c"}
                   selected={agreedToTerms}
-                  onPress={onTermsClick}
                 />
               </Left>
               <Body>
@@ -48,15 +65,23 @@ export default function SignupPageOne({ onTermsClick, onNextClick, onSigninClick
             </Item>
                 <Button
                 rounded
-                onPress={onNextClick}
+                onPress={() => {navigation.navigate('User Login')}}
                 style={{margin: 20}}>
                 <Text>Create your account</Text>
               </Button>
           </Form>
-          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={onSigninClick}>Sign in</Text></Text>
+          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={() => {navigation.navigate('User Login')}}>Sign in</Text></Text>
           
         </Content>
-        
+        <Footer>
+          <FooterTab>
+            <Button
+            onPress={() => {navigation.navigate('Location')}}
+            >
+              <Text>NEXT</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     );
 }

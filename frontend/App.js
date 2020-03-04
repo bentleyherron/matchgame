@@ -1,93 +1,61 @@
-import React, { Component } from 'react';
+// GESTURE HANDLER MUST BE FIRST IMPORT
+import 'react-native-gesture-handler';
+
+import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Root } from "native-base";
 
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
-import Loading from './views/Navigation/Loading';
 import SignupContainer from './views/Signup/SignupContainer';
-import DisplayHeader from './views/Navigation/DisplayHeader';
-import { Container, Content, Header, Left, Body, Right, Title, Footer }  from 'native-base';
-import {SafeAreaView} from 'react-native';
 
-export default class App extends Component {
+const Stack = createStackNavigator();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isReady: false,
-      currentPage: 'pageOne',
-      hasSignedUp: false,
-      userData: null,
-      favoriteSports: null
-    };
-  }
+export default function App() {
 
-  async componentDidMount() {
-    await Font.loadAsync({
+  const [isReady, setIsReady] = useState(false);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [favoriteSports, setFavoriteSports] = useState(null);
+
+  useEffect(() => {
+    Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
-    });
-    this.setState({ isReady: true });
-  }
-  
-  render() {
-    const {_setCurrentPage, _setLastPage, _setUserData, _setFavoriteSports} = this;
-    const { currentPage, isReady, hasSignedUp, userData, favoriteSports} = this.state;
-    if (!isReady) {
-      return <AppLoading />;
+    }).then(() => {
+      setIsReady(true)
     }
-    return (
-      <SafeAreaView style={{flex: 1}}>
-            {currentPage === 'pageOne' || 'pageTwo' || 'pageThree' || 'pageFour' || 'pageFive' ?
-            <SignupContainer
-            setCurrentPage={_setCurrentPage}
-            currentPage={currentPage}
-            setUserData={_setUserData}
-            userData={userData}
-            setFavoriteSports={_setFavoriteSports}
-            favoriteSports={favoriteSports}
-            />
-            :
-            null}
-            {currentPage === 'Profile' ? <Profile /> : null}
-            {currentPage === "Feed" ? <Feed setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} /> : null }
-            {currentPage === "Loading" ? <Loading /> : null}
-            {currentPage !== 'pageOne' && 'pageTwo' && 'pageThree' && 'pageFour' && 'pageFive' ?
-            <Nav setPage={_setCurrentPage} setLastPage={_setLastPage} currentPage={currentPage} />
-            :
-            null
-            }
-      </SafeAreaView>
-    );
+    )
+  }, [])
+  
+  if (!isReady) {
+    return <AppLoading />;
   }
-
-  _setCurrentPage = (text) => {
-    this.setState({
-      currentPage: text
-    })
-  }
-
-  _setLastPage = (text) => {
-    this.setState({
-      lastPage: text
-    })
-  }
-
-  _setUserData = (data) => {
-    this.setState({
-      userData: data
-    })
-  }
-
-  _setFavoriteSports = (sports) => {
-    this.setState({
-      favoriteSports: sports
-    })
-  }
+  return (
+    <NavigationContainer>
+      <Root>
+        <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
+          <Stack.Screen name="Signup" component={SignupContainer} options={{headerShown: false}} initialParams={{
+            setUserData,
+            userData,
+            setFavoriteSports,
+            favoriteSports,
+            setHasSignedUp
+          }} />
+          <Stack.Screen name="Profile" options={{headerShown: false}} component={Profile} />
+          <Stack.Screen name="Feed" options={{headerShown: false}} component={Feed} />
+          {hasSignedUp ? <Nav /> : null}
+        </Stack.Navigator>
+      </Root>
+    </NavigationContainer>
+  );
 }
+
 
 
