@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import {View, Text} from 'react-native';
 import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion } from 'native-base';
 
-import { YellowBox } from 'react-native'
+import { YellowBox } from 'react-native';
 
 
 const dataArray = [
