@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
 import axios from 'axios';
+import { URL } from 'react-native-dotenv';
 
 export default function LocationSignup({ locationId, setLocationId, navigation }) {
     const [state, setState] = useState(1);
@@ -9,7 +10,7 @@ export default function LocationSignup({ locationId, setLocationId, navigation }
 
     useEffect(() => {
         async function fetchStateData() {
-            const url = `https://8ab0e3a4.ngrok.io/states/`;
+            const url = `${URL}/states/`;
             const results = await axios.get(url);
             setStateList(results.data);
         }
@@ -18,7 +19,7 @@ export default function LocationSignup({ locationId, setLocationId, navigation }
 
     useEffect(() => {
         async function fetchCityData() {
-            const url = `https://8ab0e3a4.ngrok.io/states/${state}`;
+            const url = `${URL}/states/${state}`;
             const results = await axios.get(url);
             setCityList(results.data);
         }

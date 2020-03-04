@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Footer, FooterTab } from 'native-base';
-import axios from 'axios'
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
 
 export default function SignupPageThree({ onSportSelect, topSports, navigation }) {
 
@@ -8,7 +9,7 @@ export default function SignupPageThree({ onSportSelect, topSports, navigation }
     const [sportsList, setSportsList] = useState(null);
     useEffect(() => {
         async function fetchSportsData() {
-            const url = `https://8ab0e3a4.ngrok.io/sports`;
+            const url = `${URL}/sports`;
             const response = await axios.get(url);
             setSportsList(response.data);
         }
