@@ -1,43 +1,87 @@
-import React, {useState, useContext} from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
+import React, {useState, useEffect, useContext} from 'react';
+import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab, Toast } from 'native-base';
 import SignupContext from './SignupContext';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+import { ShadowPropTypesIOS } from 'react-native';
 
 export default function SignupPageOne({ navigation }) {
     const context = useContext(SignupContext);
     const { setUsername, setNickname, setEmail, setPassword } = context.actions;
     const { username, email } = context.state;
     const [agreedToTerms, setAgreedToTerms] = useState(false);
-    function validateUsername() {
-      return username.length > 0 && email.length > 0;
+    const [usernameError, setUsernameError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
+
+    async function validateUsername() {
+      const result = await axios.post(`${URL}/users/check/`, {"user":{"username":username}})
+      if (result.data.usernameFound) {
+        Toast.show({
+          text: 'Username already taken',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setUsernameError(false);
+        return;
+      } else {
+        setUsernameError(true);
+      }
     }
 
-    function validateEmail() {
-
+    async function validateEmail() {
+      console.log('Email string validation:')
+      console.log((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)));
+      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        Toast.show({
+          text: 'Invalid email address',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setEmailError(error);
+        return;
+      }
+      const result = await axios.post(`${URL}/users/check`, {"user":{"email":email}});
+      console.log('This is the result of the api call')
+      console.log(result.data.emailFound);
+      if (result.data.emailFound) {
+        Toast.show({
+          text: 'Email address has been used',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setEmailError(false);
+        return;
+      }
+      setEmailError(true);
     }
 
     function validateNickname() {
-
+      // check for curse words
     }
 
     function validatePassword() {
-
+      // make sure password meets criteria
     }
 
     return (
       <Container>
         <Content>
           <Form>
-            <Item fixedLabel>
+            <Item fixedLabel success={emailError}>
               <Input 
                 placeholder='Email'
                 name="email"
-                onChangeText={text => setEmail(text)}/>
+                onChangeText={text => setEmail(text)}
+                onSubmitEditing={async () => validateEmail()}
+                />
             </Item>
-            <Item fixedLabel>
+            <Item fixedLabel success={usernameError}>
               <Input
                 name="username"
                 placeholder='User Name'
-                onChangeText={text => setUsername(text)}/>
+                onChangeText={text => setUsername(text)}
+                onSubmitEditing={async () => validateUsername()}
+                />
             </Item>
             <Item fixedLabel>
               <Input
@@ -66,12 +110,6 @@ export default function SignupPageOne({ navigation }) {
                 <Text note>I agree to the terms of service</Text>
               </Body>
             </Item>
-                <Button
-                rounded
-                onPress={() => {navigation.navigate('User Login')}}
-                style={{margin: 20}}>
-                <Text>Create your account</Text>
-              </Button>
           </Form>
           <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={() => {navigation.navigate('User Login')}}>Sign in</Text></Text>
           
