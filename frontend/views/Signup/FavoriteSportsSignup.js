@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab } from 'native-base';
+import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab, Toast } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import SignupContext from './SignupContext';
@@ -49,7 +49,18 @@ export default function SignupPageThree({ navigation }) {
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => {navigation.navigate('Review')}}
+                    onPress={() => {
+                        if(sports.length) {
+                            navigation.navigate('Review');
+                        } else {
+                            Toast.show({
+                                text:"Select at least one sport to continue",
+                                buttonText:"Okay",
+                                position:"top"
+                            });
+                        }
+                        
+                    }}
                     >
                     <Text>NEXT</Text>
                     </Button>
