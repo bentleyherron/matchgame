@@ -37,7 +37,7 @@ export default function App() {
       setIsReady(true)
     }
     )
-    axios.get(`${URL}/users/1`).then(
+    axios.get(`${URL}/profile/1`).then(
       response => {
         setUserData(response.data);
         setHasSignedUp(true);
@@ -73,7 +73,7 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signu"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Feed" component={Feed} />
