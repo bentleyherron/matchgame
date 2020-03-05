@@ -8,7 +8,7 @@ import UserContext from '../../UserContext';
 
 export default function SignupPageFour({ navigation }) {
     const { username, nickname, password, email, sports, selectedImage, locationId } = useContext(SignupContext).state;
-    const { setUserData, setFavoriteSports, setHasSignedUp } = useContext(UserContext).actions;
+    const { setUserData, setHasSignedUp } = useContext(UserContext).actions;
     const [userObject, setUserObject] = useState({
         user: {
             username,
@@ -33,7 +33,7 @@ export default function SignupPageFour({ navigation }) {
         const url = `${URL}/favorite-sports/`;
         const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
         const response = await axios.post(url, sportsArrayObject);
-        setFavoriteSports(response.data);
+        // add error handling here
     };
 
     const postSignupData = async () => {

@@ -26,7 +26,6 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [favoriteSports, setFavoriteSports] = useState(null);
 
   useEffect(() => {
     Font.loadAsync({
@@ -44,24 +43,16 @@ export default function App() {
       }
     )
 
-    axios.get(`${URL}/sports/1`).then(
-      response => {
-        setFavoriteSports(response.data);
-      }
-    )
-
   }, [])
 
   const userContextValue = {
     state: {
       userData,
-      hasSignedUp,
-      favoriteSports
+      hasSignedUp
     },
     actions: {
       setHasSignedUp,
-      setUserData,
-      setFavoriteSports
+      setUserData
     }
   }
   
