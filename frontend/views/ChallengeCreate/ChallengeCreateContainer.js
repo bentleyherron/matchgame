@@ -1,17 +1,41 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ButtonCreateChallenge from './ButtonCreateChallenge';
+import {URL} from 'react-native-dotenv';
 
-export default function ChallengeCreateContainer({ route, navigation}) {
+import UserContext from '../../UserContext';
+import axios from 'axios';
 
+export default function ChallengeCreateContainer({ route, navigation }) {
+
+    const { userData } = useContext(UserContext).state;
+
+    const teamIdArray = userData.teams;
+
+    const [team, setTeam] = useState('');
     const [location, setLocation] = useState('');
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
-    const [sport, setSport] = useState('');
+    const [sport, setSport] = useState(1);
     const [message, setMessage] = useState('');
+
+    const [teamNames, setTeamNames] = useState('');
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const getTeamName = (team_id) => {
+      return axios.get(`${URL}/teams/${team_id}`)
+    }
+
+    useEffect(() => {
+      axios.all(teamIdArray.map((team) => {
+        return getTeamName(team.team_id);
+      }))
+      .then(responseArr => {
+        setTeamNames(responseArr);
+      })
+  },[])
 
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -22,7 +46,6 @@ export default function ChallengeCreateContainer({ route, navigation}) {
     };
   
     const handleConfirm = dateTime => {
-      console.warn("A date has been picked: ", dateTime);
       hideDatePicker();
       setDatetime(dateTime.toISOString());
     };
@@ -42,10 +65,17 @@ export default function ChallengeCreateContainer({ route, navigation}) {
                     placeholder="Select Sport"
                     placeholderStyle={{ color: "#bfc6ea" }}
                     placeholderIconColor="#007aff"
-                    selectedValue={sport}
-                    onValueChange={sport => setSport(sport)}
-              ></Picker>
-
+                    selectedValue={team}
+                    onValueChange={team => setTeam(team)}
+              >
+                {teamNames ? (
+                  teamNames.map(team => {
+                    return (
+                      <Picker.Item label={team.data.name} value={team.data.id} />
+                    );
+                  })
+                ) : null}
+              </Picker>
             </Item>
             <Item fixedLabel >
                 <Label>Sport</Label>
@@ -59,27 +89,27 @@ export default function ChallengeCreateContainer({ route, navigation}) {
                     selectedValue={sport}
                     onValueChange={sport => setSport(sport)}
               >
-                <Picker.Item label="Football" value="Football" />
-                <Picker.Item label="Flag Football" value="Flag Football" />
-                <Picker.Item label='Soccer' value='Soccer' />
-                <Picker.Item label='Volleyball' value='Volleyball' />
-                <Picker.Item label='Kuub' value='Kuub' />
-                <Picker.Item label='Darts' value='Darts'/>
-                <Picker.Item label='Ultimate Frisbee' value='Ultimate Frisbee' />
-                <Picker.Item label='Wiffle Ball' value='Wiffle Ball' />
-                <Picker.Item label='Softball' value='Softball' />
-                <Picker.Item label='Baseball' value='Baseball' />
-                <Picker.Item label='Bowling' value='Bowling' />
-                <Picker.Item label='Kickball' value='Kickball' />
-                <Picker.Item label='Bowling' value='Bowling' />
-                <Picker.Item label='Ping Pong' value='Ping Pong' />
-                <Picker.Item label='Beer Pong' value='Beer Pong' />
-                <Picker.Item label='Cornhole' value='Cornhole' />
-                <Picker.Item label='Bocci' value='Bocci' />
-                <Picker.Item label='Shooting' value='Shooting' />
-                <Picker.Item label='Shuffleboard' value='Shuffleboard' />
-                <Picker.Item label='Tennis' value='Tennis' />
-                <Picker.Item label='Quidditch' value='Quidditch' />
+                <Picker.Item label="Football" value="1" />
+                <Picker.Item label="Flag Football" value="2" />
+                <Picker.Item label='Soccer' value='3' />
+                <Picker.Item label='Volleyball' value='4' />
+                <Picker.Item label='Kuub' value='5' />
+                <Picker.Item label='Darts' value='6'/>
+                <Picker.Item label='Ultimate Frisbee' value='7' />
+                <Picker.Item label='Wiffle Ball' value='8' />
+                <Picker.Item label='Softball' value='9' />
+                <Picker.Item label='Baseball' value='10' />
+                <Picker.Item label='Bowling' value='11' />
+                <Picker.Item label='Kickball' value='12' />
+                <Picker.Item label='Bowling' value='13' />
+                <Picker.Item label='Ping Pong' value='14' />
+                <Picker.Item label='Beer Pong' value='15' />
+                <Picker.Item label='Cornhole' value='16' />
+                <Picker.Item label='Bocci' value='17' />
+                <Picker.Item label='Shooting' value='18' />
+                <Picker.Item label='Shuffleboard' value='19' />
+                <Picker.Item label='Tennis' value='20' />
+                <Picker.Item label='Quidditch' value='21' />
               </Picker>
             </Item>
             <Item fixedLabel>
@@ -123,18 +153,20 @@ export default function ChallengeCreateContainer({ route, navigation}) {
             </Item>
           </Form>
         </Content>
-
+        
+        <Text>{team}</Text>
         <Text>{sport}</Text>
         <Text>{location}</Text>
-        <Text>Time: {datetime.toString()}</Text>
+        <Text>Time: {datetime}</Text>
         <Text>{wager}</Text>
         <Text>{message}</Text>
 
         <ButtonCreateChallenge 
+          team_from_id={team}
           location={location}
           datetime={datetime}
           wager={wager}
-          sport={sport}
+          sport_id={sport}
           message={message}
         />
 
