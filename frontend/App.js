@@ -28,6 +28,7 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [sportData, setSportData] = useState(null);
 
   useEffect(() => {
     Font.loadAsync({
@@ -45,16 +46,24 @@ export default function App() {
       }
     )
 
+    axios.get(`${URL}/sports`).then(
+      r => {
+        setSportData(r.data);
+      }
+    )
+
   }, [])
 
   const userContextValue = {
     state: {
       userData,
-      hasSignedUp
+      hasSignedUp,
+      sportData
     },
     actions: {
       setHasSignedUp,
-      setUserData
+      setUserData,
+      setSportData
     }
   }
   // add back initialRouteName={hasSignedUp ? "Feed" : "Signup"}
