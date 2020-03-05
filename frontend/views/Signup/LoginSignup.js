@@ -1,40 +1,86 @@
-import React, {useState} from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab } from 'native-base';
+import React, {useState, useEffect, useContext} from 'react';
+import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button, Text, Footer, FooterTab, Toast } from 'native-base';
+import SignupContext from './SignupContext';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+import { ShadowPropTypesIOS } from 'react-native';
 
-export default function SignupPageOne({ setUsername, setNickname, setEmail, setPassword, username, email, nickname, password, navigation }) {
+// set up something else than onsubmitediting, maybe onlosefocus or something similar to catch if the user just goes to the next thing without submitting
+// When person selects radio, doesn't actually select, add onclick to radio
+
+export default function SignupPageOne({ navigation }) {
+    const context = useContext(SignupContext);
+    const { setUsername, setNickname, setEmail, setPassword } = context.actions;
+    const { username, email } = context.state;
     const [agreedToTerms, setAgreedToTerms] = useState(false);
+    const [usernameError, setUsernameError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
 
-    function validateUsername() {
-      return username.length > 0 && email.length > 0;
+    async function validateUsername() {
+      const result = await axios.post(`${URL}/users/check/`, {"user":{"username":username}})
+      if (result.data.usernameFound) {
+        Toast.show({
+          text: 'Username already taken',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setUsernameError(false);
+        return;
+      } else {
+        setUsernameError(true);
+      }
     }
 
-    function validateEmail() {
-
+    async function validateEmail() {
+      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+        Toast.show({
+          text: 'Invalid email address',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setEmailError(error);
+        return;
+      }
+      const result = await axios.post(`${URL}/users/check`, {"user":{"email":email}});
+      if (result.data.emailFound) {
+        Toast.show({
+          text: 'Email address has been used',
+          buttonText: 'Okay',
+          position: 'top'
+        });
+        setEmailError(false);
+        return;
+      }
+      setEmailError(true);
     }
 
     function validateNickname() {
-
+      // check for curse words
     }
 
     function validatePassword() {
-
+      // make sure password meets criteria
     }
 
     return (
       <Container>
         <Content>
           <Form>
-            <Item fixedLabel>
+            <Item fixedLabel success={emailError}>
               <Input 
                 placeholder='Email'
                 name="email"
-                onChangeText={text => setEmail(text)}/>
+                onChangeText={text => setEmail(text)}
+                onSubmitEditing={async () => validateEmail()}
+                />
             </Item>
-            <Item fixedLabel>
+            <Item fixedLabel success={usernameError}>
               <Input
                 name="username"
                 placeholder='User Name'
-                onChangeText={text => setUsername(text)}/>
+                onChangeText={text => setUsername(text)}
+                onSubmitEditing={async () => validateUsername()}
+                />
             </Item>
             <Item fixedLabel>
               <Input
@@ -63,12 +109,6 @@ export default function SignupPageOne({ setUsername, setNickname, setEmail, setP
                 <Text note>I agree to the terms of service</Text>
               </Body>
             </Item>
-                <Button
-                rounded
-                onPress={() => {navigation.navigate('User Login')}}
-                style={{margin: 20}}>
-                <Text>Create your account</Text>
-              </Button>
           </Form>
           <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={() => {navigation.navigate('User Login')}}>Sign in</Text></Text>
           
@@ -76,7 +116,18 @@ export default function SignupPageOne({ setUsername, setNickname, setEmail, setP
         <Footer>
           <FooterTab>
             <Button
-            onPress={() => {navigation.navigate('Location')}}
+            onPress={() => {
+              if(emailError && usernameError) {
+                navigation.navigate('Location');
+              } else {
+                Toast.show({
+                  text:"Valid Username and Email Required",
+                  buttonText:"Okay",
+                  position:"top"
+                })
+              }
+              
+            }}
             >
               <Text>NEXT</Text>
             </Button>

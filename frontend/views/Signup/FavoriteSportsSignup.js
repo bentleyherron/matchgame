@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Content, ListItem, Text, Radio, Button, Right, Left, H1, Footer, FooterTab } from 'native-base';
-import axios from 'axios'
+import React, { useState, useEffect, useContext } from 'react';
+import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab, Toast } from 'native-base';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+import SignupContext from './SignupContext';
 
-export default function SignupPageThree({ onSportSelect, topSports, navigation }) {
+export default function SignupPageThree({ navigation }) {
 
-    // const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
+    const context = useContext(SignupContext);
+    const {sports} = context.state;
+    const {onSportSelect} = context.actions;
     const [sportsList, setSportsList] = useState(null);
+
     useEffect(() => {
         async function fetchSportsData() {
-            const url = `https://8ab0e3a4.ngrok.io/sports`;
+            const url = `${URL}/sports`;
             const response = await axios.get(url);
             setSportsList(response.data);
         }
         fetchSportsData();
     }, [])
+    
     return(
         <Container>
-            <H1>Select Favorite Sports</H1>
             <Content>
             {
                 sportsList ? sportsList.map((sport) => {
@@ -26,7 +31,7 @@ export default function SignupPageThree({ onSportSelect, topSports, navigation }
                                 <Text>{sport.name}</Text>
                             </Left>
                             <Right>
-                                <Radio selected={topSports.filter(item => item.name === sport.name).length > 0} />
+                                <Radio selected={sports.filter(item => item.name === sport.name).length > 0} />
                             </Right>
                         </ListItem>
                     )
@@ -44,7 +49,18 @@ export default function SignupPageThree({ onSportSelect, topSports, navigation }
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => {navigation.navigate('Review')}}
+                    onPress={() => {
+                        if(sports.length) {
+                            navigation.navigate('Review');
+                        } else {
+                            Toast.show({
+                                text:"Select at least one sport to continue",
+                                buttonText:"Okay",
+                                position:"top"
+                            });
+                        }
+                        
+                    }}
                     >
                     <Text>NEXT</Text>
                     </Button>

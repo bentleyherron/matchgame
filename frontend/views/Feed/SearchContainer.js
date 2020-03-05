@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Content, Text, Header, Input, Left, Right, Item, Icon, Button, Segment } from 'native-base';
 import { FlatList } from 'react-native';
 import PlayerTeamCard from './PlayerTeamCard';
+import {URL} from 'react-native-dotenv';
 
 export default function SearchContainer() {
     const [input, setInput] = useState(null);
@@ -11,7 +12,7 @@ export default function SearchContainer() {
     const [currentPlayerTeam, setPlayerTeam] = useState(null);
     const sports = ['Football', 'Basketball', 'Kubb', 'Darts', 'Ultimate Frisbee', 'Soccer', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Beer Pong', 'Cornhole', 'Volleyball', 'Bocce Ball', 'Ping Pong', 'Golf', 'Tennis'];
     // const getUsers = async () => {
-    //     const url = `https://8ab0e3a4.ngrok.io`;
+    //     const url = `${URL}`;
     //     const userResults = axios.get(url + '/users')
     //         .then(results => {
     //             results.forEach(item => {

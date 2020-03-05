@@ -1,23 +1,27 @@
-import React from 'react';
-import { Container, Content, Text, Button, H1, Thumbnail, Footer, FooterTab } from 'native-base';
+import React, {useState, useContext, useEffect} from 'react';
+import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab, Spinner } from 'native-base';
+import SignupContext from './SignupContext';
 
-export default function SignupPageTwo({ openImagePicker, selectedImage, navigation }) {
+// figure out how to set default image if user doesn't select one
 
-      let photoContent;
+export default function SignupPageTwo({ navigation }) {
+    const { openImagePicker, setSelectedImage } = useContext(SignupContext).actions;
+    const { selectedImage } = useContext(SignupContext).state;
+    const [showSpinner, setShowSpinner] = useState(false);
 
-      if (selectedImage !== null) {
-          photoContent = <Thumbnail large
-          source={{ uri: selectedImage }}
-          />;
-
-      }
+    useEffect(() => {
+        if(selectedImage) {
+            setShowSpinner(false);
+        }
+    }, [selectedImage])
 
     return(
         <Container>
             <Content>
                 <Content />
-                {photoContent}
-                <Button primary onPress={openImagePicker}>
+                {showSpinner && selectedImage ? <Spinner /> : null}
+                {selectedImage ? <Thumbnail large source={{ uri: selectedImage }} /> : null}
+                <Button primary onPress={() => {openImagePicker();setShowSpinner(true)}}>
                     <Text>Pick a photo</Text>
                 </Button>
                 
@@ -32,7 +36,9 @@ export default function SignupPageTwo({ openImagePicker, selectedImage, navigati
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => navigation.navigate('Favorite Sports')}
+                    onPress={() => {
+                        navigation.navigate('Favorite Sports');
+                    }}
                     >
                     <Text>NEXT</Text>
                     </Button>

@@ -1,15 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
 import axios from 'axios';
+import { URL } from 'react-native-dotenv';
+import SignupContext from './SignupContext';
 
-export default function LocationSignup({ locationId, setLocationId, navigation }) {
+export default function LocationSignup({ navigation }) {
+    const context = useContext(SignupContext);
+    const { locationId } = context.state;
+    const { setLocationId } = context.actions;
     const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
     useEffect(() => {
         async function fetchStateData() {
-            const url = `https://8ab0e3a4.ngrok.io/states/`;
+            const url = `${URL}/states`;
             const results = await axios.get(url);
             setStateList(results.data);
         }
@@ -18,7 +23,7 @@ export default function LocationSignup({ locationId, setLocationId, navigation }
 
     useEffect(() => {
         async function fetchCityData() {
-            const url = `https://8ab0e3a4.ngrok.io/states/${state}`;
+            const url = `${URL}/states/${state}`;
             const results = await axios.get(url);
             setCityList(results.data);
         }
