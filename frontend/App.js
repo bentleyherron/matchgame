@@ -6,7 +6,6 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
@@ -20,7 +19,6 @@ import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
 import UserContext from './UserContext';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
