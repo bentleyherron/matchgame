@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import ButtonCreateChallenge from './ButtonCreateChallenge';
 
 export default function ChallengeCreateContainer({ route, navigation}) {
 
@@ -8,7 +9,7 @@ export default function ChallengeCreateContainer({ route, navigation}) {
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
     const [sport, setSport] = useState('');
-    const [description, setDescription] = useState('');
+    const [message, setMessage] = useState('');
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -23,7 +24,7 @@ export default function ChallengeCreateContainer({ route, navigation}) {
     const handleConfirm = dateTime => {
       console.warn("A date has been picked: ", dateTime);
       hideDatePicker();
-      setDatetime(dateTime);
+      setDatetime(dateTime.toISOString());
     };
 
     const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
@@ -32,6 +33,20 @@ export default function ChallengeCreateContainer({ route, navigation}) {
             <Header />
         <Content padder>
           <Form>
+            <Item fixedLabel>
+              <Label>Select Your Team</Label>
+              <Picker
+                    mode="dropdown"
+                    iosIcon={<Icon name="arrow-down" />}
+                    style={{ width: undefined }}
+                    placeholder="Select Sport"
+                    placeholderStyle={{ color: "#bfc6ea" }}
+                    placeholderIconColor="#007aff"
+                    selectedValue={sport}
+                    onValueChange={sport => setSport(sport)}
+              ></Picker>
+
+            </Item>
             <Item fixedLabel >
                 <Label>Sport</Label>
                 <Picker
@@ -103,7 +118,7 @@ export default function ChallengeCreateContainer({ route, navigation}) {
             <Item stackedLabel>
               <Label>Additional Information</Label>
               <Input placeholder="Specific game rules, etc." 
-                onChangeText={text => setDescription(text)}
+                onChangeText={text => setMessage(text)}
               />
             </Item>
           </Form>
@@ -113,14 +128,16 @@ export default function ChallengeCreateContainer({ route, navigation}) {
         <Text>{location}</Text>
         <Text>Time: {datetime.toString()}</Text>
         <Text>{wager}</Text>
-        <Text>{description}</Text>
+        <Text>{message}</Text>
 
-        <Button
-              rounded
-              // onPress={onNextClick}
-              style={{margin: 20}}>
-                <Text>Create Challenge</Text>
-              </Button>
+        <ButtonCreateChallenge 
+          location={location}
+          datetime={datetime}
+          wager={wager}
+          sport={sport}
+          message={message}
+        />
+
       </Container>
     );
 
