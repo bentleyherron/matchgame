@@ -12,39 +12,72 @@ const dataArray = [
   ];
 
 export default function ProfilePage(){
-    const { userData, favoriteSports } = useContext(UserContext).state;
-    const [userTeamIds, setUserTeamIds] = useState([]);
+    const { userData } = useContext(UserContext).state;
+    const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
+    const {id, nickname, username, city_id, photo } = userInfo;
+    const [uniqueTeams, setUniqueTeams] = useState([]);
     const [userTeamData, setUserTeamData] = useState([]);
+    const [sportsList, setSportsList] = useState([]);
+    const [uniqueFavSports, setUniqueFavSports] = useState([]);
+    const [reducedTeamScores, setReducedTeamScores] = useState(null);
+
+    const getUniques = (arr, keyToCheck) => {
+        return arr.filter((obj, i) => arr.findIndex(el => el[keyToCheck] === obj[keyToCheck]) === i) 
+    }
+
+    const getTeamScores = (arr) => {
+        const teamObj = {};
+        arr.forEach((obj, i) => {
+            if (teamObj[obj.team_id] !== undefined) {
+                teamObj[obj.team_id] += obj.score;
+            } else {
+                teamObj[obj.team_id] = obj.score;
+            }
+        })
+        return teamObj;
+    };
 
     useEffect(() => {
-        axios.get(`${URL}/team-members/player/${userData.id}`)
-            .then(r => {
-                const uniques = r.data.filter((obj, i) => r.data.findIndex(el => el.team_id === obj.team_id) === i);
-                setUserTeamIds(uniques);
-            })
-            .then(async () => {
-                const newTeamData = await Promise.all(userTeamIds.map(async item => {
-                    const response = await axios.get(`${URL}/teams/${item.team_id}`);
-                    const team = await response.data;
-                    return team;
+        setUniqueTeams(getUniques(teams, "team_id"));
+        setReducedTeamScores(getTeamScores(teamScores));
+
+        const fetchSportsList = async () => {
+            const response = await axios.get(`${URL}/sports`);
+            const newSportsList = await response.data;
+            setSportsList(newSportsList);
+        }
+
+        const fetchTeamData = async () => {
+            const newTeamData = await Promise.all(uniqueTeams.map(async item => {
+                const response = await axios.get(`${URL}/teams/${item.team_id}`);
+                const team = await response.data;
+                return team;
                 }));
-                setUserTeamData(newTeamData);
-            });
+            setUserTeamData(newTeamData);
+        }
+
+        fetchSportsList().then(
+            () => {
+                setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
+                fetchTeamData();
+            }
+        );
+
     },[])
 
-    console.log(userTeamData);
-
+    console.log(teamScores);
+    
     return (
         <Container>
             <Content padder>
                 <Card>
                     <CardItem>
                         <Left>
-                            <Thumbnail large source={{uri: userData.photo}} />
+                            <Thumbnail large source={{uri: photo}} />
                             <Body>
-                                <Text>{userData.username}</Text>
-                                <Text note>{userData.nickname}</Text>
-                                <Text note>Point Total: 250</Text>
+                                <Text>{username}</Text>
+                                <Text note>{nickname}</Text>
+                                <Text note>Point Total: {totalScore}</Text>
                             </Body>
                         </Left>
                     </CardItem>
@@ -56,19 +89,19 @@ export default function ProfilePage(){
                     <CardItem bordered>
                         <Grid>
                             <Row>
-                                {favoriteSports.length ? favoriteSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
+                                {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                             </Row>
                         </Grid>
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {userTeamData.length ? userTeamData.map((obj, i) => (
+                    {userTeamData.length && sportsList.length && teamScores.length ? userTeamData.map((obj, i) => (
                         <CardItem key={i + 'teamcard'}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />
                                 <Body>
                                     <Text>{obj.name}</Text>
-                                    <Text>Sport: {obj.sport_id}</Text>
-                                    <Text note>Team Point Total: 800</Text>
+                                    {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
+                                    {reducedTeamScores[obj.id] ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
                                     <Text note>Region: {obj.city_id}</Text>
                                 </Body>
                             </Left>

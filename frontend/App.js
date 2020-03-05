@@ -6,7 +6,6 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
@@ -20,7 +19,6 @@ import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
 import UserContext from './UserContext';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -28,7 +26,6 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [favoriteSports, setFavoriteSports] = useState(null);
 
   useEffect(() => {
     Font.loadAsync({
@@ -46,24 +43,16 @@ export default function App() {
       }
     )
 
-    axios.get(`${URL}/sports/1`).then(
-      response => {
-        setFavoriteSports(response.data);
-      }
-    )
-
   }, [])
 
   const userContextValue = {
     state: {
       userData,
-      hasSignedUp,
-      favoriteSports
+      hasSignedUp
     },
     actions: {
       setHasSignedUp,
-      setUserData,
-      setFavoriteSports
+      setUserData
     }
   }
   
