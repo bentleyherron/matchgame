@@ -7,7 +7,12 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+
 
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
@@ -16,11 +21,12 @@ import SignupContainer from './views/Signup/SignupContainer';
 import UserContext from './UserContext';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   const [isReady, setIsReady] = useState(false);
-  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
   const [favoriteSports, setFavoriteSports] = useState(null);
 
@@ -33,6 +39,19 @@ export default function App() {
       setIsReady(true)
     }
     )
+    axios.get(`${URL}/profile/1`).then(
+      response => {
+        setUserData(response.data);
+        setHasSignedUp(true);
+      }
+    )
+
+    axios.get(`${URL}/sports/1`).then(
+      response => {
+        setFavoriteSports(response.data);
+      }
+    )
+
   }, [])
 
   const userContextValue = {
@@ -56,11 +75,13 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-            <Stack.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"}>
-              <Stack.Screen name="Signup" options={{headerShown: false}} component={SignupContainer} />
-              <Stack.Screen name="Profile" options={{headerShown: false}} component={Profile} />
-              <Stack.Screen name="Feed" options={{headerShown: false}} component={Feed} />
-            </Stack.Navigator>
+
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signu"} tabBar={props => <Nav {...props} />}>
+              <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
+              <Tab.Screen name="Profile" component={Profile} />
+              <Tab.Screen name="Feed" component={Feed} />
+            </Tab.Navigator>
+
           </UserContext.Provider>
         </Root>
       </NavigationContainer>

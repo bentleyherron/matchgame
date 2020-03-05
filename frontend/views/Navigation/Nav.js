@@ -1,8 +1,7 @@
 import React from 'react';
 import { Footer, FooterTab, Button, Text, Icon } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-export default function Nav() {
-  const navigation = useNavigation();
+export default function Nav( {navigation}) {
   return (
       <Footer>
         <FooterTab>
