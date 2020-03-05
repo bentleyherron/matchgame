@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Image } from 'react-native';
 import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content } from 'native-base';
 import axios from 'axios';
+import { URL } from 'react-native-dotenv';
+import SignupContext from './SignupContext';
+import UserContext from '../../UserContext';
 
-export default function SignupPageFour({
-    username,
-    nickname,
-    password,
-    email,
-    sports,
-    image,
-    locationId,
-    setUserData,
-    setFavoriteSports,
-    setHasSignedUp,
-    navigation
-}) {
+export default function SignupPageFour({ navigation }) {
+    const { username, nickname, password, email, sports, image, locationId } = useContext(SignupContext).state;
+    const { setUserData, setFavoriteSports, setHasSignedUp } = useContext(UserContext).actions;
+
     const [userObject, setUserObject] = useState({
         user: {
             username,
@@ -26,17 +20,18 @@ export default function SignupPageFour({
             player_rating: 5,
             nickname}
         });
+
     const [sportsArray, setSportsArray] = useState(sports.map(sport => {return {sport_id: sport.id}}));
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const postUser = async () => {
-        const url = `https://8ab0e3a4.ngrok.io/users`
+        const url = `${URL}/users`
         const response = await axios.post(url, userObject);
         setUserData(response.data);
         return response.data.id;
     };
     const postSports = async (id) => {
-        const url = `https://8ab0e3a4.ngrok.io/favorite-sports/`;
+        const url = `${URL}/favorite-sports/`;
         const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
         const response = await axios.post(url, sportsArrayObject);
         setFavoriteSports(response.data);
