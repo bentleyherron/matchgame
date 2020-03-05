@@ -7,10 +7,12 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+
 
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
@@ -73,11 +75,13 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
+
             <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signu"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Feed" component={Feed} />
             </Tab.Navigator>
+
           </UserContext.Provider>
         </Root>
       </NavigationContainer>
