@@ -11,8 +11,8 @@ export default function ButtonCreateChallenge({
     datetime,
     team_from_id,
     latitude,
-    longitude
-
+    longitude,
+    navigation
 }) {
 
     const challengeObject = {
@@ -38,7 +38,8 @@ export default function ButtonCreateChallenge({
     return (
         <Button
             onPress={() => {
-                postChallenge()
+                postChallenge();
+                navigation.navigate('Feed');
             }}>
             <Text>Post Challenge</Text>
         </Button>

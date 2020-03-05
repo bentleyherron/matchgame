@@ -177,7 +177,8 @@ export default function ChallengeCreateContainer({ navigation }) {
         <Text>{wager}</Text>
         <Text>{message}</Text>
 
-        <ButtonCreateChallenge 
+        <ButtonCreateChallenge
+          navigation={navigation}
           team_from_id={team}
           location={location}
           datetime={datetime}

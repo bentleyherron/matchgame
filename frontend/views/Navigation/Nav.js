@@ -9,7 +9,7 @@ export default function Nav( {navigation}) {
             <Icon type="FontAwesome" name="fire"/>
             <Text>Feed</Text>
           </Button>
-          <Button>
+          <Button onPress={() => {navigation.navigate('Challenge Create')}}>
             <Icon type="AntDesign" name="pluscircle" />
           </Button>
           <Button onPress={() => {navigation.navigate('Profile')}}>
