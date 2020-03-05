@@ -13,18 +13,33 @@ const dataArray = [
 
 export default function ProfilePage(){
     const { userData } = useContext(UserContext).state;
-    const {totalScore, teamScores, teams, userInfo, favoriteSports} = userData;
+    const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
     const [uniqueTeams, setUniqueTeams] = useState([]);
     const [userTeamData, setUserTeamData] = useState([]);
     const [sportsList, setSportsList] = useState([]);
     const [uniqueFavSports, setUniqueFavSports] = useState([]);
+    const [reducedTeamScores, setReducedTeamScores] = useState(null);
 
     const getUniques = (arr, keyToCheck) => {
         return arr.filter((obj, i) => arr.findIndex(el => el[keyToCheck] === obj[keyToCheck]) === i) 
     }
+
+    const getTeamScores = (arr) => {
+        const teamObj = {};
+        arr.forEach((obj, i) => {
+            if (teamObj[obj.team_id] !== undefined) {
+                teamObj[obj.team_id] += obj.score;
+            } else {
+                teamObj[obj.team_id] = obj.score;
+            }
+        })
+        return teamObj;
+    };
+
     useEffect(() => {
         setUniqueTeams(getUniques(teams, "team_id"));
+        setReducedTeamScores(getTeamScores(teamScores));
 
         const fetchSportsList = async () => {
             const response = await axios.get(`${URL}/sports`);
@@ -40,6 +55,7 @@ export default function ProfilePage(){
                 }));
             setUserTeamData(newTeamData);
         }
+
         fetchSportsList().then(
             () => {
                 setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
@@ -49,7 +65,7 @@ export default function ProfilePage(){
 
     },[])
 
-    console.log(sportsList.length ? sportsList[1].name : null);
+    console.log(teamScores);
     
     return (
         <Container>
@@ -78,14 +94,14 @@ export default function ProfilePage(){
                         </Grid>
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {userTeamData.length && sportsList.length ? userTeamData.map((obj, i) => (
+                    {userTeamData.length && sportsList.length && teamScores.length ? userTeamData.map((obj, i) => (
                         <CardItem key={i + 'teamcard'}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />
                                 <Body>
                                     <Text>{obj.name}</Text>
                                     {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
-                                    <Text note>Team Point Total: 800</Text>
+                                    {reducedTeamScores[obj.id] ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
                                     <Text note>Region: {obj.city_id}</Text>
                                 </Body>
                             </Left>
