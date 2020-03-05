@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Challenge from './Challenge';
 import { FlatList } from 'react-native';
+import { Container, Spinner } from 'native-base';
+import axios from 'axios';
+
+import {URL} from 'react-native-dotenv';
 
 export default function ChallengesContainer() {
+
+    const [challengeArray, setChallengeArray] = useState('');
+
+    useEffect(() => {
+        axios.get(`${URL}/challenges`)
+            .then((response) => {
+                console.log(response.data);
+                setChallengeArray(response.data);
+            })
+    },[])
+
     const challenge1 = {
         id: 1,
         teamFrom: 'Shark',
@@ -38,15 +53,21 @@ export default function ChallengesContainer() {
     }
 
     return (
-        <FlatList
-        data={[challenge1, challenge2, challenge3]}
-        renderItem={ ({ item }) => (
-            <Challenge
-            keyExtractor={item.id}
-            challenge={item}
-            expandChallenge={expandChallenge}
-            />
-        )}
-        />
+        <Container>
+            {challengeArray ? (
+                <FlatList
+                data={challengeArray}
+                renderItem={ ({ item }) => (
+                    <Challenge
+                    keyExtractor={item.id}
+                    challenge={item}
+                    expandChallenge={expandChallenge}
+                    />
+                )}
+                />
+            ) : (
+                <Spinner/>
+            )}
+        </Container>
     );
 }
