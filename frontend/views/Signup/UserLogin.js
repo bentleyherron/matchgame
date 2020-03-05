@@ -3,31 +3,32 @@ import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text
 import SignupContext from './SignupContext';
 
 export default function SignupPageOne({ navigation }) {
-
+    // TODO: add validation for login
     const { setUsername, setEmail, setPassword } = useContext(SignupContext).actions;
     return (
       <Container>
         <Content>
           <Form>
-            <Item fixedLabel>
+            <Item fixedLabel style={{padding: 10, marginBottom: 10, marginTop: 10}}>
               <Input 
                 placeholder='Email'
                 name="email"
                 onChangeText={text => setEmail(text)}/>
             </Item>
-            <Item fixedLabel>
+            <Item fixedLabel style={{padding: 10, marginBottom: 30}}>
               <Input 
                 placeholder='Password'
                 name="password"
                 onChangeText={text => setPassword(text)}/>
             </Item>
           </Form>
-        </Content>
-        <Button
-            rounded
-            onPress={() => {navigation.navigate('Feed')}}>
-            <Text>LOGIN</Text>
+          <Button
+              rounded
+              onPress={() => {navigation.navigate('Feed')}}>
+              <Text>LOGIN</Text>
           </Button>
+          <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20}}>Don't have an account? <Text note style={{color: 'blue'}}>Register Here</Text></Text>
+        </Content>
       </Container>
     );
 }

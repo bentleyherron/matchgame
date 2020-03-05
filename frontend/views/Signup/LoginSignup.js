@@ -110,7 +110,7 @@ export default function SignupPageOne({ navigation }) {
               </Body>
             </Item>
           </Form>
-          <Text note style={{margin: 20}}>Already have an account? <Text note style={{color: 'blue'}} onPress={() => {navigation.navigate('User Login')}}>Sign in</Text></Text>
+          <Text note onPress={() => navigation.navigate('User Login')} style={{margin: 20, padding: 20}}>Already have an account? <Text note style={{color: 'blue'}}>Sign in</Text></Text>
           
         </Content>
         <Footer>

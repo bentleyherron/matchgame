@@ -72,7 +72,7 @@ export default function SignupContainer() {
 
     return (
         <SignupContext.Provider value={SignupContextValue}>
-            <Tab.Navigator initialRouteName="Login">
+            <Tab.Navigator initialRouteName="User Login">
                 <Tab.Screen name="Login" component={LoginSignup} options={{title:'Create Profile'}} />
                 <Tab.Screen name="Location" component={LocationSignup} options={{title: 'Select Location'}} />
                 <Tab.Screen name="Profile Pic" component={ProfilePicSignup} options={{title: 'Select Profile Picture'}} />
