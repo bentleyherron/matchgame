@@ -2,26 +2,33 @@ import React, { useState } from 'react';
 import { Button, Text } from 'native-base';
 import axios from 'axios';
 
+import {URL} from 'react-native-dotenv';
+
 export default function ButtonCreateChallenge({
-    sport,
-    location,
+    sport_id,
     wager,
-    description,
-    datetime
+    message,
+    datetime,
+    team_from_id
+
 }) {
 
-    const [challengeObject, setChallengeObject] = useState({
+    const challengeObject = {
         challenge: {
-            sport,
+            sport_id,
             datetime,
             wager,
-            description
+            message,
+            team_from_id
         }
-    })
+    }
 
     const postChallenge = async () => {
-        const url = `https://8ab0e3a4.ngrok.io/challenges`
+        const url = `${URL}/challenges`
+        console.log(url);
+        console.log(challengeObject);
         const response = await axios.post(url, challengeObject);
+        
     }
 
     return (
