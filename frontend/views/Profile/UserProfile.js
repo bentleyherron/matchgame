@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {FlatList}  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Right, Thumbnail, Body, Text, H1, Accordion, ListItem } from 'native-base';
+import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -19,7 +19,8 @@ export default function ProfilePage(){
     useEffect(() => {
         axios.get(`${URL}/team-members/player/${userData.id}`)
             .then(r => {
-                setUserTeamIds(r.data);
+                const uniques = r.data.filter((obj, i) => r.data.findIndex(el => el.team_id === obj.team_id) === i);
+                setUserTeamIds(uniques);
             })
             .then(async () => {
                 const newTeamData = await Promise.all(userTeamIds.map(async item => {
@@ -30,6 +31,8 @@ export default function ProfilePage(){
                 setUserTeamData(newTeamData);
             });
     },[])
+
+    console.log(userTeamData);
 
     return (
         <Container>
@@ -51,37 +54,33 @@ export default function ProfilePage(){
                 <Card>
                     <H1 style={{padding: 20}}>Sports</H1>
                     <CardItem bordered>
-                        <FlatList
-                        data={favoriteSports}
-                        renderItem={( {item} ) => (<ListItem keyExtractor={item.id}><Text>{item.name}</Text></ListItem>)}
-                        />
+                        <Grid>
+                            <Row>
+                                {favoriteSports.length ? favoriteSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
+                            </Row>
+                        </Grid>
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    <CardItem>
-                        
-                        <Left>
-                            <Body>
-                            <Text>Weekend Warriors</Text>
-                            <Text note>Team Point Total: 800</Text>
-                            <Text note>Region: Marietta</Text>
-                            </Body>
-                        </Left>
-                    </CardItem>
-                    <CardItem bordered>
-                        <Left>
-                            <Body>
-                            <Text>Mighty Ducks</Text>
-                            <Text note>Team Point Total: 800</Text>
-                            <Text note>Region: Marietta</Text>
-                            </Body>
-                        </Left>
-                    </CardItem>
-{/* 
+                    {userTeamData.length ? userTeamData.map((obj, i) => (
+                        <CardItem key={i + 'teamcard'}>
+                            <Left>
+                            <Thumbnail large source={{uri: obj.photo}} />
+                                <Body>
+                                    <Text>{obj.name}</Text>
+                                    <Text>Sport: {obj.sport_id}</Text>
+                                    <Text note>Team Point Total: 800</Text>
+                                    <Text note>Region: {obj.city_id}</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                    )):
+                    null}
+                {/* 
                 <H1 style={{padding: 20}}>Record</H1>
                 <CardItem>
                     <Accordion dataArray={dataArray} expanded={0}/>
                 </CardItem> */}
-            </Card>
+                </Card>
             </Content>
         </Container>
     );
