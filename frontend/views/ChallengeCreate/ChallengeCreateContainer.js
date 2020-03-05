@@ -169,14 +169,6 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
           </Form>
         </Content>
-        
-        <Text>{team}</Text>
-        <Text>{sport}</Text>
-        <Text>{location}</Text>
-        <Text>Time: {datetime}</Text>
-        <Text>{wager}</Text>
-        <Text>{message}</Text>
-
         <ButtonCreateChallenge
           navigation={navigation}
           team_from_id={team}
