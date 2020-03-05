@@ -3,7 +3,9 @@ import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text
 import SignupContext from './SignupContext';
 
 export default function SignupPageOne({ navigation }) {
+
     // TODO: add validation for login
+
     const { setUsername, setEmail, setPassword } = useContext(SignupContext).actions;
     return (
       <Container>
