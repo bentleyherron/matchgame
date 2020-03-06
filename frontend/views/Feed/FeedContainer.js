@@ -6,12 +6,17 @@ import EventsContainer from './EventsContainer';
 import Search from './SearchContainer';
 
 export default function FeedContainer(){
+
+    const [page, setPage] = useState(0);
+
     return (
         <Container>
             <Header hasTabs/>
-            <Tabs>
+            <Tabs page={page}>
                 <Tab heading="Challenges">
-                    <ChallengesContainer />
+                    <ChallengesContainer 
+                        setPage={setPage}
+                    />
                 </Tab>
                 <Tab heading="Events">
                     <EventsContainer />

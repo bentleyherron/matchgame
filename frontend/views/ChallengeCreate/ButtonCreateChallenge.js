@@ -10,6 +10,7 @@ export default function ButtonCreateChallenge({
     message,
     datetime,
     team_from_id,
+    city_id,
     latitude,
     longitude,
     navigation
@@ -22,6 +23,7 @@ export default function ButtonCreateChallenge({
             wager,
             message,
             team_from_id,
+            city_id,
             latitude,
             longitude
         }
