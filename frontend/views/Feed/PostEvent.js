@@ -25,8 +25,15 @@ export default function PostEvent({
     const description = message;
     const { userData } = useContext(UserContext).state;
 
+    const team_to_id = userData.teams[0].team_id;
+
     const eventObject = {
+        eventTeams: [
+            team_from_id,
+            team_to_id
+    ],
         event: {
+            team_id: 1,
             city_id,
             latitude,
             longitude,
@@ -38,11 +45,10 @@ export default function PostEvent({
     }
 
     const postEvent = async () => {
-        const url = `${URL}/events`;
-        console.log(url);
-        // console.log(userData);
-        console.log(eventObject);
-        const response = await axios.post(url, eventObject);
+        const eventUrl = `${URL}/events`;
+        const eventResponse = await axios.post(eventUrl, eventObject);
+        console.log(eventResponse.data.eventTeams);
+        // setPage(1);
     }
 
     return(
