@@ -15,7 +15,17 @@ export default function TeamCreateContainer({ navigation }) {
     const [teamName, setTeamName] = useState('');
     const [teamSport, setTeamSport] = useState('');
     const [teamPhoto, setTeamPhoto] = useState('');
-    const [teamMembers, setTeamMembers] = useState([]);
+    const [teamMembers, setTeamMembers] = useState({});
+
+    const handleTeamMemberAdd = (id, username) => {
+        if(teamMembers[id]) {
+            const newTeamMembers = {...teamMembers};
+            delete newTeamMembers[id];
+            setTeamMembers(newTeamMembers);
+        } else {
+            setTeamMembers({...teamMembers, id: username})
+        }
+    }
 
     const imagePickerAsync = async() => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -45,7 +55,7 @@ export default function TeamCreateContainer({ navigation }) {
             setTeamName,
             setTeamSport,
             imagePickerAsync,
-            setTeamMembers
+            handleTeamMemberAdd
         }
     }
 

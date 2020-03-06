@@ -2,10 +2,10 @@ import React from 'react';
 import {Text, Card, CardItem, Left, Body, Right, Title, Thumbnail} from 'native-base';
 import {Image} from 'react-native';
 
-export default function PlayerTeamCard({cardData}) {
-    const { photo, username, sports, player_rating } = cardData;
+export default function PlayerTeamCard({cardData, handleSelect}) {
+    const { photo, username, sports, player_rating, id } = cardData;
     return (
-        <Card>
+        <Card onPress={() => handleSelect(id, username)}>
             <CardItem>
                 <Left>
                     <Image style={{width: 66, height: 58}} source={{uri: photo}} />
