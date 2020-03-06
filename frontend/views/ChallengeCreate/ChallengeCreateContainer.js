@@ -10,6 +10,7 @@ import axios from 'axios';
 export default function ChallengeCreateContainer({ route, navigation }) {
 
     const { userData } = useContext(UserContext).state;
+    const userCityId = userData.userInfo.city_id;
 
     const teamIdArray = userData.teams;
 
@@ -168,6 +169,7 @@ export default function ChallengeCreateContainer({ route, navigation }) {
           wager={wager}
           sport_id={sport}
           message={message}
+          city_id={userCityId}
         />
 
       </Container>
