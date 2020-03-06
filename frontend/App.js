@@ -6,7 +6,6 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
@@ -18,17 +17,20 @@ import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
+import TeamCreate from './views/TeamCreate/TeamCreate';
+import ChallengeCreate from './views/ChallengeCreate/ChallengeCreateContainer';
 import UserContext from './UserContext';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const [isReady, setIsReady] = useState(false);
+  const [isFontReady, setIsFontReady] = useState(false);
+  const [isUserDataReady, setIsUserDataReady] = useState(false);
+  const [isSportsDataReady, setIsSportsDataReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [favoriteSports, setFavoriteSports] = useState(null);
+  const [sportData, setSportData] = useState(null);
 
   useEffect(() => {
     Font.loadAsync({
@@ -36,38 +38,38 @@ export default function App() {
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
     }).then(() => {
-      setIsReady(true)
+      setIsFontReady(true);
     }
     )
-    axios.get(`${URL}/profile/1`).then(
+    axios.get(`${URL}/profile/2`).then(
       response => {
         setUserData(response.data);
         setHasSignedUp(true);
-      }
-    )
-
-    axios.get(`${URL}/sports/1`).then(
-      response => {
-        setFavoriteSports(response.data);
-      }
-    )
-
+        setIsUserDataReady(true)
+      });
+      
+      axios.get(`${URL}/sports`).then(
+        r => {
+          setSportData(r.data);
+          setIsSportsDataReady(true);
+        }
+        );
   }, [])
 
   const userContextValue = {
     state: {
       userData,
       hasSignedUp,
-      favoriteSports
+      sportData
     },
     actions: {
       setHasSignedUp,
       setUserData,
-      setFavoriteSports
+      setSportData
     }
   }
   
-  if (!isReady) {
+  if (!isFontReady || !isUserDataReady || !isSportsDataReady) {
     return <AppLoading />;
   }
   return (
@@ -76,10 +78,12 @@ export default function App() {
         <Root>
           <UserContext.Provider value={userContextValue}>
 
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signu"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
+              <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
+              {/* <Tab.Screen name="Team Create" component={TeamCreate} /> */}
             </Tab.Navigator>
 
           </UserContext.Provider>

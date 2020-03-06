@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ButtonCreateChallenge from './ButtonCreateChallenge';
-import {URL} from 'react-native-dotenv';
+import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 
 import UserContext from '../../UserContext';
 import axios from 'axios';
 
-export default function ChallengeCreateContainer({ route, navigation }) {
+export default function ChallengeCreateContainer({ navigation }) {
 
     const { userData } = useContext(UserContext).state;
     const userCityId = userData.userInfo.city_id;
@@ -16,6 +16,8 @@ export default function ChallengeCreateContainer({ route, navigation }) {
 
     const [team, setTeam] = useState('');
     const [location, setLocation] = useState('');
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
     const [sport, setSport] = useState(1);
@@ -49,7 +51,19 @@ export default function ChallengeCreateContainer({ route, navigation }) {
     const handleConfirm = dateTime => {
       hideDatePicker();
       setDatetime(dateTime.toISOString());
-    };
+    }
+
+    const getGoogleLocation = async (input) => {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${GOOGLE_API_KEY}&input=${input}&inputtype=textquery&fields=formatted_address,geometry,name,place_id,plus_code`);
+      if (response.data.candidates.length) {
+        const {geometry, name } = response.data.candidates[0];
+        setLatitude(geometry.location.lat);
+        setLongitude(geometry.location.lng);
+        setLocation(name);
+      } else {
+        console.log('Google Maps Error in Challenge Create Container');
+      }
+    }
 
     const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
     return(
@@ -118,7 +132,9 @@ export default function ChallengeCreateContainer({ route, navigation }) {
               <Input
                 placeholder='(ex. Piedmont Park)'
                 name="location"
-                onChangeText={text => setLocation(text)}/>
+                onChangeText={text => setLocation(text)}
+                onSubmitEditing={async () => getGoogleLocation(location)}
+                />
             </Item>
             <Item fixedLabel>
                 <Label>Date and Time</Label>
@@ -154,15 +170,8 @@ export default function ChallengeCreateContainer({ route, navigation }) {
             </Item>
           </Form>
         </Content>
-        
-        <Text>{team}</Text>
-        <Text>{sport}</Text>
-        <Text>{location}</Text>
-        <Text>Time: {datetime}</Text>
-        <Text>{wager}</Text>
-        <Text>{message}</Text>
-
-        <ButtonCreateChallenge 
+        <ButtonCreateChallenge
+          navigation={navigation}
           team_from_id={team}
           location={location}
           datetime={datetime}
@@ -170,6 +179,8 @@ export default function ChallengeCreateContainer({ route, navigation }) {
           sport_id={sport}
           message={message}
           city_id={userCityId}
+          latitude={latitude}
+          longitude={longitude}
         />
 
       </Container>

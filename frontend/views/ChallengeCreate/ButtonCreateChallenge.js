@@ -10,8 +10,10 @@ export default function ButtonCreateChallenge({
     message,
     datetime,
     team_from_id,
-    city_id
-
+    city_id,
+    latitude,
+    longitude,
+    navigation
 }) {
 
     const challengeObject = {
@@ -21,7 +23,9 @@ export default function ButtonCreateChallenge({
             wager,
             message,
             team_from_id,
-            city_id
+            city_id,
+            latitude,
+            longitude
         }
     }
 
@@ -36,7 +40,8 @@ export default function ButtonCreateChallenge({
     return (
         <Button
             onPress={() => {
-                postChallenge()
+                postChallenge();
+                navigation.navigate('Feed');
             }}>
             <Text>Post Challenge</Text>
         </Button>
