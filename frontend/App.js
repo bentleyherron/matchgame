@@ -46,8 +46,7 @@ export default function App() {
         setUserData(response.data);
         setHasSignedUp(true);
         setIsUserDataReady(true)
-      }
-      );
+      });
       
       axios.get(`${URL}/sports`).then(
         r => {
@@ -55,7 +54,6 @@ export default function App() {
           setIsSportsDataReady(true);
         }
         );
-
   }, [])
 
   const userContextValue = {
