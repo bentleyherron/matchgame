@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 5211,
-  "expoServerNgrokUrl": "https://ei-qd8.anonymous.frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.ei-qd8.anonymous.frontend.exp.direct",
-  "ngrokPid": 5226,
+  "packagerPort": 19001,
+  "packagerPid": 4750,
+  "expoServerNgrokUrl": "https://ec-h25.anonymous.frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.ec-h25.anonymous.frontend.exp.direct",
+  "ngrokPid": 4767,
   "webpackServerPort": null
 }
