@@ -51,7 +51,6 @@ export default function App() {
         setSportData(r.data);
       }
     )
-
   }, [])
 
   const userContextValue = {
