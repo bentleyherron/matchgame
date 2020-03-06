@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar } from 'native-base';
+import PostEvent from './PostEvent';
 
-export default function Challenge({ challenge, expandChallenge }) {
+export default function Challenge({ challenge, setPage }) {
     const { team_from_id,
             datetime,
             wager,
@@ -25,9 +26,14 @@ export default function Challenge({ challenge, expandChallenge }) {
     }
     
     function formatTime(d) {
-      var h = addZero(d.getHours());
-      var m = addZero(d.getMinutes());
-      const formattedTime = h + ":" + m;
+      let hours = addZero(d.getHours());
+      let minutes = addZero(d.getMinutes());
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      const formattedTime = hours + ':' + minutes + ' ' + ampm;
+      // const formattedTime = h + ":" + m;
       return formattedTime;
     }
 
@@ -44,7 +50,16 @@ export default function Challenge({ challenge, expandChallenge }) {
                 <Text note>{wager} Pts · {formattedDate} · {formattedTime}</Text>
               </Body>
               <Right>
-                <Text note>3:50 pm</Text>
+                {/* <Text note>3:50 pm</Text> */}
+                {is_accepted ? (null)
+                 : (<PostEvent
+                      challenge={challenge}
+                      setPage={setPage}
+
+                 
+                 />)
+                }
+                
               </Right>
         </ListItem>
     );

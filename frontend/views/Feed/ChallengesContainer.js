@@ -1,52 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Challenge from './Challenge';
 import { FlatList } from 'react-native';
 import { Container, Spinner } from 'native-base';
 import axios from 'axios';
-
 import {URL} from 'react-native-dotenv';
+import UserContext from '../../UserContext';
 
-export default function ChallengesContainer() {
+export default function ChallengesContainer({setPage}) {
 
     const [challengeArray, setChallengeArray] = useState('');
 
+    const { userData, favoriteSports } = useContext(UserContext).state;
+
     useEffect(() => {
-        axios.get(`${URL}/challenges`)
+        axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`)
             .then((response) => {
                 console.log(response.data);
+                console.log(userData.userInfo.city_id)
                 setChallengeArray(response.data);
             })
+
     },[])
-
-    const challenge1 = {
-        id: 1,
-        teamFrom: 'Shark',
-        teamTo: 'Dolphin',
-        date: new Date("2018-3-20"),
-        message: 'We are going to school you guys!',
-        wager: 100,
-        isAccepted: false
-    };
-
-    const challenge2 = {
-        id: 2,
-        teamFrom: 'Team Rocket',
-        teamTo: 'Psyduck',
-        date: new Date("2004-2-14"),
-        message: 'Blasting off at the speed of light!',
-        wager: 100,
-        isAccepted: false
-    };
-
-    const challenge3 = {
-        id: 3,
-        teamFrom: 'Your Mom',
-        teamTo: 'Chad',
-        date: new Date('2020-2-14'),
-        message: 'This is getting interesting!',
-        wager: 100,
-        isAccepted: false
-    };
 
     expandChallenge = () => {
         console.log('you clicked the challenge');
@@ -62,6 +36,7 @@ export default function ChallengesContainer() {
                     keyExtractor={item.id}
                     challenge={item}
                     expandChallenge={expandChallenge}
+                    setPage={setPage}
                     />
                 )}
                 />
