@@ -17,6 +17,8 @@ import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
+import TeamCreate from './views/TeamCreate/TeamCreate';
+import ChallengeCreate from './views/ChallengeCreate/ChallengeCreateContainer';
 import UserContext from './UserContext';
 
 const Tab = createBottomTabNavigator();
@@ -26,6 +28,7 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [sportData, setSportData] = useState(null);
 
   useEffect(() => {
     Font.loadAsync({
@@ -43,18 +46,26 @@ export default function App() {
       }
     )
 
+    axios.get(`${URL}/sports`).then(
+      r => {
+        setSportData(r.data);
+      }
+    )
   }, [])
 
   const userContextValue = {
     state: {
       userData,
-      hasSignedUp
+      hasSignedUp,
+      sportData
     },
     actions: {
       setHasSignedUp,
-      setUserData
+      setUserData,
+      setSportData
     }
   }
+  // add back initialRouteName={hasSignedUp ? "Feed" : "Signup"}
   
   if (!isReady) {
     return <AppLoading />;
@@ -65,10 +76,12 @@ export default function App() {
         <Root>
           <UserContext.Provider value={userContextValue}>
 
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signu"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
+              <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
+              {/* <Tab.Screen name="Team Create" component={TeamCreate} /> */}
             </Tab.Navigator>
 
           </UserContext.Provider>
