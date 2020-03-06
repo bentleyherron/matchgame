@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {FlatList}  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion} from 'native-base';
+import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -12,12 +12,12 @@ const dataArray = [
   ];
 
 export default function ProfilePage(){
-    const { userData } = useContext(UserContext).state;
+    const { userData, sportData } = useContext(UserContext).state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
+    const sportsList = sportData;
     const [uniqueTeams, setUniqueTeams] = useState([]);
     const [userTeamData, setUserTeamData] = useState([]);
-    const [sportsList, setSportsList] = useState([]);
     const [uniqueFavSports, setUniqueFavSports] = useState([]);
     const [reducedTeamScores, setReducedTeamScores] = useState(null);
 
@@ -37,43 +37,45 @@ export default function ProfilePage(){
         return teamObj;
     };
 
+    const fetchTeamData = async () => {
+        const newTeamData = await Promise.all(uniqueTeams.map(async item => {
+            const response = await axios.get(`${URL}/teams/${item.team_id}`);
+            const team = await response.data;
+            return team;
+            }));
+        setUserTeamData(newTeamData);
+    }
+
     useEffect(() => {
         setUniqueTeams(getUniques(teams, "team_id"));
         setReducedTeamScores(getTeamScores(teamScores));
+        setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
+    }, []);
 
-        const fetchSportsList = async () => {
-            const response = await axios.get(`${URL}/sports`);
-            const newSportsList = await response.data;
-            setSportsList(newSportsList);
+    useEffect(() => {
+        if (uniqueTeams.length > 0) {
+            fetchTeamData();
         }
+    },[uniqueTeams]);
 
-        const fetchTeamData = async () => {
-            const newTeamData = await Promise.all(uniqueTeams.map(async item => {
-                const response = await axios.get(`${URL}/teams/${item.team_id}`);
-                const team = await response.data;
-                return team;
-                }));
-            setUserTeamData(newTeamData);
-        }
+    console.log('page rendered');
 
-        fetchSportsList().then(
-            () => {
-                setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
-                fetchTeamData();
-            }
-        );
-
-    },[])
-
-    console.log(teamScores);
-    
+    if (!userTeamData.length) {
+        return (
+            <Container>
+                <Content>
+                    <Spinner />
+                </Content>
+            </Container>
+        )
+    }
     return (
         <Container>
             <Content padder>
                 <Card>
                     <CardItem>
                         <Left>
-                            <Thumbnail large source={{uri: photo}} />
+                            {photo ? <Thumbnail large source={{uri: photo}} /> : null}
                             <Body>
                                 <Text>{username}</Text>
                                 <Text note>{nickname}</Text>
@@ -86,15 +88,11 @@ export default function ProfilePage(){
                 
                 <Card>
                     <H1 style={{padding: 20}}>Sports</H1>
-                    <CardItem bordered>
-                        <Grid>
-                            <Row>
-                                {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
-                            </Row>
-                        </Grid>
+                    <CardItem bordered style={{flexDirection: 'column', justifyContent:"flex-start", alignItems:"flex-start"}}>
+                        {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {userTeamData.length && sportsList.length && teamScores.length ? userTeamData.map((obj, i) => (
+                    {userTeamData.length ? userTeamData.map((obj, i) => (
                         <CardItem key={i + 'teamcard'}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />

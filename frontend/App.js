@@ -25,7 +25,9 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const [isReady, setIsReady] = useState(false);
+  const [isFontReady, setIsFontReady] = useState(false);
+  const [isUserDataReady, setIsUserDataReady] = useState(false);
+  const [isSportsDataReady, setIsSportsDataReady] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
   const [sportData, setSportData] = useState(null);
@@ -36,21 +38,23 @@ export default function App() {
       Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       ...Ionicons.font,
     }).then(() => {
-      setIsReady(true)
+      setIsFontReady(true);
     }
     )
-    axios.get(`${URL}/profile/1`).then(
+    axios.get(`${URL}/profile/2`).then(
       response => {
         setUserData(response.data);
         setHasSignedUp(true);
+        setIsUserDataReady(true)
       }
-    )
-
-    axios.get(`${URL}/sports`).then(
-      r => {
-        setSportData(r.data);
-      }
-    )
+      );
+      
+      axios.get(`${URL}/sports`).then(
+        r => {
+          setSportData(r.data);
+          setIsSportsDataReady(true);
+        }
+        );
 
   }, [])
 
@@ -66,9 +70,8 @@ export default function App() {
       setSportData
     }
   }
-  // add back initialRouteName={hasSignedUp ? "Feed" : "Signup"}
   
-  if (!isReady) {
+  if (!isFontReady || !isUserDataReady || !isSportsDataReady) {
     return <AppLoading />;
   }
   return (
