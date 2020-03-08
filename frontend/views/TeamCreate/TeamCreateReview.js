@@ -14,17 +14,6 @@ export default function TeamCreateReview( {navigation}) {
         const newArr = Object.keys(obj).map(item => {return {id: item, name: obj[item]}});
         return newArr;
     }
-    console.log({
-        "team": {
-            "name": teamName,
-            "city_id": userData.userInfo.city_id,
-            "captain_id": userData.userInfo.id,
-            "sport_id": teamSport,
-            "rating": 5,
-            "photo": teamPhoto,
-            "is_solo": false
-        }
-    });
 
     const postNewTeam = async () => {
         console.log('submitting');
