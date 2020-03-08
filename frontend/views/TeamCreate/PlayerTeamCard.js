@@ -1,11 +1,11 @@
 import React from 'react';
-import {Text, Card, CardItem, Left, Body, Right, Title, Thumbnail} from 'native-base';
+import {Text, Card, CardItem, Left, Body, Right, Title, Thumbnail, Button} from 'native-base';
 import {Image} from 'react-native';
 
 export default function PlayerTeamCard({cardData, handleSelect}) {
-    const { photo, username, sports, player_rating, id } = cardData;
+    const { photo, username, player_rating, id } = cardData;
     return (
-        <Card onPress={() => {console.log('clicked item');handleSelect(id, username)}}>
+        <Card>
             <CardItem>
                 <Left>
                     <Image style={{width: 66, height: 58}} source={{uri: photo}} />
@@ -29,6 +29,11 @@ export default function PlayerTeamCard({cardData, handleSelect}) {
                 <Body>
                     <Text>{player_rating}</Text>
                 </Body>
+                <Right>
+                    <Button onPress={() => handleSelect(id, username)}>
+                        <Text>Add</Text>
+                    </Button>
+                </Right>
             </CardItem>
         </Card>
     );

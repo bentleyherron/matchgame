@@ -17,9 +17,10 @@ import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
 import SignupContainer from './views/Signup/SignupContainer';
-import TeamCreate from './views/TeamCreate/TeamCreate';
+import TeamCreate from './views/TeamCreate/TeamCreateContainer';
 import ChallengeCreate from './views/ChallengeCreate/ChallengeCreateContainer';
 import UserContext from './UserContext';
+import TeamContext from './views/TeamCreate/TeamContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +69,7 @@ export default function App() {
       setSportData
     }
   }
+  // hasSignedUp ? "Feed" : "Signup"
   
   if (!isFontReady || !isUserDataReady || !isSportsDataReady) {
     return <AppLoading />;
@@ -78,11 +80,12 @@ export default function App() {
         <Root>
           <UserContext.Provider value={userContextValue}>
 
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={"Team Create"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
+              <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
               {/* <Tab.Screen name="Team Create" component={TeamCreate} /> */}
             </Tab.Navigator>
 
