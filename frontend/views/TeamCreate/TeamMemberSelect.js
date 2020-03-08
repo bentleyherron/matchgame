@@ -1,22 +1,23 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, Text} from 'native-base';
+import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
-import PlayerTeamCard from '../Feed/PlayerTeamCard';
+import PlayerTeamCard from './PlayerTeamCard';
 
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 
 // make filter text check be all lowercase
+// make a different function for adding members and removing members
 
 export default function TeamMemberSelect({ navigation }) {
     const [searchInput, setSearchInput] = useState(null);
     const [userList, setUserList] = useState(null);
     const [currentUserList, setCurrentUserList] = useState(null);
 
-    const {state, actions} = useContext(TeamContextValue);
+    const {state, actions} = useContext(TeamContext);
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
@@ -36,6 +37,11 @@ export default function TeamMemberSelect({ navigation }) {
         setCurrentUserList(filteredResults);
     }
 
+    const convertTeamMembers = (obj) => {
+        const newArr = Object.keys(obj).map(item => {return {id: item, name: obj[item]}});
+        return newArr;
+    }
+
     return(
         <Container>
             <Content>
@@ -48,8 +54,7 @@ export default function TeamMemberSelect({ navigation }) {
                         </Button>
                     </Item>
                 </Header>
-                <Item>
-                    <H1>Select Users</H1>
+                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
                     <FlatList
                         data={currentUserList}
                         renderItem={ ({ item }) => (
@@ -59,19 +64,25 @@ export default function TeamMemberSelect({ navigation }) {
                             handleSelect={handleTeamMemberAdd}
                             />
                         )} />
-                </Item>
-                <Item>
-                    <H1>Users Selected</H1>
+                    <H1 style={{textAlign: "center", padding: 10}}>Users Selected</H1>
                     <FlatList
-                        data={currentUserList}
+                        data={convertTeamMembers(teamMembers)}
                         renderItem={ ({ item }) => (
-                            <PlayerTeamCard
-                            keyExtractor={item.id}
-                            cardData={item}
-                            handleSelect={handleTeamMemberAdd}
-                            />
+                            <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
+                                <Left>
+                                    <Text>
+                                        {item.name}
+                                    </Text>
+                                </Left>
+                                <Right>
+                                    <Button onPress={() => handleTeamMemberAdd(item.id, item.name)}>
+                                        <Text>
+                                            Remove
+                                        </Text>
+                                    </Button>
+                                </Right>
+                            </Item>
                         )} />
-                </Item>
             </Content>
         <Footer>
                 <FooterTab>

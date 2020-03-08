@@ -23,7 +23,9 @@ export default function TeamCreateContainer({ navigation }) {
             delete newTeamMembers[id];
             setTeamMembers(newTeamMembers);
         } else {
-            setTeamMembers({...teamMembers, id: username})
+            const newTeamMembers = {...teamMembers};
+            newTeamMembers[id] = username;
+            setTeamMembers(newTeamMembers);
         }
     }
 
