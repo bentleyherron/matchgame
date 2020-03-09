@@ -5,6 +5,8 @@ import axios from 'axios';
 
 export default function Event({eventObject}) {
 
+    const [didLoad, setDidLoad] = useState(false);
+
     const { title,
             date,
             teams,
@@ -12,7 +14,6 @@ export default function Event({eventObject}) {
             description,
             sport_id,
          } = eventObject.event;
-
 
     const [teamNames, setTeamNames] = useState('');
 
@@ -40,18 +41,9 @@ export default function Event({eventObject}) {
 
     const formattedTime = formatTime(datetime);
 
-    useEffect(async () => {
-        try {
-            const teamInfo = await Promise.all(
-                eventObject.eventTeams.map(async team => {
-                    // console.log(`Event: ${team.event_id} Team Id: ${team.team_id}`);
-                    const response = await axios.get(`${URL}/teams/${team.team_id}`);
-                    return response.data;
-                }));
-            setTeamNames(teamInfo);
-        } 
-        catch (err) {
-            console.log(err);
+    useEffect(() => {
+        if (eventObject) {
+            setDidLoad(true);
         }
     }, [])
 
@@ -60,16 +52,21 @@ export default function Event({eventObject}) {
         <Card
             style={{padding: 5}} 
             onPress={() => expandEvent(event)}>
-            <CardItem header>
-                <Body>
-                    <Text>{title}</Text>
-                    {/* {
-                        teamNames ? (<Text>{teamNames[0].name} vs. {teamNames[1].name}</Text>) : null
-                    } */}
-                    <Text note>{formattedDate} · {formattedTime}</Text>
-                </Body>
-                <Right><Button rounded><Text>Wager Pts.</Text></Button></Right>
-            </CardItem>
+            {didLoad ? (
+                 <CardItem header>
+                 <Body>
+                     <Text>{title}</Text>
+                     {
+                         eventObject.teamNames ? (
+                             <Text>{eventObject.teamNames[0]} vs. {eventObject.teamNames[1]}</Text>
+                         ) : (null)
+                     }
+                     <Text note>{formattedDate} · {formattedTime}</Text>
+                 </Body>
+                 <Right><Button rounded><Text>Wager Pts.</Text></Button></Right>
+             </CardItem>
+            ) : (<Spinner />)}
+           
         </Card>
     );
 }
