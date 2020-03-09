@@ -88,7 +88,6 @@ export default function App() {
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
               <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
-              {/* <Tab.Screen name="Team Create" component={TeamCreate} /> */}
             </Tab.Navigator>
 
           </UserContext.Provider>
