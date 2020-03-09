@@ -5,8 +5,6 @@ import axios from 'axios';
 
 export default function Event({eventObject}) {
 
-    const [didLoad, setDidLoad] = useState(false);
-
     const { title,
             date,
             teams,
@@ -41,18 +39,12 @@ export default function Event({eventObject}) {
 
     const formattedTime = formatTime(datetime);
 
-    useEffect(() => {
-        if (eventObject) {
-            setDidLoad(true);
-        }
-    }, [])
-
 
     return (
+        
         <Card
             style={{padding: 5}} 
             onPress={() => expandEvent(event)}>
-            {didLoad ? (
                  <CardItem header>
                  <Body>
                      <Text>{title}</Text>
@@ -65,8 +57,6 @@ export default function Event({eventObject}) {
                  </Body>
                  <Right><Button rounded><Text>Wager Pts.</Text></Button></Right>
              </CardItem>
-            ) : (<Spinner />)}
-           
         </Card>
     );
 }
