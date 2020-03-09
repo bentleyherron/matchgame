@@ -3,7 +3,6 @@ import { Container, Content, Form, Item, Input, Left, Right, Body, Radio, Button
 import SignupContext from './SignupContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
-import { ShadowPropTypesIOS } from 'react-native';
 
 // set up something else than onsubmitediting, maybe onlosefocus or something similar to catch if the user just goes to the next thing without submitting
 // When person selects radio, doesn't actually select, add onclick to radio
