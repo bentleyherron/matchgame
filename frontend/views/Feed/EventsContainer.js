@@ -1,84 +1,123 @@
-import React from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
 import { FlatList } from 'react-native';
-import { Content, Header, Tab, Tabs } from 'native-base';
+import { Content, Header, Tab, Tabs, Container, Spinner } from 'native-base';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+import UserContext from '../../UserContext';
+import EventPage from './EventPage';
 
 export default function EventsContainer() {
-    const event1 = {
-        id: 1,
-        title: "First Event",
-        sport: "kuub",
-        location: "Atlanta",
-        date: new Date('2020-02-15'),
-        description: "Two teams that are ready to rumble",
-        photo: 'https://picsum.photos/200',
-        isPublic: true,
-        eventOccurred: new Date('2020-02-15'),
-        teams: ['sharks', 'dolphins'],
-        wager: 200,
-        winner: 'sharks'
+
+    const [eventArray, setEventArray] = useState('');
+    const [completeEventArray, setCompleteEventArray] = useState('');
+    const [eventTeamsArray, setEventTeamsArray] = useState('');
+    const [eventClicked, setEventClicked] = useState(false);
+
+    const { userData, favoriteSports } = useContext(UserContext).state;
+
+    const getEventTeams = (event_id) => {
+        return axios.get(`${URL}/events/${event_id}`)
+      }
+
+    const getAllEventInfo = () => {
+        axios.get(`${URL}/events`)
+        .then((response) => {
+            return (response.data)
+        })
+        .then((response) => {
+            axios.all(response.map((event) => {
+                return getEventTeams(event.id);
+            }))
+            .then(responseArr => {
+                 return responseArr.map(event => {
+                    return (event.data);
+                });
+            })
+            .then(response => {
+                console.log(response);
+                setEventArray(response);
+            })
+        })
     };
 
-    const event2 = {
-        id: 2,
-        title: "Second Event",
-        sport: 'wrestling',
-        location: "Atlanta",
-        date: new Date('2020-02-13'),
-        description: "We compete for blood!",
-        photo: 'https://picsum.photos/200',
-        isPublic: true,
-        eventOccurred: new Date('2020-02-13'),
-        teams: ['rocket', 'psyduck'],
-        wager: 350,
-        winner: 'psyduck'
-    };
-
-    const event3 = {
-        id: 3,
-        title: "Rumble in the Jungle",
-        sport: 'boxing',
-        location: "Atlanta",
-        date: new Date('2020-02-02'),
-        description: "Ali vs Frasier",
-        photo: 'https://picsum.photos/200',
-        isPublic: false,
-        eventOccurred: new Date('2020-02-02'),
-        teams: ['ali', 'frasier'],
-        wager: 1000,
-        winner: 'ali'
-    };
-
-    const event4 = {
-        id: 4,
-        title: "Fifa grand final",
-        sport: 'soccer',
-        location: "Atlanta",
-        date: new Date('2020-02-29'),
-        description: "Ali vs Frasier",
-        photo: 'https://picsum.photos/200',
-        isPublic: true,
-        eventOccurred: null,
-        teams: ['spain', 'germany'],
-        wager: 100,
-        winner: null
-    };
-
-    expandEvent = () => {
-        console.log('you clicked the event');
+    const getSingleTeamName = async(teamObject) => {
+        const teamArr = await axios.get(`${URL}/teams/${teamObject.team_id}`);
+        const teamName = teamArr.data.name;
+        return teamName;
+    }
+    
+    const getTeamNames = async (eventTeamsObject) => {
+        return Promise.all(
+            eventTeamsObject.map((teamObject) => {
+                return getSingleTeamName(teamObject);
+            })
+        )
     }
 
+    const fetchEventTeamNames = async () => {
+        return Promise.all(
+            eventArray.map((event) => {
+                return getTeamNames(event.eventTeams);
+            })
+        ) 
+    }
+
+    const handleEventClick = () => {
+        setEventClicked(!eventClicked);
+    }
+
+    useEffect(() => {
+        const getCompleteInfo = async() => {
+            const eventInfo = await getAllEventInfo();
+        }
+        getCompleteInfo();
+    },[]);
+
+    useEffect(() => {
+        if (eventArray) {
+            fetchEventTeamNames()
+                .then(r => {
+                    console.log(r);
+                    setEventTeamsArray(r);
+                })
+                
+        }
+    }, [eventArray])
+
+
+    useEffect(() => {
+        if (eventTeamsArray) {
+            let newArray = [...eventArray];
+            for (let i = 0; i < eventArray.length; i++) {
+                newArray[i].teamNames = eventTeamsArray[i];
+            }
+            setCompleteEventArray(newArray);
+        }
+    }, [eventTeamsArray])
+
     return (
-        <FlatList
-        style={{padding: 5}}
-        data={[event1, event2, event3, event4]}
-        renderItem={ ({ item }) => (
-            <Event
-            keyExtractor={item.id}
-            event={item}
-            expandEvent={expandEvent}
-            />
-        )}
-        />
+        <Container>
+            { completeEventArray && !eventClicked ? (
+                <FlatList
+                style={{padding: 5}}
+                data={completeEventArray}
+                renderItem={ ({ item }) => (
+                    <Event
+                    keyExtractor={item.id}
+                    eventObject={item}
+                    eventClick={handleEventClick}
+                    />
+                )}
+                />
+            ) : null}
+            { eventClicked ? (
+                <EventPage 
+                    eventClick={handleEventClick}
+                />
+            ) : (null)
+            }
+        </Container>
+        
     );
 }
