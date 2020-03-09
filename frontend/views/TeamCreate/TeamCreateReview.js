@@ -16,7 +16,6 @@ export default function TeamCreateReview( {navigation}) {
     }
 
     const postNewTeam = async () => {
-        console.log('submitting');
         const result = await axios.post(`${URL}/teams/`, {
             "team": {
                 "name": teamName,
@@ -28,7 +27,6 @@ export default function TeamCreateReview( {navigation}) {
                 "is_solo": false
             }
         });
-        console.log(result);
         return false;
     }
 
