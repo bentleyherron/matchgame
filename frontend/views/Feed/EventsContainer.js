@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
 import { FlatList } from 'react-native';
-import { Content, Header, Tab, Tabs } from 'native-base';
+import { Content, Header, Tab, Tabs, Container } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -19,8 +19,6 @@ export default function EventsContainer() {
     useEffect(() => {
         axios.get(`${URL}/events`)
             .then((response) => {
-                console.log(response.data);
-                // setEventArray(response.data);
                 return (response.data)
             })
             .then((response) => {
@@ -28,21 +26,16 @@ export default function EventsContainer() {
                     return getEventTeams(event.id);
                 }))
                 .then(responseArr => {
-                    responseArr.map(event => {
-                        console.log(event.data)
+                     return responseArr.map(event => {
                         return (event.data);
-                    })
+                    });
                 })
                 .then(response => {
+                    console.log(response);
                     setEventArray(response);
                 })
             })
-
     },[])
-
-    expandEvent = () => {
-        console.log('you clicked the event');
-    }
 
     return (
         <FlatList
@@ -51,8 +44,7 @@ export default function EventsContainer() {
         renderItem={ ({ item }) => (
             <Event
             keyExtractor={item.id}
-            event={item}
-            expandEvent={expandEvent}
+            eventObject={item}
             />
         )}
         />
