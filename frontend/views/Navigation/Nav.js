@@ -2,7 +2,6 @@ import React from 'react';
 import { Footer, FooterTab, Button, Text, Icon } from 'native-base';
 export default function Nav( {state, navigation}) {
   const currentRouteKey = state.history[state.history.length - 1];
-  console.log(currentRouteKey);
   const {routes} = state;
   const route = routes.filter(obj => obj.key === currentRouteKey.key);
   let routeName;
