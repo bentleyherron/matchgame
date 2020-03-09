@@ -58,8 +58,6 @@ export default function ProfilePage(){
         }
     },[uniqueTeams]);
 
-    console.log('page rendered');
-
     if (!userTeamData.length) {
         return (
             <Container>

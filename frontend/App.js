@@ -80,13 +80,12 @@ export default function App() {
         <Root>
           <UserContext.Provider value={userContextValue}>
 
-            <Tab.Navigator initialRouteName={"Team Create"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
               <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
-              {/* <Tab.Screen name="Team Create" component={TeamCreate} /> */}
             </Tab.Navigator>
 
           </UserContext.Provider>

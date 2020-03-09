@@ -1,7 +1,6 @@
 import React from 'react';
 import UserProfile from './UserProfile';
 import TeamProfile from './TeamProfile';
-import Inbox from './Inbox/InboxContainer';
 import { Container, Header, Tab, Tabs } from 'native-base';
 
 export default function ProfileContainer() {
@@ -15,9 +14,6 @@ export default function ProfileContainer() {
                 </Tab>
                 <Tab heading="Team Profile">
                     <TeamProfile/>
-                </Tab>
-                <Tab heading="Inbox">
-                    <Inbox/>
                 </Tab>
             </Tabs>
         </Container>
