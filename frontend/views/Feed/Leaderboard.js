@@ -1,36 +1,127 @@
-import React, {useState} from 'react';
-import { List, ListItem, Text, Content, Picker } from 'native-base';
+import React, {useState, useEffect, useContext} from 'react';
+import { List, ListItem, Text, Content, Picker, Container, Spinner, Left, Body } from 'native-base';
+import UserContext from '../../UserContext';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
+
+
+// get all teams in a region and sort by sport
+
 
 export default function Leaderboard() {
-    const [sport, setSport] = useState('tennis');
-    const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ];
-    const data = {
-        tennis: [{team: 'dasher', score: 4100}, {team: 'dancer', score:2000}, {team: 'rudolph', score:5800}],
-        football: [{team: 'prancer', score: 3100}, {team: 'vixen', score:2200}, {team: 'comet', score:3900}],
-        kuub: [{team: 'cupid', score: 400}, {team: 'donner', score:1800}, {team: 'blitzen', score:5000}]
+    const [teamData, setTeamData] = useState(null);
+    const[regionSportList, setRegionSportList] = useState(null);
+    const [currentSport, setCurrentSport] = useState(null);
+    const [teamsFilteredBySport, setTeamsFilteredBySport] = useState(null);
+    const [isLoading, setIsLoading] = useState(null);
+
+    const {sportData} = useContext(UserContext).state;
+
+    // grab team data on page load
+    useEffect(() => {
+        axios.get(`${URL}/teams`)
+            .then(
+                r => setTeamData(r.data)
+            )
+    }, [])
+
+
+    // set sports list for region based upon sport_id of teams in region
+    useEffect(() => {
+        if(teamData && sportData){
+            const teamsBySport = {};
+            teamData.forEach((team) => {
+                if(team.sport_id) {
+                    if(teamsBySport[team.sport_id]) {
+                        teamsBySport[team.sport_id].push(team);
+                    } else {
+                        teamsBySport[team.sport_id] = [team];
+                    }
+                }
+            });
+            setRegionSportList(Object.keys(teamsBySport).map((sport_id) => {
+                return sportData[sport_id - 1]}));
+        }
+    }, [teamData]);
+
+    const fetchFilteredTeams = async () => {
+        const shownTeams = teamData.filter(teamObj => teamObj.sport_id === currentSport.id);
+        setIsLoading(true);
+        Promise.all(shownTeams.map(async teamObj => {
+            const result = await axios.get(`${URL}/teams/${teamObj.id}`)
+            return result.data;
+        }))
+        .then(
+            result => {
+                setTeamsFilteredBySport(result);
+                setIsLoading(false);
+            }
+        )
     }
+
+    // show top scoring teams for region
+    useEffect(() => {
+        if(teamData && currentSport) {
+            fetchFilteredTeams();
+        }
+    }, [currentSport, teamData])
+
+    if (!teamData || !sportData) {
+        return (
+        <Container>
+            <Content>
+                <Spinner />
+            </Content>
+        </Container>
+        );
+    }
+
     return (
         <Content>
             <Picker
             note
             mode="dropdown"
-            selectedValue={sport}
-            onValueChange={(value) => setSport(value)}
+            selectedValue={currentSport}
+            onValueChange={setCurrentSport}
             >
-                <Picker.Item label="Tennis" value="tennis" />
-                <Picker.Item label="Football" value="football" />
-                <Picker.Item label="Kuub" value="kuub" />
+                {regionSportList ? regionSportList.map(sportObj => (<Picker.Item key={sportObj.id + "sportId"} label={sportObj.name} value={sportObj} />)) : null}
             </Picker>
+
+            {isLoading ? <Spinner /> : 
+            teamsFilteredBySport && teamsFilteredBySport.length > 1 ?
             <List>
-                {data[sport] ?
-                data[sport].sort((a, b) => (a.score > b.score) ? -1 : 1)
+                {teamsFilteredBySport.sort((a, b) => (a.team_score > b.team_score) ? -1 : 1)
                         .map((item, index) => (
-                                <ListItem key={index}>
-                                    <Text>Name: {item.team}</Text>
-                                    <Text>Score: {item.score}</Text>
-                                </ListItem>)
-                                ) : null}
-            </List>
+                            <ListItem key={index + "teamSportScoreObjs"}>
+                                <Left style={{flexDirection: 'column'}}>
+                                    <Text>Name:</Text>
+                                    <Text>Score:</Text>
+                                </Left>
+                                <Body style={{flexDirection: 'column'}}>
+                                    <Text>{item.name}</Text>
+                                    <Text>{item.team_score}</Text>
+                                </Body>
+                            </ListItem>
+                                ))}
+            </List> : 
+            teamsFilteredBySport ?
+            <List>
+            {teamsFilteredBySport
+                    .map((item, index) => (
+                            <ListItem key={index + "teamSportScoreObjs"}>
+                                <Left style={{flexDirection: 'column'}}>
+                                    <Text>Name:</Text>
+                                    <Text>Score:</Text>
+                                </Left>
+                                <Body style={{flexDirection: 'column'}}>
+                                    <Text>{item.name}</Text>
+                                    <Text>{item.team_score}</Text>
+                                </Body>
+                            </ListItem>)
+                            )}
+            </List> :
+            null
+            }
         </Content>
     );
 }
