@@ -5,12 +5,14 @@ import { Content, Header, Tab, Tabs, Container, Spinner } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
+import EventPage from './EventPage';
 
 export default function EventsContainer() {
 
     const [eventArray, setEventArray] = useState('');
     const [completeEventArray, setCompleteEventArray] = useState('');
     const [eventTeamsArray, setEventTeamsArray] = useState('');
+    const [eventClicked, setEventClicked] = useState(false);
 
     const { userData, favoriteSports } = useContext(UserContext).state;
 
@@ -61,6 +63,10 @@ export default function EventsContainer() {
         ) 
     }
 
+    const handleEventClick = () => {
+        setEventClicked(!eventClicked);
+    }
+
     useEffect(() => {
         const getCompleteInfo = async() => {
             const eventInfo = await getAllEventInfo();
@@ -92,7 +98,7 @@ export default function EventsContainer() {
 
     return (
         <Container>
-            { completeEventArray ? (
+            { completeEventArray && !eventClicked ? (
                 <FlatList
                 style={{padding: 5}}
                 data={completeEventArray}
@@ -100,10 +106,17 @@ export default function EventsContainer() {
                     <Event
                     keyExtractor={item.id}
                     eventObject={item}
+                    eventClick={handleEventClick}
                     />
                 )}
                 />
-            ) : <Spinner />}
+            ) : null}
+            { eventClicked ? (
+                <EventPage 
+                    eventClick={handleEventClick}
+                />
+            ) : (null)
+            }
         </Container>
         
     );

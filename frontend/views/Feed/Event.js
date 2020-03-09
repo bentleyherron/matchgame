@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner} from 'native-base';
+import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner, Thumbnail, ListItem} from 'native-base';
 import {URL} from 'react-native-dotenv';
 import axios from 'axios';
 
-export default function Event({eventObject}) {
+export default function Event({eventObject, eventClick}) {
 
     const { title,
             date,
@@ -42,12 +42,13 @@ export default function Event({eventObject}) {
 
     return (
         
-        <Card
-            style={{padding: 5}} 
-            onPress={() => expandEvent(event)}>
-                 <CardItem header>
+        <ListItem
+            avatar
+            onPress={() => console.log('event pressed')}>
+                 <Left>
+                    <Thumbnail small source={require("../Profile/soccer.png")} />
+                </Left>
                  <Body>
-                     <Text>{title}</Text>
                      {
                          eventObject.teamNames ? (
                              <Text>{eventObject.teamNames[0]} vs. {eventObject.teamNames[1]}</Text>
@@ -55,8 +56,7 @@ export default function Event({eventObject}) {
                      }
                      <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
-                 <Right><Button rounded><Text>Wager Pts.</Text></Button></Right>
-             </CardItem>
-        </Card>
+                 <Right><Button small rounded onPress={() => eventClick()}><Text>See Event</Text></Button></Right>
+        </ListItem>
     );
 }
