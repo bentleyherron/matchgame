@@ -1,21 +1,19 @@
 import React from 'react';
 import UserProfile from './UserProfile';
 import TeamProfile from './TeamProfile';
-import { Container, Header, Tab, Tabs } from 'native-base';
+import ProfileHeader from '../Navigation/ProfileHeader';
+import UserUpdate from './UserUpdate/UserUpdate';
+import {createStackNavigator} from '@react-navigation/stack';
+
+const Stack = createStackNavigator()
 
 export default function ProfileContainer() {
 
     return (
-        <Container>
-            <Header hasTabs />
-            <Tabs>
-                <Tab heading="User Profile">
-                    <UserProfile/>
-                </Tab>
-                <Tab heading="Team Profile">
-                    <TeamProfile/>
-                </Tab>
-            </Tabs>
-        </Container>
+        <Stack.Navigator initialRouteName="User Profile" screenOptions={{header: props => <ProfileHeader {...props} />}} >
+            <Stack.Screen name="User Profile" component={UserProfile} />
+            <Stack.Screen name="Team Profile" component={TeamProfile} />
+            <Stack.Screen name="User Update" component={UserUpdate} />
+        </Stack.Navigator>
     );
 }

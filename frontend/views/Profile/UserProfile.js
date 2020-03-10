@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {FlatList}  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner} from 'native-base';
+import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -11,7 +11,7 @@ const dataArray = [
     { title: "Mighty Ducks", content: "Games" }
   ];
 
-export default function ProfilePage(){
+export default function ProfilePage({navigation}){
     const { userData, sportData } = useContext(UserContext).state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
@@ -80,6 +80,11 @@ export default function ProfilePage(){
                                 <Text note>Point Total: {totalScore}</Text>
                             </Body>
                         </Left>
+                        <Right>
+                            <Button onPress={() => navigation.navigate('User Update')}>
+                                <Icon type="AntDesign" name="edit" />
+                            </Button>
+                        </Right>
                     </CardItem>
                 </Card>
 

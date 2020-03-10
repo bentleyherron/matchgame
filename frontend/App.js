@@ -79,7 +79,6 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-
             <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
@@ -87,7 +86,6 @@ export default function App() {
               <Tab.Screen name="Feed" component={Feed} />
               <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
             </Tab.Navigator>
-
           </UserContext.Provider>
         </Root>
       </NavigationContainer>
