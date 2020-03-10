@@ -7,12 +7,13 @@ import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 
+// add error handling on this (if no location selected, etc.)
 export default function ChallengeCreateContainer({ navigation }) {
 
-    const { userData } = useContext(UserContext).state;
+    const { userData, sportData } = useContext(UserContext).state;
     const userCityId = userData.userInfo.city_id;
 
-    const teamIdArray = userData.teams;
+    const {teams} = userData;
 
     const [team, setTeam] = useState('');
     const [location, setLocation] = useState('');
@@ -20,25 +21,12 @@ export default function ChallengeCreateContainer({ navigation }) {
     const [longitude, setLongitude] = useState(null);
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
-    const [sport, setSport] = useState(1);
+    const [sport, setSport] = useState(null);
     const [message, setMessage] = useState('');
 
     const [teamNames, setTeamNames] = useState('');
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-    const getTeamName = (team_id) => {
-      return axios.get(`${URL}/teams/${team_id}`)
-    }
-
-    useEffect(() => {
-      axios.all(teamIdArray.map((team) => {
-        return getTeamName(team.team_id);
-      }))
-      .then(responseArr => {
-        setTeamNames(responseArr);
-      })
-  },[])
 
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -65,7 +53,18 @@ export default function ChallengeCreateContainer({ navigation }) {
       }
     }
 
-    const sportsList = ['Football', 'Flag Football', 'Soccer', 'Volleyball', 'Kuub', 'Darts', 'Ultimate Frisbee', 'Wiffle Ball', 'Softball', 'Baseball', 'Bowling', 'Kickball', 'Bowling', 'Ping Pong', 'Beer Pong', 'Cornhole', 'Bocci', 'Shooting', 'Shuffleboard', 'Tennis', 'Quidditch' ]
+    const formatDate = (str) => {
+      const date = new Date(str);
+      const formattedDate = date.toLocaleDateString();
+      return formattedDate;
+    }
+
+    const formatTime = (str) => {
+      const date = new Date(str);
+      const formattedTime = date.toLocaleTimeString();
+      return formattedTime;
+    }
+
     return(
         <Container>
             <Header />
@@ -81,12 +80,12 @@ export default function ChallengeCreateContainer({ navigation }) {
                     placeholderStyle={{ color: "#bfc6ea" }}
                     placeholderIconColor="#007aff"
                     selectedValue={team}
-                    onValueChange={team => setTeam(team)}
+                    onValueChange={team => {setTeam(team); setSport(team.sport_id)}}
               >
-                {teamNames ? (
-                  teamNames.map(team => {
+                {teams ? (
+                  teams.map(team => {
                     return (
-                      <Picker.Item label={team.data.name} value={team.data.id} />
+                      <Picker.Item label={team.name} value={team} />
                     );
                   })
                 ) : null}
@@ -94,38 +93,7 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
             <Item fixedLabel >
                 <Label>Sport</Label>
-                <Picker
-                    mode="dropdown"
-                    iosIcon={<Icon name="arrow-down" />}
-                    style={{ width: undefined }}
-                    placeholder="Select Sport"
-                    placeholderStyle={{ color: "#bfc6ea" }}
-                    placeholderIconColor="#007aff"
-                    selectedValue={sport}
-                    onValueChange={sport => setSport(sport)}
-              >
-                <Picker.Item label="Football" value="1" />
-                <Picker.Item label="Flag Football" value="2" />
-                <Picker.Item label='Soccer' value='3' />
-                <Picker.Item label='Volleyball' value='4' />
-                <Picker.Item label='Kuub' value='5' />
-                <Picker.Item label='Darts' value='6'/>
-                <Picker.Item label='Ultimate Frisbee' value='7' />
-                <Picker.Item label='Wiffle Ball' value='8' />
-                <Picker.Item label='Softball' value='9' />
-                <Picker.Item label='Baseball' value='10' />
-                <Picker.Item label='Bowling' value='11' />
-                <Picker.Item label='Kickball' value='12' />
-                <Picker.Item label='Bowling' value='13' />
-                <Picker.Item label='Ping Pong' value='14' />
-                <Picker.Item label='Beer Pong' value='15' />
-                <Picker.Item label='Cornhole' value='16' />
-                <Picker.Item label='Bocci' value='17' />
-                <Picker.Item label='Shooting' value='18' />
-                <Picker.Item label='Shuffleboard' value='19' />
-                <Picker.Item label='Tennis' value='20' />
-                <Picker.Item label='Quidditch' value='21' />
-              </Picker>
+                {team ? team.sport_id ?  <Text>{team.sport_id}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
             </Item>
             <Item fixedLabel>
               <Label>Location</Label>
@@ -138,18 +106,24 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
             <Item fixedLabel>
                 <Label>Date and Time</Label>
-                <Button
-                  transparent
-                  onPress={showDatePicker}>
-                    <Text>Select</Text>
-                  </Button>
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="datetime"
-                  onConfirm={handleConfirm}
-                  onCancel={hideDatePicker}
-              />
-               
+                <Body>
+                  <Button
+                    transparent
+                    onPress={showDatePicker}>
+                      <Text>Select</Text>
+                    </Button>
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="datetime"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
+                </Body>
+                {datetime ?
+                <Right style={{flexDirection: 'column'}}>
+                   <Text>{formatDate(datetime)}</Text>
+                   <Text>{formatTime(datetime)}</Text>
+                </Right> : null}
             </Item>
             <Item fixedLabel>
               <Label>How many points do you wager?</Label>
