@@ -167,7 +167,7 @@ export default function UserUpdate({ navigation }) {
                             </Text>
                         </Left>
                         <Body>
-                            <Button onPress={() => {navigation.navigate('Favorite Sports Update')}}>
+                            <Button onPress={() => {navigation.navigate('Sport Update')}}>
                                 <Text>Update Favorite Sports</Text>
                             </Button>
                         </Body>
