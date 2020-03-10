@@ -11,7 +11,7 @@ const dataArray = [
     { title: "Mighty Ducks", content: "Games" }
   ];
 
-export default function ProfilePage({navigation}){
+export default function ProfilePage({ navigation }){
     const { userData, sportData } = useContext(UserContext).state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
