@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2805,
+  "packagerPid": 2071,
   "expoServerNgrokUrl": "https://ye-ahj.anonymous.frontend.exp.direct",
   "packagerNgrokUrl": "https://packager.ye-ahj.anonymous.frontend.exp.direct",
-  "ngrokPid": 2824,
+  "ngrokPid": 2102,
   "webpackServerPort": null
 }

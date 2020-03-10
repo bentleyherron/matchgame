@@ -16,8 +16,6 @@ export default function ProfilePage({navigation}){
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
     const sportsList = sportData;
-    const [uniqueTeams, setUniqueTeams] = useState([]);
-    const [userTeamData, setUserTeamData] = useState([]);
     const [uniqueFavSports, setUniqueFavSports] = useState([]);
     const [reducedTeamScores, setReducedTeamScores] = useState(null);
 
@@ -37,28 +35,12 @@ export default function ProfilePage({navigation}){
         return teamObj;
     };
 
-    const fetchTeamData = async () => {
-        const newTeamData = await Promise.all(uniqueTeams.map(async item => {
-            const response = await axios.get(`${URL}/teams/${item.team_id}`);
-            const team = await response.data;
-            return team;
-            }));
-        setUserTeamData(newTeamData);
-    }
-
     useEffect(() => {
-        setUniqueTeams(getUniques(teams, "team_id"));
         setReducedTeamScores(getTeamScores(teamScores));
         setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
     }, []);
 
-    useEffect(() => {
-        if (uniqueTeams.length > 0) {
-            fetchTeamData();
-        }
-    },[uniqueTeams]);
-
-    if (!userTeamData.length) {
+    if (!userData) {
         return (
             <Container>
                 <Content>
@@ -95,14 +77,14 @@ export default function ProfilePage({navigation}){
                         {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {userTeamData.length ? userTeamData.map((obj, i) => (
+                    {teams ? teams.map((obj, i) => (
                         <CardItem key={i + 'teamcard'}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />
                                 <Body>
                                     <Text>{obj.name}</Text>
                                     {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
-                                    {reducedTeamScores[obj.id] ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
+                                    {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
                                     <Text note>Region: {obj.city_id}</Text>
                                 </Body>
                             </Left>
