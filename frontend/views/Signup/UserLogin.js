@@ -21,6 +21,7 @@ export default function SignupPageOne({ navigation }) {
               <Input 
                 placeholder='Password'
                 name="password"
+                secureTextEntry={true}
                 onChangeText={text => setPassword(text)}/>
             </Item>
           </Form>
