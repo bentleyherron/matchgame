@@ -129,7 +129,7 @@ export default function SignupPageOne({ navigation }) {
               
             }}
             >
-              <Text style={{fontSize: 14}}>NEXT</Text>
+              <Text style={{fontSize: 15}}>NEXT</Text>
             </Button>
           </FooterTab>
         </Footer>
