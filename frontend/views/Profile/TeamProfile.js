@@ -26,9 +26,9 @@ export default function TeamProfile(){
     }
 
     const fetchTeamProfileData = async () => {
-        const teamArr = getUniques(userData.teams, "team_id");
+        const teamArr = getUniques(userData.teams, "id");
         const dataResults = await Promise.all(teamArr.map(async teamObj => {
-            const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.team_id}`);
+            const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}`);
             return teamProfile.data;
         }));
         setTeamData(dataResults);
