@@ -13,6 +13,8 @@ export default function EventsContainer() {
     const [completeEventArray, setCompleteEventArray] = useState('');
     const [eventTeamsArray, setEventTeamsArray] = useState('');
     const [eventClicked, setEventClicked] = useState(false);
+    const [eventIdClicked, setEventIdClicked] = useState(null);
+    const [currentEventPageInfo, setCurrentEventPageInfo] = useState(null);
 
     const { userData, favoriteSports } = useContext(UserContext).state;
 
@@ -35,7 +37,7 @@ export default function EventsContainer() {
                 });
             })
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 setEventArray(response);
             })
         })
@@ -63,9 +65,26 @@ export default function EventsContainer() {
         ) 
     }
 
-    const handleEventClick = () => {
+    const handleEventClick = (eventId) => {
         setEventClicked(!eventClicked);
+        console.log(`Event Id Clicked: ${eventId}`)
+        setEventIdClicked(eventId);
+        
     }
+
+    const updateCurrentPage = (eventIdClicked) => {
+        const currentPageContent = completeEventArray.filter((event) => {
+            return event.event.id === eventIdClicked;
+        });
+        console.log(currentPageContent);
+        setCurrentEventPageInfo(currentPageContent);
+    }
+
+    useEffect(() => {
+        if (eventClicked) {
+            updateCurrentPage(eventIdClicked);
+        }
+    }, [eventClicked])
 
     useEffect(() => {
         const getCompleteInfo = async() => {
@@ -78,7 +97,7 @@ export default function EventsContainer() {
         if (eventArray) {
             fetchEventTeamNames()
                 .then(r => {
-                    console.log(r);
+                    // console.log(r);
                     setEventTeamsArray(r);
                 })
                 
@@ -92,6 +111,7 @@ export default function EventsContainer() {
             for (let i = 0; i < eventArray.length; i++) {
                 newArray[i].teamNames = eventTeamsArray[i];
             }
+            console.log(newArray);
             setCompleteEventArray(newArray);
         }
     }, [eventTeamsArray])
@@ -111,8 +131,9 @@ export default function EventsContainer() {
                 )}
                 />
             ) : null}
-            { eventClicked ? (
-                <EventPage 
+            { eventClicked && currentEventPageInfo ? (
+                <EventPage
+                    pageContent = {currentEventPageInfo[0]}
                     eventClick={handleEventClick}
                 />
             ) : (null)

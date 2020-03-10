@@ -7,10 +7,9 @@ export default function Event({eventObject, eventClick}) {
 
     const { title,
             date,
-            teams,
             wager,
-            description,
             sport_id,
+            id,
          } = eventObject.event;
 
     const [teamNames, setTeamNames] = useState('');
@@ -44,7 +43,7 @@ export default function Event({eventObject, eventClick}) {
         
         <ListItem
             avatar
-            onPress={() => console.log('event pressed')}>
+            onPress={() => eventClick(id)}>
                  <Left>
                     <Thumbnail small source={require("../Profile/soccer.png")} />
                 </Left>
@@ -56,7 +55,7 @@ export default function Event({eventObject, eventClick}) {
                      }
                      <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
-                 <Right><Button small rounded onPress={() => eventClick()}><Text>See Event</Text></Button></Right>
+                 <Right><Button small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>
         </ListItem>
     );
 }

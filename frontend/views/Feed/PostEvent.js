@@ -47,7 +47,6 @@ export default function PostEvent({
     const postEvent = async () => {
         const eventUrl = `${URL}/events`;
         const eventResponse = await axios.post(eventUrl, eventObject);
-        console.log(eventResponse.data.eventTeams);
         setPage(1);
     }
 
