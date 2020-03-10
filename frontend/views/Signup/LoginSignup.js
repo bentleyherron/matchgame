@@ -91,6 +91,7 @@ export default function SignupPageOne({ navigation }) {
               <Input 
                 placeholder='Password'
                 name="password"
+                secureTextEntry={true}
                 onChangeText={text => setPassword(text)}/>
             </Item>
             <Item selected={true}
@@ -105,11 +106,11 @@ export default function SignupPageOne({ navigation }) {
                 />
               </Left>
               <Body>
-                <Text note>I agree to the terms of service</Text>
+                <Text note >I agree to the terms of service</Text>
               </Body>
             </Item>
           </Form>
-          <Text note onPress={() => navigation.navigate('User Login')} style={{margin: 20, padding: 20}}>Already have an account? <Text note style={{color: 'blue'}}>Sign in</Text></Text>
+          <Text note onPress={() => navigation.navigate('User Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Already have an account? <Text note style={{color: 'blue'}}>Sign in</Text></Text>
           
         </Content>
         <Footer>
@@ -128,7 +129,7 @@ export default function SignupPageOne({ navigation }) {
               
             }}
             >
-              <Text>NEXT</Text>
+              <Text style={{fontSize: 14}}>NEXT</Text>
             </Button>
           </FooterTab>
         </Footer>

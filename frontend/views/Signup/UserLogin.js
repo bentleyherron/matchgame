@@ -31,7 +31,7 @@ export default function SignupPageOne({ navigation }) {
               onPress={() => {navigation.navigate('Feed')}}>
               <Text>LOGIN</Text>
           </Button>
-          <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Don't have an account? <Text note style={{color: 'blue'}}>Register Here</Text></Text>
+          <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Don't have an account? <Text note style={{color: 'blue'}}>Register here</Text></Text>
         </Content>
       </Container>
     );
