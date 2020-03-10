@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail } from 'native-base';
@@ -10,9 +10,8 @@ import UserContext from '../../../UserContext';
 
 export default function UserUpdate({ navigation }) {
     const {userData} = useContext(UserContext).state;
-    const { id, username, nickname, email, photo, city_id, joined_date, last_logged_in, player_rating } = userData.userInfo;
+    const { id, username, nickname, email, photo } = userData.userInfo;
     const { setUserData } = useContext(UserContext).actions;
-    console.log(id);
 
     const [newUsername, setNewUsername] = useState(username);
     const [newNickname, setNewNickname] = useState(nickname);
@@ -21,6 +20,7 @@ export default function UserUpdate({ navigation }) {
     const [newPhoto, setNewPhoto] = useState(photo);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
+    const [userId, setUserId] = useState(null);
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -39,26 +39,29 @@ export default function UserUpdate({ navigation }) {
           setNewPhoto("data:image/png;base64," + pickerResult.base64);
           setShowSpinner(false);
     }
+
+    useEffect(() => {
+        setUserId(id);
+    }, [])
     
     const updateUser = async () => {
-        const userObject = {
-            "user": {
-                id,
-                username: newUsername,
-                nickname: newNickname,
-                password: newPassword || password,
-                email: newEmail,
-                photo: newPhoto,
-                city_id,
-                joined_date,
-                last_logged_in,
-                player_rating
+        console.log(userId);
+        if (userId) {
+            let userObject = {
+                "user": {
+                    id: userId
+                }
             }
+    
+            username !== newUsername ? userObject = {"user": {...userObject.user, username: newUsername}} : console.log('username not changed');
+            nickname !== newNickname ? userObject = {"user": {...userObject.user, nickname: newNickname}} : console.log('nickname not changed');
+            email !== newEmail ? userObject = {"user": {...userObject.user, email: newEmail}} : console.log('email not changed');
+            photo !== newPhoto ? userObject = {"user": {...userObject.user, photo: newPhoto}} : console.log('photo not changed');
+            newPassword ? userObject = {"user": {...userObject.user, password: newPassword}} : console.log('password not changed');
+            const url = `${URL}/users/`;
+            const response = await axios.put(url, userObject);
+            return false;
         }
-        const url = `${URL}/users/`;
-        const response = await axios.put(url, userObject);
-        setUserData(response.data);
-        return false;
     };
 
     // const postSports = async (id) => {
@@ -73,7 +76,6 @@ export default function UserUpdate({ navigation }) {
     //     postSports(id);
     //     return false; // change this for error handling
     // }
-
     return(
         <Container>
             <Content>
@@ -187,7 +189,7 @@ export default function UserUpdate({ navigation }) {
                         setIsSubmitting(true);
                         const wasSubmitted = await updateUser();
                         setIsSubmitting(wasSubmitted);
-                        !wasSubmitted ? navigation.navigate('Profile') : console.log('error in submission');
+                        !wasSubmitted ? navigation.navigate('User Profile') : console.log('error in submission');
                     }}
                     >
                         <Text>Submit</Text>
