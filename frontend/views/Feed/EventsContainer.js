@@ -20,10 +20,14 @@ export default function EventsContainer({page}) {
 
     const getAllEventInfo = () => {
         // change the 11 below to ${userData.userInfo.city_id}
-        axios.get(`${URL}/events/city/11`)
-        .then((response) => {
-            setEventArray(response.data)
-        })
+        try{
+            axios.get(`${URL}/events/city/11`)
+            .then((response) => {
+                setEventArray(response.data)
+            })
+        } catch(err) {
+            console.log(err);
+        }
     };
 
     const handleEventClick = (eventId) => {

@@ -26,14 +26,18 @@ export default function ChallengesContainer({setPage, route}) {
     // },[route.params])
 
     useEffect(() => {
-        axios.get(`${URL}/challenges/city/11`, {
-            headers: {
-                "x-access-token": userToken
-            }
-        })
-        .then((response) => {
-            setChallengeArray(response.data);
-        })
+        try{
+            axios.get(`${URL}/challenges/city/11`, {
+                headers: {
+                    "x-access-token": userToken
+                }
+            })
+            .then((response) => {
+                setChallengeArray(response.data);
+            })
+        }catch(err) {
+            console.log(err);
+        }
     },[])
 
     return (

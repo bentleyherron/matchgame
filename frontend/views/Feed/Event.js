@@ -37,7 +37,6 @@ export default function Event({eventObject, eventClick}) {
 
     const formattedTime = formatTime(datetime);
 
-    console.log(eventObject);
     return (
         
         <ListItem

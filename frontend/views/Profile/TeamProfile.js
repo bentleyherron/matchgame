@@ -24,15 +24,19 @@ export default function TeamProfile(){
     }
 
     const fetchTeamProfileData = async () => {
-        const teamArr = getUniques(userData.teams, "id");
-        const dataResults = await Promise.all(teamArr.map(async teamObj => {
-            const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
-                headers: {
-                  "x-access-token": userToken
-                }});
-            return teamProfile.data;
-        }));
-        setTeamData(dataResults);
+        try{
+            const teamArr = getUniques(userData.teams, "id");
+            const dataResults = await Promise.all(teamArr.map(async teamObj => {
+                const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                    headers: {
+                      "x-access-token": userToken
+                    }});
+                return teamProfile.data;
+            }));
+            setTeamData(dataResults);
+        }catch(err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {

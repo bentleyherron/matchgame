@@ -13,9 +13,13 @@ export default function SignupPageThree({ navigation }) {
 
     useEffect(() => {
         async function fetchSportsData() {
-            const url = `${URL}/sports`;
-            const response = await axios.get(url);
-            setSportsList(response.data);
+            try{
+                const url = `${URL}/sports`;
+                const response = await axios.get(url);
+                setSportsList(response.data);
+            } catch(err) {
+                console.log(err);
+            }
         }
         fetchSportsData();
     }, [])

@@ -17,15 +17,19 @@ export default function SignupPageOne({ navigation }) {
 
     const postLogin = async () => {
       setIsLoggingIn(true);
-      axios.post(`${URL}/login/`, {user: {
-        email,
-        password
-      }}).then(r => {
-        setUserToken(r.data.token);
-        setHasSignedUp(true);
-        setIsLoggingIn(false);
-        navigation.navigate('Feed');
-      })
+      try{
+        axios.post(`${URL}/login/`, {user: {
+          email,
+          password
+        }}).then(r => {
+          setUserToken(r.data.token);
+          setHasSignedUp(true);
+          setIsLoggingIn(false);
+          navigation.navigate('Feed');
+        })
+      } catch(err) {
+        console.log(err);
+      }
     }
     return (
       <Container>

@@ -24,12 +24,16 @@ export default function TeamMemberSelect({ navigation }) {
 
     useEffect(() => {
         if(!userList) {
-            axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}}).then(
-                r => {
-                    setUserList(r.data);
-                    setCurrentUserList(r.data);
-                }
-            )
+            try{
+                axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}}).then(
+                    r => {
+                        setUserList(r.data);
+                        setCurrentUserList(r.data);
+                    }
+                )
+            } catch(err) {
+                console.log(err);
+            }
         }
     }, [])
 

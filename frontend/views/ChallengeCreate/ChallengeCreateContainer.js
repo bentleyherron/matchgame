@@ -42,14 +42,18 @@ export default function ChallengeCreateContainer({ navigation }) {
     }
 
     const getGoogleLocation = async (input) => {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${GOOGLE_API_KEY}&input=${input}&inputtype=textquery&fields=formatted_address,geometry,name,place_id,plus_code`);
-      if (response.data.candidates.length) {
-        setGoogleData(response.data.candidates);
-        const { geometry } = response.data.candidates[0];
-        setLatitude(geometry.location.lat);
-        setLongitude(geometry.location.lng);
-      } else {
-        console.log('Google Maps Error in Challenge Create Container');
+      try{
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${GOOGLE_API_KEY}&input=${input}&inputtype=textquery&fields=formatted_address,geometry,name,place_id,plus_code`);
+        if (response.data.candidates.length) {
+          setGoogleData(response.data.candidates);
+          const { geometry } = response.data.candidates[0];
+          setLatitude(geometry.location.lat);
+          setLongitude(geometry.location.lng);
+        } else {
+          console.log('No candidates for location entered');
+        }
+      } catch(err) {
+        console.log(err);
       }
     }
 
@@ -58,7 +62,6 @@ export default function ChallengeCreateContainer({ navigation }) {
         setLatitude(geometry.location.lat);
         setLongitude(geometry.location.lng);
         setGoogleData(null);
-        console.log('did click card')
     }
 
     const formatDate = (str) => {
@@ -74,22 +77,26 @@ export default function ChallengeCreateContainer({ navigation }) {
     }
 
     const postChallenge = async () => {
-      const challengeObject = {
-        challenge: {
-            sport_id: sport,
-            datetime,
-            wager,
-            message,
-            team_from_id: team.id,
-            city_id: userCityId,
-            latitude,
-            longitude,
-            title: `${sportData[sport].name} at ${location}`
-        }
-    }
-      const url = `${URL}/challenges`
-      const response = await axios.post(url, challengeObject);
-      navigation.navigate('Feed', {hasSignedUp:true});
+      try{
+        const challengeObject = {
+          challenge: {
+              sport_id: sport,
+              datetime,
+              wager,
+              message,
+              team_from_id: team.id,
+              city_id: userCityId,
+              latitude,
+              longitude,
+              title: `${sportData[sport].name} at ${location}`
+          }
+      }
+        const url = `${URL}/challenges`
+        const response = await axios.post(url, challengeObject);
+        navigation.navigate('Feed', {hasSignedUp:true});
+      }catch(err) {
+        console.log(err);
+      }
       
   }
 

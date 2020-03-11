@@ -65,12 +65,16 @@ export default function UserUpdate({ navigation }) {
     };
 
     const deleteAccount = () => {
-        axios.delete(`${URL}/users/${userId}`)
-            .then(
-                r => {
-                    navigation.navigate('Signup');
-                }
-            )
+        try{
+            axios.delete(`${URL}/users/${userId}`)
+                .then(
+                    r => {
+                        navigation.navigate('Signup');
+                    }
+                )
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     // const postSports = async (id) => {

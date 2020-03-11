@@ -24,27 +24,40 @@ export default function SignupPageFour({ navigation }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const postUser = async () => {
-        const url = `${URL}/signup/`
-        const response = await axios.post(url, userObject);
-        console.log(response.data);
-        setUserData(response.data);
-        return response.data;
+        try{
+            const url = `${URL}/signup/`
+            const response = await axios.post(url, userObject);
+            console.log(response.data);
+            setUserData(response.data);
+            return response.data;
+        } catch(err) {
+            console.log(err);
+        }
     };
     const postSports = async (token) => {
-        const url = `${URL}/favorite-sports/`;
-        const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
-        const response = await axios.post(url, sportsArrayObject, {
-            headers: {
-                "x-access-token": token
-            }
-        });
+        try{
+            const url = `${URL}/favorite-sports/`;
+            const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
+            const response = await axios.post(url, sportsArrayObject, {
+                headers: {
+                    "x-access-token": token
+                }
+            });
+        } catch(err) {
+            console.log(err);
+        }
         // add error handling here
     };
 
     const postSignupData = async () => {
-        const data = await postUser();
-        postSports(data);
-        return false; // change this for error handling
+        try{
+            const data = await postUser();
+            postSports(data);
+            return false; // change this for error handling
+        } catch(err) {
+            console.log(err);
+            return true;
+        }
     }
 
     return(

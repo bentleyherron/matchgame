@@ -58,20 +58,24 @@ export default function App() {
       //     setUserData(response.data);
       //     setIsLoading(false)
       //   });
-      axios.get(`${URL}/profile/2`)
-        .then(
-          r => {
-            setUserData(r.data)
-            setIsLoading(false)
-          }
-        )
-        
-        axios.get(`${URL}/sports`).then(
-          r => {
-            setSportData(r.data);
-            setIsSportsDataReady(true);
-          }
-          );
+      try{
+        axios.get(`${URL}/profile/2`)
+          .then(
+            r => {
+              setUserData(r.data)
+              setIsLoading(false)
+            }
+          )
+          
+          axios.get(`${URL}/sports`).then(
+            r => {
+              setSportData(r.data);
+              setIsSportsDataReady(true);
+            }
+            );
+      } catch(err) {
+        console.log(err);
+      }
     }
   }, [hasSignedUp, shouldRefresh])
 

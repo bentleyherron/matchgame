@@ -45,9 +45,13 @@ export default function PostEvent({
     }
 
     const postEvent = async () => {
-        const eventUrl = `${URL}/events`;
-        const eventResponse = await axios.post(eventUrl, eventObject);
-        setPage(1);
+        try{
+            const eventUrl = `${URL}/events`;
+            const eventResponse = await axios.post(eventUrl, eventObject);
+            setPage(1);
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(

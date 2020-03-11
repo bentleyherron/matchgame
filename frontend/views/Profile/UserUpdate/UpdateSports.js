@@ -47,10 +47,14 @@ export default function UpdateSports({ navigation }) {
         // del = id, user_id
 
         // delete favorite sports
-        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
-        axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}}).then(
-            r => navigation.navigate('User Profile')
-        )
+        try{
+            const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
+            axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}}).then(
+                r => navigation.navigate('User Profile')
+            )
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     return(

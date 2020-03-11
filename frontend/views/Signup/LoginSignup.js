@@ -16,41 +16,49 @@ export default function SignupPageOne({ navigation }) {
     const [emailError, setEmailError] = useState(null);
 
     async function validateUsername() {
-      const result = await axios.post(`${URL}/signup/check/`, {"user":{"username":username}})
-      if (result.data.usernameFound) {
-        Toast.show({
-          text: 'Username already taken',
-          buttonText: 'Okay',
-          position: 'top'
-        });
-        setUsernameError(false);
-        return;
-      } else {
-        setUsernameError(true);
+      try{
+        const result = await axios.post(`${URL}/signup/check/`, {"user":{"username":username}})
+        if (result.data.usernameFound) {
+          Toast.show({
+            text: 'Username already taken',
+            buttonText: 'Okay',
+            position: 'top'
+          });
+          setUsernameError(false);
+          return;
+        } else {
+          setUsernameError(true);
+        }
+      } catch(err) {
+        console.log(err);
       }
-    }
+      }
 
     async function validateEmail() {
-      if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-        Toast.show({
-          text: 'Invalid email address',
-          buttonText: 'Okay',
-          position: 'top'
-        });
-        setEmailError(error);
-        return;
+      try{
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+          Toast.show({
+            text: 'Invalid email address',
+            buttonText: 'Okay',
+            position: 'top'
+          });
+          setEmailError(error);
+          return;
+        }
+        const result = await axios.post(`${URL}/signup/check/`, {"user":{"email":email}});
+        if (result.data.emailFound) {
+          Toast.show({
+            text: 'Email address has been used',
+            buttonText: 'Okay',
+            position: 'top'
+          });
+          setEmailError(false);
+          return;
+        }
+        setEmailError(true);
+      } catch(err) {
+        console.log(err);
       }
-      const result = await axios.post(`${URL}/signup/check/`, {"user":{"email":email}});
-      if (result.data.emailFound) {
-        Toast.show({
-          text: 'Email address has been used',
-          buttonText: 'Okay',
-          position: 'top'
-        });
-        setEmailError(false);
-        return;
-      }
-      setEmailError(true);
     }
 
     function validateNickname() {
@@ -60,8 +68,6 @@ export default function SignupPageOne({ navigation }) {
     function validatePassword() {
       // make sure password meets criteria
     }
-
-    console.log(URL);
 
     return (
       <Container>

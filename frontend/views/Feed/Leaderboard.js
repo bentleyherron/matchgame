@@ -20,10 +20,14 @@ export default function Leaderboard() {
     // grab team data on page load
     // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
-        axios.get(`${URL}/leaderboard/11`)
-            .then(
-                r => setTeamData(r.data)
-            )
+        try{
+            axios.get(`${URL}/leaderboard/11`)
+                .then(
+                    r => setTeamData(r.data)
+                )
+        }catch(err) {
+            console.log(err);
+        }
     }, [])
 
 
