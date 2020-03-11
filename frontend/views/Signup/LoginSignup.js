@@ -16,7 +16,7 @@ export default function SignupPageOne({ navigation }) {
     const [emailError, setEmailError] = useState(null);
 
     async function validateUsername() {
-      const result = await axios.post(`${URL}/users/check/`, {"user":{"username":username}})
+      const result = await axios.post(`${URL}/signup/check/`, {"user":{"username":username}})
       if (result.data.usernameFound) {
         Toast.show({
           text: 'Username already taken',
@@ -40,7 +40,7 @@ export default function SignupPageOne({ navigation }) {
         setEmailError(error);
         return;
       }
-      const result = await axios.post(`${URL}/users/check`, {"user":{"email":email}});
+      const result = await axios.post(`${URL}/signup/check/`, {"user":{"email":email}});
       if (result.data.emailFound) {
         Toast.show({
           text: 'Email address has been used',

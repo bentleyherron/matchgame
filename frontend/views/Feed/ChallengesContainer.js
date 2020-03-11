@@ -8,15 +8,17 @@ import UserContext from '../../UserContext';
 
 export default function ChallengesContainer({setPage}) {
 
-    const [challengeArray, setChallengeArray] = useState('');
+    const [challengeArray, setChallengeArray] = useState(null);
 
-    const { userData, favoriteSports } = useContext(UserContext).state;
+    const { userData, favoriteSports, userToken } = useContext(UserContext).state;
 
     useEffect(() => {
-        axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`)
+        axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
+            headers: {
+                "x-access-token": userToken
+            }
+        })
             .then((response) => {
-                console.log(response.data);
-                console.log(userData.userInfo.city_id)
                 setChallengeArray(response.data);
             })
 

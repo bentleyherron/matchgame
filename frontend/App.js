@@ -27,11 +27,12 @@ const Tab = createBottomTabNavigator();
 export default function App() {
 
   const [isFontReady, setIsFontReady] = useState(false);
-  const [isUserDataReady, setIsUserDataReady] = useState(false);
   const [isSportsDataReady, setIsSportsDataReady] = useState(false);
-  const [hasSignedUp, setHasSignedUp] = useState(true);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
   const [userData, setUserData] = useState(null);
   const [sportData, setSportData] = useState(null);
+  const [userToken, setUserToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     Font.loadAsync({
@@ -42,36 +43,46 @@ export default function App() {
       setIsFontReady(true);
     }
     )
-    axios.get(`${URL}/profile/2`).then(
-      response => {
-        setUserData(response.data);
-        setHasSignedUp(true);
-        setIsUserDataReady(true)
-      });
-      
-      axios.get(`${URL}/sports`).then(
-        r => {
-          setSportData(r.data);
-          setIsSportsDataReady(true);
-        }
-        );
   }, [])
+
+  useEffect(() => {
+    if(hasSignedUp) {
+      setIsLoading(true);
+      axios.get(`${URL}/profile/`, {
+        headers: {
+          "x-access-token": userToken
+        }
+      }).then(
+        response => {
+          setUserData(response.data);
+          setIsLoading(false)
+        });
+        
+        axios.get(`${URL}/sports`).then(
+          r => {
+            setSportData(r.data);
+            setIsSportsDataReady(true);
+          }
+          );
+    }
+  }, [hasSignedUp])
 
   const userContextValue = {
     state: {
       userData,
       hasSignedUp,
-      sportData
+      sportData,
+      userToken
     },
     actions: {
       setHasSignedUp,
       setUserData,
-      setSportData
+      setSportData,
+      setUserToken
     }
   }
-  // hasSignedUp ? "Feed" : "Signup"
-  
-  if (!isFontReady || !isUserDataReady || !isSportsDataReady) {
+
+  if (!isFontReady || isLoading || !isSportsDataReady) {
     return <AppLoading />;
   }
   return (

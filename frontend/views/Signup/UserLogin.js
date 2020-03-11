@@ -1,12 +1,32 @@
-import React, {useContext} from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text } from 'native-base';
+import React, {useState, useContext} from 'react';
+import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Spinner } from 'native-base';
 import SignupContext from './SignupContext';
+import UserContext from '../../UserContext';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
 
 export default function SignupPageOne({ navigation }) {
 
     // TODO: add validation for login
-
+    // ADD FAILURE ERROR HANDLING
+    const {actions, state} = useContext(UserContext);
+    const {setUserToken, setHasSignedUp} = actions;
+    const {email, password} = useContext(SignupContext).state;
     const { setUsername, setEmail, setPassword } = useContext(SignupContext).actions;
+    const [isLogginIn, setIsLoggingIn] = useState(false);
+
+    const postLogin = async () => {
+      setIsLoggingIn(true);
+      axios.post(`${URL}/login/`, {user: {
+        email,
+        password
+      }}).then(r => {
+        setUserToken(r.data.token);
+        setHasSignedUp(true);
+        setIsLoggingIn(false);
+        navigation.navigate('Feed');
+      })
+    }
     return (
       <Container>
         <Content>
@@ -26,10 +46,11 @@ export default function SignupPageOne({ navigation }) {
           </Form>
           <Button
               rounded
-              onPress={() => {navigation.navigate('Feed')}}>
+              onPress={() => {postLogin()}}>
               <Text>LOGIN</Text>
           </Button>
           <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20}}>Don't have an account? <Text note style={{color: 'blue'}}>Register Here</Text></Text>
+          {isLogginIn ? <Spinner /> : null}
         </Content>
       </Container>
     );

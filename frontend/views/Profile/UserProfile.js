@@ -5,12 +5,6 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
-const dataArray = [
-    { title: "Individual", content: "Games" },
-    { title: "Weekend Warriors", content: "Games" },
-    { title: "Mighty Ducks", content: "Games" }
-  ];
-
 export default function ProfilePage({ navigation }){
     const { userData, sportData } = useContext(UserContext).state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
@@ -77,7 +71,8 @@ export default function ProfilePage({ navigation }){
                         {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {teams ? teams.map((obj, i) => (
+                    {teams ? teams.map((obj, i) => 
+                        {!obj.is_solo ?
                         <CardItem key={i + 'teamcard'}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />
@@ -88,8 +83,8 @@ export default function ProfilePage({ navigation }){
                                     <Text note>Region: {obj.city_id}</Text>
                                 </Body>
                             </Left>
-                        </CardItem>
-                    )):
+                        </CardItem>: null}
+                    ):
                     null}
                 {/* 
                 <H1 style={{padding: 20}}>Record</H1>
