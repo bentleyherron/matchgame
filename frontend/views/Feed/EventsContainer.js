@@ -10,8 +10,6 @@ import EventPage from './EventPage';
 export default function EventsContainer({page}) {
 
     const [eventArray, setEventArray] = useState('');
-    const [completeEventArray, setCompleteEventArray] = useState('');
-    const [eventTeamsArray, setEventTeamsArray] = useState('');
     const [eventClicked, setEventClicked] = useState(false);
     const [eventIdClicked, setEventIdClicked] = useState(null);
     const [currentEventPageInfo, setCurrentEventPageInfo] = useState(null);
@@ -42,10 +40,9 @@ export default function EventsContainer({page}) {
     }
 
     const updateCurrentPage = (eventIdClicked) => {
-        const currentPageContent = completeEventArray.filter((event) => {
+        const currentPageContent = eventArray.filter((event) => {
             return event.event.id === eventIdClicked;
         });
-        console.log(currentPageContent);
         setCurrentEventPageInfo(currentPageContent);
     }
 
@@ -67,7 +64,7 @@ export default function EventsContainer({page}) {
 
     return (
         <Container style={styles.eventsContainer}>
-            { completeEventArray && !eventClicked ? (
+            { eventArray && !eventClicked ? (
                 <FlatList
                 style={{padding: 5}}
                 data={eventArray}
@@ -82,7 +79,7 @@ export default function EventsContainer({page}) {
             ) : null}
             { eventClicked && currentEventPageInfo ? (
                 <EventPage
-                    pageContent = {currentEventPageInfo[0]}
+                    pageContent = {currentEventPageInfo}
                     eventClick={handleEventClick}
                 />
             ) : (null)

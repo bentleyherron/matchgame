@@ -9,7 +9,8 @@ export default function Challenge({ challenge, setPage }) {
             wager,
             message,
             is_accepted,
-            sport_id
+            sport_id,
+            title
            } = challenge;
 
     const {teams, userInfo} = useContext(UserContext).state.userData;

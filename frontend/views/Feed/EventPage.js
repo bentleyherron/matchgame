@@ -10,9 +10,10 @@ export default function EventPage({pageContent, eventClick}) {
         description,
         is_public,
         sport_id,
-    } = pageContent.event;
+    } = pageContent[0].event;
 
-    const teamNames = pageContent.teamNames;
+    const teamName1 = pageContent[0].eventTeam;
+    const teamName2 = pageContent[1].eventTeam;
 
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const datetime = new Date(date);

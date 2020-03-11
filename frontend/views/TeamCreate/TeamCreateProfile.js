@@ -16,7 +16,7 @@ export default function TeamCreateProfile({navigation}) {
             setShowSpinner(false);
         }
     })
-
+    console.log(teamSport);
     return(
         <Container>
         <Content>
@@ -33,7 +33,7 @@ export default function TeamCreateProfile({navigation}) {
                         mode="dropdown"
                         iosIcon={<Icon name="arrow-down" />}
                         placeholder="Sport"
-                        selectedValue={teamSport}
+                        selectedValue={teamSport || 1}
                         onValueChange={setTeamSport}>
                             {sportData.length ? sportData.map((obj, index) => (
                                 <Picker.Item label={obj.name} value={obj.id} key={index + 'sport'} />

@@ -7,7 +7,7 @@ import UserContext from '../../UserContext';
 
 export default function ProfilePage({ navigation }){
     const {actions, state} = useContext(UserContext);
-    const {setUserData, setUserToken, setHasSignedUp} = actions;
+    const {setUserData, setUserToken, setHasSignedUp, setShouldRefresh} = actions;
     const { userData, sportData } = state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
@@ -33,6 +33,10 @@ export default function ProfilePage({ navigation }){
 
     const logout = () => {
         navigation.navigate('Signup');
+        setShouldRefresh(currentState => !currentState);
+        setUserData(null);
+        setUserToken(null);
+        setHasSignedUp(false);
     }
 
     useEffect(() => {
