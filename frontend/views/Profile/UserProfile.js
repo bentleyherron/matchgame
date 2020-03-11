@@ -5,14 +5,10 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
-const dataArray = [
-    { title: "Individual", content: "Games" },
-    { title: "Weekend Warriors", content: "Games" },
-    { title: "Mighty Ducks", content: "Games" }
-  ];
-
 export default function ProfilePage({ navigation }){
-    const { userData, sportData } = useContext(UserContext).state;
+    const {actions, state} = useContext(UserContext);
+    const {setUserData, setUserToken, setHasSignedUp} = actions;
+    const { userData, sportData } = state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
     const sportsList = sportData;
@@ -35,6 +31,13 @@ export default function ProfilePage({ navigation }){
         return teamObj;
     };
 
+    const logout = () => {
+        setUserData(null);
+        setHasSignedUp(false);
+        setUserToken(null);
+        navigation.navigate('Signup');
+    }
+
     useEffect(() => {
         setReducedTeamScores(getTeamScores(teamScores));
         setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
@@ -52,6 +55,9 @@ export default function ProfilePage({ navigation }){
     return (
         <Container>
             <Content padder>
+                <Right>
+                    <Text onPress={() => logout()}>Logout</Text>
+                </Right>
                 <Card>
                     <CardItem>
                         <Left>
@@ -77,20 +83,26 @@ export default function ProfilePage({ navigation }){
                         {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {teams ? teams.map((obj, i) => (
-                        <CardItem key={i + 'teamcard'}>
-                            <Left>
-                            <Thumbnail large source={{uri: obj.photo}} />
-                                <Body>
-                                    <Text>{obj.name}</Text>
-                                    {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
-                                    {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
-                                    <Text note>Region: {obj.city_id}</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
-                    )):
-                    null}
+                    {teams.map((obj, i) => 
+                    {
+                        if(!obj.is_solo) {
+                            return (
+                            <CardItem key={i + 'teamcard'}>
+                                <Left>
+                                <Thumbnail large source={{uri: obj.photo}} />
+                                    <Body>
+                                        <Text>{obj.name}</Text>
+                                        {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
+                                        {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
+                                        <Text note>Region: {obj.city_id}</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            );
+                        }
+                    }
+
+                    )}
                 {/* 
                 <H1 style={{padding: 20}}>Record</H1>
                 <CardItem>

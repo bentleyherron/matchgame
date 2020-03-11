@@ -14,18 +14,26 @@ export default function LocationSignup({ navigation }) {
 
     useEffect(() => {
         async function fetchStateData() {
-            const url = `${URL}/states`;
-            const results = await axios.get(url);
-            setStateList(results.data);
+            try{
+                const url = `${URL}/states`;
+                const results = await axios.get(url);
+                setStateList(results.data);
+            } catch(err) {
+                console.log(err);
+            }
         }
         fetchStateData();
     }, []);
 
     useEffect(() => {
         async function fetchCityData() {
-            const url = `${URL}/states/${state}`;
-            const results = await axios.get(url);
-            setCityList(results.data);
+            try{
+                const url = `${URL}/states/${state}`;
+                const results = await axios.get(url);
+                setCityList(results.data);
+            } catch(err) {
+                console.log(err);
+            }
         }
         if (state) {
             fetchCityData();
