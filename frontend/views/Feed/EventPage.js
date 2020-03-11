@@ -5,15 +5,16 @@ import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, T
 export default function EventPage({pageContent, eventClick}) {
 
     const {
-        city_id,
+        city_state,
         date,
         description,
-        is_public,
         sport_id,
-    } = pageContent[0].event;
+        photo,
+        wager,
+        title
+    } = pageContent.event;
 
-    const teamName1 = pageContent[0].eventTeam;
-    const teamName2 = pageContent[1].eventTeam;
+    const {eventTeams} = pageContent;
 
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const datetime = new Date(date);
@@ -32,7 +33,6 @@ export default function EventPage({pageContent, eventClick}) {
         const ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0'+minutes : minutes;
         const formattedTime = hours + ':' + minutes + ' ' + ampm;
         return formattedTime;
     }
@@ -67,6 +67,8 @@ export default function EventPage({pageContent, eventClick}) {
       }
   });
 
+  console.log()
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -76,16 +78,17 @@ export default function EventPage({pageContent, eventClick}) {
           <Card style={styles.eventBody}>
             <CardItem header bordered>
               <Body>
-                <Text>{pageContent.title}</Text>
+                <Text>{title}</Text>
                 <Text note>{formattedDate} · {formattedTime}</Text>
+                <Text note>{city_state}</Text>
               </Body>
-              <Right><Thumbnail source={require("../Profile/soccer.png")}></Thumbnail></Right>
+              <Right><Thumbnail source={{uri: photo}}></Thumbnail></Right>
             </CardItem>
             <CardItem bordered>
               <Body>
                 <Text>Points Wagered:</Text>
               </Body>
-              <Right><H2>{pageContent.wager}</H2></Right>
+              <Right><H2>{wager}</H2></Right>
             </CardItem>
             <CardItem header>
               <Text>Teams</Text>
@@ -93,14 +96,14 @@ export default function EventPage({pageContent, eventClick}) {
             <CardItem bordered> 
               <Left>
                 <Body>
-                  <Thumbnail source={require('../Profile/MightyDucks.png')}></Thumbnail>
-                  <Text>{pageContent.teamNames[0]}</Text>
+                  <Thumbnail source={{uri: eventTeams[0].eventTeam.photo}}></Thumbnail>
+                  <Text>{eventTeams[0].eventTeam.team_name}</Text>
                 </Body>
               </Left>
               <Right>
                 <Body>
-                  <Thumbnail source={require('../Profile/MightyDucks.png')}></Thumbnail>
-                  <Text>{pageContent.teamNames[1]}</Text>
+                  <Thumbnail source={{uri: eventTeams[1].eventTeam.photo}}></Thumbnail>
+                  <Text>{eventTeams[1].eventTeam.team_name}</Text>
                 </Body>
                 </Right>
             </CardItem>
