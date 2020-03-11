@@ -61,6 +61,17 @@ export default function TeamProfile(){
             paddingRight: 15,
             backgroundColor: '#fafafa'
         },
+        pickerContainer : {
+            marginBottom: 15,
+            marginLeft: 10,
+            marginRight: 10,
+            paddingLeft: 10,
+            paddingRight: 10
+        },
+        profileHeaderContainer : {
+            marginBottom: 15,
+            borderRadius: 15,
+        },
         profileHeader: {
             marginBottom: 5,
             borderRadius: 15,
@@ -82,7 +93,7 @@ export default function TeamProfile(){
     return (
         <Container style={styles.container}>
             <Content padder showsVerticalScrollIndicator={false}>
-                <Item>
+                <Item style={styles.pickerContainer}>
                         <Picker
                             mode="dropdown"
                             iosIcon={<Icon name="arrow-down" />}
@@ -95,16 +106,14 @@ export default function TeamProfile(){
                         </Picker>
                     </Item>
 
-                {teamSelected ? <Card style={styles.profileHeader}>
+                {teamSelected ? <Card style={styles.profileHeaderContainer}>
                     <CardItem style={styles.profileHeader}>
-                        <Left>
-                            {/* {teamSelected.photo ? <Thumbnail large source={{uri: teamSelected.photo}} /> : null} */}
-                            <Body>
+                        {teamSelected.photo ? <Left><Thumbnail large source={{uri: teamSelected.photo}} /></Left> : null}
+                        <Body>
                             <Text>{teamSelected.team_name}</Text>
                             <Text note>Members: {teamSelected.team_members.length}</Text>
                             <Text note>Score: {teamSelected.score}</Text>
                             </Body>
-                        </Left>
                     </CardItem>
                 </Card> : null}
 
