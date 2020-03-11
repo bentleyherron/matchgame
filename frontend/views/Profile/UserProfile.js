@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {FlatList}  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon} from 'native-base';
+import { StyleSheet, FlatList }  from 'react-native';
+import { Container, Content, Card, CardItem, ListItem, Left, Grid, Row, Col, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon, StyleProvider} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -49,37 +49,73 @@ export default function ProfilePage({ navigation }){
             </Container>
         )
     }
+
+    const styles = StyleSheet.create({
+        container: {
+            paddingLeft: 15,
+            paddingRight: 15,
+            backgroundColor: '#fafafa'
+        },
+        profileButtons: {
+            padding: 15,
+            marginTop: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            justifyContent: "flex-end"
+        },
+        profileHeader: {
+            marginBottom: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            borderBottomWidth: 0
+        },
+        profileCategories : {
+            padding: 15,
+            fontWeight: "bold"
+        },
+        profileBody: {
+            borderRadius: 15,
+            padding: 15
+        }
+    });
+
     return (
-        <Container>
+        <Container style={styles.container}>
             <Content padder>
-                <Right>
-                    <Text onPress={() => logout()}>Logout</Text>
-                </Right>
-                <Card>
-                    <CardItem>
+                <Grid>
+                    <Row style={styles.profileButtons}> 
+                        <Button light rounded small><Text onPress={() => logout()}>Logout</Text></Button>
+                        <Button light rounded small>
+                                <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} />
+                            </Button>
+
+                    </Row>
+                </Grid>
+                <Card transparent>
+                    <ListItem avatar noBorder style={styles.profileHeader}>
                         <Left>
                             {photo ? <Thumbnail large source={{uri: photo}} /> : null}
-                            <Body>
-                                <Text>{username}</Text>
-                                <Text note>{nickname}</Text>
-                                <Text note>Point Total: {totalScore}</Text>
-                            </Body>
                         </Left>
+                        <Body>
+                            <Text>{username}</Text>
+                            <Text note>{nickname}</Text>
+                            <Text note>Point Total: {totalScore}</Text>
+                        </Body>
                         <Right>
-                            <Button onPress={() => navigation.navigate('User Update')}>
-                                <Icon type="AntDesign" name="edit" />
-                            </Button>
+                            
                         </Right>
-                    </CardItem>
+                    </ListItem>
                 </Card>
 
                 
-                <Card>
-                    <H1 style={{padding: 20}}>Sports</H1>
-                    <CardItem bordered style={{flexDirection: 'column', justifyContent:"flex-start", alignItems:"flex-start"}}>
-                        {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
+                <Card style={styles.profileBody}>
+                    <H1 style={styles.profileCategories}>Sports</H1>
+                    <CardItem bordered style={styles.profileBody}>
+                        <Body>
+                        {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"} style={{padding: 5}}>{obj.name}</Text>) : null}
+                        </Body>
                     </CardItem>
-                    <H1 style={{padding: 20}}>Teams</H1>
+                    <H1 style={styles.profileCategories}>Teams</H1>
                     {teams.map((obj, i) => 
                     {
                         if(!obj.is_solo) {
@@ -100,13 +136,10 @@ export default function ProfilePage({ navigation }){
                     }
 
                     )}
-                {/* 
-                <H1 style={{padding: 20}}>Record</H1>
-                <CardItem>
-                    <Accordion dataArray={dataArray} expanded={0}/>
-                </CardItem> */}
                 </Card>
             </Content>
-        </Container>
+            </Container>
+       
     );
+
 }
