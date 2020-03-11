@@ -7,7 +7,7 @@ import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 import EventPage from './EventPage';
 
-export default function EventsContainer() {
+export default function EventsContainer({page}) {
 
     const [eventArray, setEventArray] = useState('');
     const [completeEventArray, setCompleteEventArray] = useState('');
@@ -23,47 +23,12 @@ export default function EventsContainer() {
       }
 
     const getAllEventInfo = () => {
-        axios.get(`${URL}/events`)
+        // change the 11 below to ${userData.userInfo.city_id}
+        axios.get(`${URL}/events/city/11`)
         .then((response) => {
-            return (response.data)
-        })
-        .then((response) => {
-            axios.all(response.map((event) => {
-                return getEventTeams(event.id);
-            }))
-            .then(responseArr => {
-                 return responseArr.map(event => {
-                    return (event.data);
-                });
-            })
-            .then(response => {
-                // console.log(response);
-                setEventArray(response);
-            })
+            setEventArray(response.data)
         })
     };
-
-    const getSingleTeamName = async(teamObject) => {
-        const teamArr = await axios.get(`${URL}/teams/${teamObject.team_id}`);
-        const teamName = teamArr.data.name;
-        return teamName;
-    }
-    
-    const getTeamNames = async (eventTeamsObject) => {
-        return Promise.all(
-            eventTeamsObject.map((teamObject) => {
-                return getSingleTeamName(teamObject);
-            })
-        )
-    }
-
-    const fetchEventTeamNames = async () => {
-        return Promise.all(
-            eventArray.map((event) => {
-                return getTeamNames(event.eventTeams);
-            })
-        ) 
-    }
 
     const handleEventClick = (eventId) => {
         setEventClicked(!eventClicked);

@@ -19,7 +19,9 @@ export default function FeedContainer({route}){
                     />
                 </Tab>
                 <Tab heading="Events">
-                    <EventsContainer />
+                    <EventsContainer 
+                        page={page}
+                    />
                 </Tab>
                 <Tab heading="Leaders">
                     <Leaderboard />

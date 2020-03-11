@@ -74,7 +74,8 @@ export default function ChallengeCreateContainer({ navigation }) {
             team_from_id: team.id,
             city_id: userCityId,
             latitude,
-            longitude
+            longitude,
+            title: `${sportData[sport].name} at ${location}`
         }
     }
       const url = `${URL}/challenges`

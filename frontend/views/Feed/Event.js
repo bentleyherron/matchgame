@@ -31,14 +31,13 @@ export default function Event({eventObject, eventClick}) {
         const ampm = hours >= 12 ? 'pm' : 'am';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0'+minutes : minutes;
         const formattedTime = hours + ':' + minutes + ' ' + ampm;
         return formattedTime;
     }
 
     const formattedTime = formatTime(datetime);
 
-
+    console.log(eventObject);
     return (
         
         <ListItem
@@ -48,12 +47,8 @@ export default function Event({eventObject, eventClick}) {
                     <Thumbnail small source={require("../Profile/soccer.png")} />
                 </Left>
                  <Body>
-                     {
-                         eventObject.teamNames ? (
-                             <Text>{eventObject.teamNames[0]} vs. {eventObject.teamNames[1]}</Text>
-                         ) : (null)
-                     }
-                     <Text note>{formattedDate} · {formattedTime}</Text>
+                    <Text>{event.title}</Text>
+                    <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
                  <Right><Button small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>
         </ListItem>
