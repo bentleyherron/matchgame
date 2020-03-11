@@ -28,7 +28,7 @@ export default function App() {
 
   const [isFontReady, setIsFontReady] = useState(false);
   const [isSportsDataReady, setIsSportsDataReady] = useState(false);
-  const [hasSignedUp, setHasSignedUp] = useState(true);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
   const [userData, setUserData] = useState(null);
   const [sportData, setSportData] = useState(null);
   const [userToken, setUserToken] = useState(null);
