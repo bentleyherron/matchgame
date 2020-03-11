@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea} from 'native-base';
+import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 
@@ -22,6 +22,7 @@ export default function ChallengeCreateContainer({ navigation }) {
     const [wager, setWager] = useState(0);
     const [sport, setSport] = useState(null);
     const [message, setMessage] = useState('');
+    const [googleData, setGoogleData] = useState(null);
 
     const [teamNames, setTeamNames] = useState('');
     
@@ -43,13 +44,21 @@ export default function ChallengeCreateContainer({ navigation }) {
     const getGoogleLocation = async (input) => {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${GOOGLE_API_KEY}&input=${input}&inputtype=textquery&fields=formatted_address,geometry,name,place_id,plus_code`);
       if (response.data.candidates.length) {
-        const {geometry, name } = response.data.candidates[0];
+        setGoogleData(response.data.candidates);
+        const { geometry } = response.data.candidates[0];
         setLatitude(geometry.location.lat);
         setLongitude(geometry.location.lng);
-        setLocation(name);
       } else {
         console.log('Google Maps Error in Challenge Create Container');
       }
+    }
+
+    const selectGoogleCard = (obj) => {
+        const {geometry, name } = obj;
+        setLatitude(geometry.location.lat);
+        setLongitude(geometry.location.lng);
+        setGoogleData(null);
+        console.log('did click card')
     }
 
     const formatDate = (str) => {
@@ -104,13 +113,13 @@ export default function ChallengeCreateContainer({ navigation }) {
                 {teams ? (
                   teams.map(team => {
                     return (
-                      <Picker.Item label={team.name} value={team} />
+                      <Picker.Item key={team.id + "team"} label={team.name} value={team} />
                     );
                   })
                 ) : null}
               </Picker>
             </Item>
-            <Item fixedLabel >
+            <Item style={{paddingVertical:10, paddingRight:10}} fixedLabel >
                 <Label>Sport</Label>
                 {team ? team.sport_id ?  <Text>{team.sport_id}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
             </Item>
@@ -123,6 +132,31 @@ export default function ChallengeCreateContainer({ navigation }) {
                 onSubmitEditing={async () => getGoogleLocation(location)}
                 />
             </Item>
+            {googleData ? 
+            <Item style={{flexDirection:"column"}}>
+              <H3 style={{paddingTop:10}}>Did you mean?</H3>
+              {googleData.map((obj, i) => (
+                <Card key={i + "Google Card"} style={{height:120, minWidth: 350}} onPress={() => selectGoogleCard(obj)}>
+                  <CardItem button onPress={() => selectGoogleCard(obj)}>
+                    <Left>
+                      <Text>Name</Text>
+                    </Left>
+                    <Right>
+                      <Text>{obj.name}</Text>
+                    </Right>
+                  </CardItem>
+                  <CardItem button onPress={() => selectGoogleCard(obj)}>
+                    <Left>
+                      <Text>Address</Text>
+                    </Left>
+                    <Right>
+                      <Text>{obj.formatted_address}</Text>
+                    </Right>
+                  </CardItem>
+                </Card>
+              ))}
+            </Item>
+            : null}
             <Item fixedLabel>
                 <Label>Date and Time</Label>
                 <Body>
