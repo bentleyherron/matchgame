@@ -1,16 +1,46 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar } from 'native-base';
 import PostEvent from './PostEvent';
+import UserContext from '../../UserContext';
 
 export default function Challenge({ challenge, setPage }) {
     const { team_from_id,
             datetime,
             wager,
             message,
-            is_accepted
+            is_accepted,
+            sport_id
            } = challenge;
+
+    const {teams, userInfo} = useContext(UserContext).state.userData;
+    const {id} = userInfo;
+
+    const [isCaptain, setisCaptain] = useState(null);
+    const [didCreateChallenge, setDidCreateChallenge] = useState(null);
     
-    // If you are a captain of a team for that particular sport ID and not the team that sent it, you should be able to accept the challenge and post an event
+    const checkCaptainAndSport = () => {
+        const isCaptain = {};
+        teams.forEach((team) => {
+          if(team.captain_id === id) {
+            team.sport_id ? isCaptain[team.sport_id] = true : null;
+          }
+        })
+        return isCaptain;
+      }
+
+    const createTeamObj = () => {
+      const teamObj = {};
+      teams.forEach((team) => {
+        teamObj[team.id] = true;
+      })
+      return teamObj;
+    }
+
+    useEffect(() => {
+      setisCaptain(checkCaptainAndSport());
+      setDidCreateChallenge(createTeamObj());
+    }, [])
+
     
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const date = new Date(datetime);
@@ -35,7 +65,7 @@ export default function Challenge({ challenge, setPage }) {
     }
 
     const formattedTime = formatTime(date);
-    
+    console.log(didCreateChallenge);
     return (
         <ListItem avatar>
               <Left>
@@ -48,13 +78,15 @@ export default function Challenge({ challenge, setPage }) {
               </Body>
               <Right>
                 {/* <Text note>3:50 pm</Text> */}
-                {is_accepted ? (null)
-                 : (<PostEvent
+                {isCaptain ? 
+                is_accepted || !isCaptain[sport_id] || didCreateChallenge[team_from_id]
+                ? null
+                : (<PostEvent
                       challenge={challenge}
                       setPage={setPage}
-
-                 
-                 />)
+                    />)
+                :
+                null 
                 }
                 
               </Right>
