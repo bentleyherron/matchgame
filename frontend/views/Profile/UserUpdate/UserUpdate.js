@@ -64,6 +64,15 @@ export default function UserUpdate({ navigation }) {
         }
     };
 
+    const deleteAccount = () => {
+        axios.delete(`${URL}/users/${userId}`)
+            .then(
+                r => {
+                    navigation.navigate('Signup');
+                }
+            )
+    }
+
     // const postSports = async (id) => {
     //     const url = `${URL}/favorite-sports/`;
     //     const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
@@ -169,6 +178,16 @@ export default function UserUpdate({ navigation }) {
                         <Body>
                             <Button onPress={() => {navigation.navigate('Sport Update')}}>
                                 <Text>Update Favorite Sports</Text>
+                            </Button>
+                        </Body>
+                    </ListItem>
+                    <ListItem>
+                        <Left>
+                            <Label>Delete Account</Label>
+                        </Left>
+                        <Body>
+                            <Button danger onPress={() => {deleteAccount()}}>
+                                <Text>Submit</Text>
                             </Button>
                         </Body>
                     </ListItem>
