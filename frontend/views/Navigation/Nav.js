@@ -29,17 +29,17 @@ export default function Nav( {state, navigation}) {
             <Icon type="FontAwesome" name="home" style={styles.navIcon} />
           </Button>
           {routeName === "Feed" ?
-          <Button onPress={() => {
+          <Button bordered rounded small light onPress={() => {
             navigation.navigate('Challenge Create')
             }}>
-            <Icon type="AntDesign" name="pluscircle" style={styles.navIcon} />
+              <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW CHALLENGE</Text>
           </Button>
           :
           routeName === "Profile" ?
-          <Button style={styles.navIcon} onPress={() => {
+          <Button bordered rounded small light onPress={() => {
             navigation.navigate('Team Create')
             }}>
-            <Icon type="AntDesign" name="pluscircle" style={styles.navIcon} />
+            <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW TEAM</Text>
           </Button>
           :
           null }

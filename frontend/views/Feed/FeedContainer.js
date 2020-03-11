@@ -40,7 +40,7 @@ export default function FeedContainer({route}){
                         route={route}
                     />
                 </Tab>
-                <Tab heading="Events">
+                <Tab heading="Events" tabStyle={styles.tab} activeTabStyle={styles.tab}>
                     <EventsContainer 
                         page={page}
                     />
