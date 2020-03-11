@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import SignupContext from './SignupContext';
@@ -11,6 +11,7 @@ export default function LocationSignup({ navigation }) {
     const [state, setState] = useState(1);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function fetchStateData() {
@@ -18,6 +19,7 @@ export default function LocationSignup({ navigation }) {
                 const url = `${URL}/states`;
                 const results = await axios.get(url);
                 setStateList(results.data);
+                setIsLoading(false);
             } catch(err) {
                 console.log(err);
             }
@@ -28,9 +30,11 @@ export default function LocationSignup({ navigation }) {
     useEffect(() => {
         async function fetchCityData() {
             try{
+                setIsLoading(true)
                 const url = `${URL}/states/${state}`;
                 const results = await axios.get(url);
                 setCityList(results.data);
+                setIsLoading(false);
             } catch(err) {
                 console.log(err);
             }
@@ -73,6 +77,7 @@ export default function LocationSignup({ navigation }) {
                     :
                     null}
                 </Form>
+                {isLoading ? <Spinner /> : null}
             </Content>
             <Footer>
                 <FooterTab>

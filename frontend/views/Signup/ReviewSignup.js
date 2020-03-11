@@ -8,7 +8,7 @@ import UserContext from '../../UserContext';
 
 export default function SignupPageFour({ navigation }) {
     const { username, nickname, password, email, sports, selectedImage, locationId } = useContext(SignupContext).state;
-    const { setUserData, setHasSignedUp } = useContext(UserContext).actions;
+    const { setUserData, setHasSignedUp, setUserToken } = useContext(UserContext).actions;
     const [userObject, setUserObject] = useState({
         user: {
             username,
@@ -25,28 +25,41 @@ export default function SignupPageFour({ navigation }) {
     
     const postUser = async () => {
         try{
+            setIsSubmitting(true);
             const url = `${URL}/signup/`
             const response = await axios.post(url, userObject);
-            console.log(response.data);
-            setUserData(response.data);
             return response.data;
         } catch(err) {
             console.log(err);
         }
     };
-    const postSports = async (token) => {
+    const postSports = async () => {
         try{
-            const url = `${URL}/favorite-sports/`;
-            const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
-            const response = await axios.post(url, sportsArrayObject, {
-                headers: {
-                    "x-access-token": token
-                }
-            });
+            axios.post(`${URL}/login/`, {user: {
+                email,
+                password
+              }}).then(
+                  r => {
+                      console.log(r.data.token);
+                      setUserToken(r.data.token);
+                      const url = `${URL}/favorite-sports/`;
+                      const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
+                      axios.post(url, sportsArrayObject, {
+                          headers: {
+                              "x-access-token": r.data.token
+                          }
+                      }).then(
+                          r => {
+                              setIsSubmitting(false);
+                              setHasSignedUp(true);
+                              navigation.navigate('User Login');
+                          }
+                      )
+                  }
+              )
         } catch(err) {
             console.log(err);
         }
-        // add error handling here
     };
 
     const postSignupData = async () => {
@@ -148,11 +161,7 @@ export default function SignupPageFour({ navigation }) {
                 <FooterTab>
                     <Button
                     onPress={async () => {
-                        setIsSubmitting(true);
-                        const wasSubmitted = await postSignupData();
-                        setIsSubmitting(wasSubmitted);
-                        setHasSignedUp(true);
-                        !wasSubmitted ? navigation.navigate('User Login') : console.log('error in submission');
+                        postSignupData();
                     }}
                     >
                         <Text>Submit</Text>

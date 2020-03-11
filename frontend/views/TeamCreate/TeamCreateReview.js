@@ -16,20 +16,43 @@ export default function TeamCreateReview( {navigation}) {
         return newArr;
     }
 
-    const postNewTeam = async () => {
-        const result = await axios.post(`${URL}/teams/`, {
-            "team": {
-                "name": teamName,
-                "city_id": userData.userInfo.city_id,
-                "captain_id": userData.userInfo.id,
-                "sport_id": teamSport,
-                "rating": 5,
-                "photo": teamPhoto,
-                "is_solo": false
-            }
-        }, {headers:{"x-access-token": userToken}});
-        return false;
+    const postTeamMembers = async (teamId) => {
+        let addTeamMembers = {teamMembers:Object.keys(teamMembers).map(item => {return {player_id: item, team_id:teamId}})};
+        axios.post(`${URL}/team-members/`, addTeamMembers, {headers:{"x-access-token": userToken}})
     }
+
+    const postNewTeam = async () => {
+        try{
+            setIsSubmitting(true);
+            axios.post(`${URL}/teams/`, {
+                "team": {
+                    "name": teamName,
+                    "city_id": userData.userInfo.city_id,
+                    "captain_id": userData.userInfo.id,
+                    "sport_id": teamSport,
+                    "rating": 5,
+                    "photo": teamPhoto,
+                    "is_solo": false
+                }
+            }, {headers:{"x-access-token": userToken}})
+            .then(
+                r => {
+                    postTeamMembers(r.data.id)
+                    .then(
+                        r => {
+                            setIsSubmitting(false);
+                            navigation.navigate('User Profile');
+                            setShouldRefresh(currentState => !currentState);
+                        }
+                    )
+                }
+            );
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+
 
     return(
         <Container>
@@ -83,9 +106,9 @@ export default function TeamCreateReview( {navigation}) {
                         </Left>
                         <Body>
                             <List>
-                                {convertTeamMembers(teamMembers).map(member => (
+                                {teamMembers ? convertTeamMembers(teamMembers).map(member => (
                                         <Text key={member.id+"member"}>{member.name}</Text>
-                                ))}
+                                )) : null}
                             </List>
                         </Body>
                     </ListItem>
@@ -103,15 +126,7 @@ export default function TeamCreateReview( {navigation}) {
                 <FooterTab>
                     <Button
                     onPress={async () => {
-                        setIsSubmitting(true);
-                        const wasSubmitted = await postNewTeam();
-                        setIsSubmitting(wasSubmitted);
-                        if(!wasSubmitted){
-                            navigation.navigate('User Profile') 
-                            setShouldRefresh(currentState => !currentState)
-                        } else{
-                            console.log('error in submission');
-                        }
+                        postNewTeam();
                     }}
                     >
                         <Text>Submit</Text>
