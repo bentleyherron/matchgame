@@ -61,6 +61,8 @@ export default function SignupPageOne({ navigation }) {
       // make sure password meets criteria
     }
 
+    console.log(URL);
+
     return (
       <Container>
         <Content>

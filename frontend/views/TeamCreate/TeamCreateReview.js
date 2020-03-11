@@ -9,7 +9,7 @@ import {URL} from 'react-native-dotenv';
 export default function TeamCreateReview( {navigation}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { teamName, teamSport, teamPhoto, teamMembers } = useContext(TeamContext).state
-    const { userData, sportData } = useContext(UserContext).state;
+    const { userData, sportData, userToken } = useContext(UserContext).state;
     const convertTeamMembers = (obj) => {
         const newArr = Object.keys(obj).map(item => {return {id: item, name: obj[item]}});
         return newArr;
@@ -26,7 +26,7 @@ export default function TeamCreateReview( {navigation}) {
                 "photo": teamPhoto,
                 "is_solo": false
             }
-        });
+        }, {headers:{"x-access-token": userToken}});
         return false;
     }
 
@@ -105,8 +105,7 @@ export default function TeamCreateReview( {navigation}) {
                         setIsSubmitting(true);
                         const wasSubmitted = await postNewTeam();
                         setIsSubmitting(wasSubmitted);
-                        setHasSignedUp(true);
-                        !wasSubmitted ? navigation.navigate('Feed') : console.log('error in submission');
+                        !wasSubmitted ? navigation.navigate('User Profile') : console.log('error in submission');
                     }}
                     >
                         <Text>Submit</Text>

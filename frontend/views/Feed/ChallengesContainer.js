@@ -6,27 +6,22 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
-export default function ChallengesContainer({setPage}) {
-
+export default function ChallengesContainer({setPage, route}) {
     const [challengeArray, setChallengeArray] = useState(null);
-
+    
     const { userData, favoriteSports, userToken } = useContext(UserContext).state;
-
+    
     useEffect(() => {
         axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
             headers: {
                 "x-access-token": userToken
             }
         })
-            .then((response) => {
-                setChallengeArray(response.data);
-            })
-
-    },[])
-
-    expandChallenge = () => {
-        console.log('you clicked the challenge');
-    }
+        .then((response) => {
+            setChallengeArray(response.data);
+        })
+        
+    },[route.params])
 
     return (
         <Container>

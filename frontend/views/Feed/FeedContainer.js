@@ -5,8 +5,7 @@ import ChallengesContainer from './ChallengesContainer';
 import EventsContainer from './EventsContainer';
 import Search from './SearchContainer';
 
-export default function FeedContainer(){
-
+export default function FeedContainer({route}){
     const [page, setPage] = useState(0);
 
     return (
@@ -16,6 +15,7 @@ export default function FeedContainer(){
                 <Tab heading="Challenges">
                     <ChallengesContainer 
                         setPage={setPage}
+                        route={route}
                     />
                 </Tab>
                 <Tab heading="Events">

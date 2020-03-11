@@ -67,9 +67,14 @@ export default function TeamProfile(){
                             placeholder="Team Name"
                             selectedValue={teamSelected}
                             onValueChange={setTeamSelected}>
-                                {teamData.length ? teamData.map((team, index) => (
-                                    <Picker.Item label={team.team_name} value={team} key={index + 'team'} />
-                                )) : null}
+                                {teamData.length ? 
+                                    teamData.map((team, index) => {
+                                        if(!team.is_solo) {
+                                            return(
+                                                <Picker.Item label={team.team_name} value={team} key={index + 'team'} />
+                                            );
+                                        }})
+                                : null}
                         </Picker>
                     </Item>
                 {teamSelected ? <Card>

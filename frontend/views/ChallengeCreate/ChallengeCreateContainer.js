@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import ButtonCreateChallenge from './ButtonCreateChallenge';
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 
 import UserContext from '../../UserContext';
@@ -65,6 +64,25 @@ export default function ChallengeCreateContainer({ navigation }) {
       return formattedTime;
     }
 
+    const postChallenge = async () => {
+      const challengeObject = {
+        challenge: {
+            sport_id: sport,
+            datetime,
+            wager,
+            message,
+            team_from_id: team.id,
+            city_id: userCityId,
+            latitude,
+            longitude
+        }
+    }
+      const url = `${URL}/challenges`
+      const response = await axios.post(url, challengeObject);
+      navigation.navigate('Feed', {hasSignedUp:true});
+      
+  }
+
     return(
         <Container>
             <Header />
@@ -76,7 +94,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                     mode="dropdown"
                     iosIcon={<Icon name="arrow-down" />}
                     style={{ width: undefined }}
-                    placeholder="Select Sport"
+                    placeholder="Select Team"
                     placeholderStyle={{ color: "#bfc6ea" }}
                     placeholderIconColor="#007aff"
                     selectedValue={team}
@@ -144,18 +162,9 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
           </Form>
         </Content>
-        <ButtonCreateChallenge
-          navigation={navigation}
-          team_from_id={team}
-          location={location}
-          datetime={datetime}
-          wager={wager}
-          sport_id={sport}
-          message={message}
-          city_id={userCityId}
-          latitude={latitude}
-          longitude={longitude}
-        />
+        <Button onPress={() => postChallenge()}>
+          <Text>Post Challenge</Text>
+        </Button>
 
       </Container>
     );

@@ -12,8 +12,6 @@ export default function LocationSignup({ navigation }) {
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
-    console.log(`${URL}/states`)
-
     useEffect(() => {
         async function fetchStateData() {
             const url = `${URL}/states`;

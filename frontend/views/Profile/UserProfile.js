@@ -71,21 +71,26 @@ export default function ProfilePage({ navigation }){
                         {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
-                    {teams ? teams.map((obj, i) => 
-                        {!obj.is_solo ?
-                        <CardItem key={i + 'teamcard'}>
-                            <Left>
-                            <Thumbnail large source={{uri: obj.photo}} />
-                                <Body>
-                                    <Text>{obj.name}</Text>
-                                    {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
-                                    {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
-                                    <Text note>Region: {obj.city_id}</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>: null}
-                    ):
-                    null}
+                    {teams.map((obj, i) => 
+                    {
+                        if(!obj.is_solo) {
+                            return (
+                            <CardItem key={i + 'teamcard'}>
+                                <Left>
+                                <Thumbnail large source={{uri: obj.photo}} />
+                                    <Body>
+                                        <Text>{obj.name}</Text>
+                                        {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
+                                        {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
+                                        <Text note>Region: {obj.city_id}</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                            );
+                        }
+                    }
+
+                    )}
                 {/* 
                 <H1 style={{padding: 20}}>Record</H1>
                 <CardItem>

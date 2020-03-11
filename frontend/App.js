@@ -28,7 +28,7 @@ export default function App() {
 
   const [isFontReady, setIsFontReady] = useState(false);
   const [isSportsDataReady, setIsSportsDataReady] = useState(false);
-  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [hasSignedUp, setHasSignedUp] = useState(true);
   const [userData, setUserData] = useState(null);
   const [sportData, setSportData] = useState(null);
   const [userToken, setUserToken] = useState(null);
@@ -48,15 +48,22 @@ export default function App() {
   useEffect(() => {
     if(hasSignedUp) {
       setIsLoading(true);
-      axios.get(`${URL}/profile/`, {
-        headers: {
-          "x-access-token": userToken
-        }
-      }).then(
-        response => {
-          setUserData(response.data);
-          setIsLoading(false)
-        });
+      // axios.get(`${URL}/profile/`, {
+      //   headers: {
+      //     "x-access-token": userToken
+      //   }
+      // }).then(
+      //   response => {
+      //     setUserData(response.data);
+      //     setIsLoading(false)
+      //   });
+      axios.get(`${URL}/profile/3`)
+        .then(
+          r => {
+            setUserData(r.data)
+            setIsLoading(false)
+          }
+        )
         
         axios.get(`${URL}/sports`).then(
           r => {
@@ -82,7 +89,7 @@ export default function App() {
     }
   }
 
-  if (!isFontReady || isLoading || !isSportsDataReady) {
+  if (!isFontReady || isLoading) {
     return <AppLoading />;
   }
   return (
