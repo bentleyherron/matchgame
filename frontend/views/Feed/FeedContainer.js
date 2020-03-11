@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { Container, Content, Header, Tab, Tabs, Text } from 'native-base';
 import Leaderboard from './Leaderboard';
 import ChallengesContainer from './ChallengesContainer';
@@ -13,6 +13,7 @@ export default function FeedContainer({route}){
         headerContainer : {
             height: 80,
             paddingTop: 35,
+            marginTop:StatusBar.currentHeight,
             backgroundColor: '#0065ff'
         },
         logoContainer : {

@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet} from 'react-native';
+import { StyleSheet, StatusBar} from 'react-native';
 import { Header, Grid, Row, Col, Left, Body, Right, Button, Text } from 'native-base';
 export default function ProfileHeader({navigation}) {
 
     const styles = StyleSheet.create({
         headerContainer : {
             height: 120, 
-            flexDirection: 'column', 
+            flexDirection: 'column',
+            marginTop:StatusBar.currentHeight, 
             paddingTop: 35,
             borderWidth:1,
             backgroundColor: '#0065ff',
