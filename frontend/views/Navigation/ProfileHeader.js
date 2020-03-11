@@ -9,10 +9,13 @@ export default function ProfileHeader({navigation}) {
             flexDirection: 'column', 
             paddingTop: 35,
             borderWidth:1,
-            backgroundColor: '#0065ff'
+            backgroundColor: '#0065ff',
+            paddingLeft: 0,
+            paddingRight: 0
         },
         logoContainer : {
-            justifyContent: 'center'
+            justifyContent: 'center',
+            paddingBottom: 11
         },
         matchgameLogo: {
             fontSize: 25,
@@ -21,7 +24,9 @@ export default function ProfileHeader({navigation}) {
         },
         profileButtonsContainer : {
             justifyContent: 'space-around',
-            paddingBottom: 3
+            paddingBottom: 3,
+            backgroundColor: '#1551a9',
+            marginLeft: 0
         }
     });
 
@@ -33,10 +38,10 @@ export default function ProfileHeader({navigation}) {
                 </Row>
                 <Row style={styles.profileButtonsContainer}>
                     <Button transparent onPress={() => navigation.navigate('User Profile')}>
-                        <Text>Your Profile</Text>
+                        <Text uppercase={false}>Your Profile</Text>
                     </Button>
                     <Button transparent onPress={() => navigation.navigate('Team Profile')}>
-                        <Text>
+                        <Text uppercase={false}>
                             Your Teams
                         </Text>
                     </Button>

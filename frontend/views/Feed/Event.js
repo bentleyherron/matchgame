@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
 import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner, Thumbnail, ListItem} from 'native-base';
 import {URL} from 'react-native-dotenv';
 import axios from 'axios';
@@ -38,10 +39,19 @@ export default function Event({eventObject, eventClick}) {
 
     const formattedTime = formatTime(datetime);
 
+    const styles = StyleSheet.create({
+        listItem: {
+            backgroundColor: '#fcfbfc'
+        },
+        seeEventButton: {
+            backgroundColor: '#02A456'
+        }
+    });
 
     return (
         
         <ListItem
+            style={styles.listItem}
             avatar
             onPress={() => eventClick(id)}>
                  <Left>
@@ -55,7 +65,7 @@ export default function Event({eventObject, eventClick}) {
                      }
                      <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
-                 <Right><Button small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>
+                 <Right><Button style={styles.seeEventButton} small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>
         </ListItem>
     );
 }
