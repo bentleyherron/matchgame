@@ -9,6 +9,7 @@ export default function ProfileHeader({navigation}) {
             flexDirection: 'column', 
             paddingTop: 35,
             borderWidth:1,
+            backgroundColor: '#0065ff'
         },
         logoContainer : {
             justifyContent: 'center'
