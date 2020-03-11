@@ -1,45 +1,79 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
-import SignupContext from './SignupContext';
+import UserContext from '../../../UserContext';
 
-export default function LocationSignup({ navigation }) {
-    const context = useContext(SignupContext);
-    const { locationId } = context.state;
-    const { setLocationId } = context.actions;
-    const [state, setState] = useState(1);
+export default function UpdateCity({ navigation }) {
+    const {userToken, userData} = useContext(UserContext).state;
+    const {id, city_id}= userData.userInfo;
+    const [newCity_Id, setNewCity_Id] = useState(null);
+    const [state, setState] = useState(null);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
     useEffect(() => {
-        async function fetchStateData() {
-            try{
-                const url = `${URL}/states`;
-                const results = await axios.get(url);
-                setStateList(results.data);
-            } catch(err) {
-                console.log(err);
-            }
+        setNewCity_Id(city_id);
+        try{
+            axios.get(`${URL}/states/city/${city_id}`)
+                .then(r => {
+                    setState(r.data[0].state_id)}
+                    )
+        }catch(err) {
+            console.log(err);
         }
-        fetchStateData();
+    }, [])
+
+    useEffect(() => {
+        try{
+            axios.get(`${URL}/states`)
+                .then(r => setStateList(r.data))
+        }catch(err) {
+            console.log(err);
+        }
     }, []);
 
     useEffect(() => {
-        async function fetchCityData() {
+        if (state) {
             try{
-                const url = `${URL}/states/${state}`;
-                const results = await axios.get(url);
-                setCityList(results.data);
-            } catch(err) {
+                axios.get(`${URL}/states/${state}`)
+                    .then(r => setCityList(r.data))
+            }catch(err) {
                 console.log(err);
             }
-        }
-        if (state) {
-            fetchCityData();
         };
     }, [state]);
 
+
+    const submitState = () => {
+        try{
+            const userData = {
+                user: {
+                    id,
+                    city_id: newCity_Id
+                }
+            }
+            const url = `${URL}/users/`
+            axios.put(url, userData, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              });
+            navigation.navigate('User Profile');
+        }catch(err) {
+            console.log(err);
+        }
+    }
+
+    if (!state) {
+        return (
+            <Container>
+                <Content>
+                    <Spinner />
+                </Content>
+            </Container>
+        )
+    }
     return (
         <Container>
             <Content>
@@ -62,11 +96,11 @@ export default function LocationSignup({ navigation }) {
                         mode="dropdown"
                         iosIcon={<Icon name="arrow-down" />}
                         placeholder="City"
-                        selectedValue={locationId}
-                        onValueChange={setLocationId}
+                        selectedValue={newCity_Id}
+                        onValueChange={setNewCity_Id}
                         >
                             {cityList.map((city, i) => (
-                                <Picker.Item label={city.city} value={city} key={i + 'city'} />
+                                <Picker.Item label={city.city} value={city.id} key={i + 'city'} />
                             ))}
                         </Picker>
                     </Item>
@@ -84,9 +118,9 @@ export default function LocationSignup({ navigation }) {
                 </FooterTab>
                 <FooterTab>
                     <Button
-                    onPress={() => {navigation.navigate('Profile Pic')}}
+                    onPress={submitState}
                     >
-                    <Text>NEXT</Text>
+                    <Text>Submit</Text>
                     </Button>
                 </FooterTab>
             </Footer>

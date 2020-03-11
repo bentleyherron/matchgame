@@ -46,7 +46,7 @@ export default function EventPage({pageContent, eventClick}) {
           <Card>
             <CardItem header bordered>
               <Body>
-                <Text>Piedmont Park Soccer</Text>
+                <Text>{pageContent.title}</Text>
                 <Text note>{formattedDate} · {formattedTime}</Text>
               </Body>
               <Right><Thumbnail source={require("../Profile/soccer.png")}></Thumbnail></Right>
@@ -55,7 +55,7 @@ export default function EventPage({pageContent, eventClick}) {
               <Body>
                 <Text>Points Wagered:</Text>
               </Body>
-              <Right><H2>100</H2></Right>
+              <Right><H2>{pageContent.wager}</H2></Right>
             </CardItem>
             <CardItem header>
               <Text>Teams</Text>

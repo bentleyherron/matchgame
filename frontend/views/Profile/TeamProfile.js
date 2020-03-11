@@ -7,8 +7,6 @@ import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
-// team photo from database
-
 const dataArray = [
     { title: "All Sports", content: "Games" },
     { title: "Ice Hockey", content: "Games" },
@@ -16,7 +14,7 @@ const dataArray = [
   ];
 
 export default function TeamProfile(){
-    const { userData, sportData } = useContext(UserContext).state;
+    const { userData, sportData, userToken } = useContext(UserContext).state;
     const [isCaptain, setIsCaptain] = useState(false);
     const [teamData, setTeamData] = useState(null);
     const [teamSelected, setTeamSelected] = useState(null);
@@ -26,12 +24,19 @@ export default function TeamProfile(){
     }
 
     const fetchTeamProfileData = async () => {
-        const teamArr = getUniques(userData.teams, "team_id");
-        const dataResults = await Promise.all(teamArr.map(async teamObj => {
-            const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.team_id}`);
-            return teamProfile.data;
-        }));
-        setTeamData(dataResults);
+        try{
+            const teamArr = getUniques(userData.teams, "id");
+            const dataResults = await Promise.all(teamArr.map(async teamObj => {
+                const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                    headers: {
+                      "x-access-token": userToken
+                    }});
+                return teamProfile.data;
+            }));
+            setTeamData(dataResults);
+        }catch(err) {
+            console.log(err);
+        }
     }
 
     useEffect(() => {
@@ -66,9 +71,14 @@ export default function TeamProfile(){
                             placeholder="Team Name"
                             selectedValue={teamSelected}
                             onValueChange={setTeamSelected}>
-                                {teamData.length ? teamData.map((team, index) => (
-                                    <Picker.Item label={team.team_name} value={team} key={index + 'team'} />
-                                )) : null}
+                                {teamData.length ? 
+                                    teamData.map((team, index) => {
+                                        if(!team.is_solo) {
+                                            return(
+                                                <Picker.Item label={team.team_name} value={team} key={index + 'team'} />
+                                            );
+                                        }})
+                                : null}
                         </Picker>
                     </Item>
                 {teamSelected ? <Card>
