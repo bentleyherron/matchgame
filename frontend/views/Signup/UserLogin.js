@@ -25,7 +25,7 @@ export default function SignupPageOne({ navigation }) {
           setUserToken(r.data.token);
           setHasSignedUp(true);
           setIsLoggingIn(false);
-          navigation.navigate('Feed');
+          navigation.navigate('Profile');
         })
       } catch(err) {
         console.log(err);
@@ -52,7 +52,7 @@ export default function SignupPageOne({ navigation }) {
           <Button
               rounded
               style={{marginLeft: 20, marginRight: 20, marginTop: 15, padding: 20, justifyContent: 'center'}}
-              onPress={() => {navigation.navigate('Feed')}}>
+              onPress={() => {postLogin()}}>
               <Text>LOGIN</Text>
           </Button>
           <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Don't have an account? <Text note style={{color: 'blue'}}>Register here</Text></Text>

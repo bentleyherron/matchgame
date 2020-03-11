@@ -94,7 +94,7 @@ export default function ProfilePage({ navigation }){
                                         <Text>{obj.name}</Text>
                                         {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
                                         {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
-                                        <Text note>Region: {obj.city_id}</Text>
+                                        <Text note>Region: {obj.city_state}</Text>
                                     </Body>
                                 </Left>
                             </CardItem>

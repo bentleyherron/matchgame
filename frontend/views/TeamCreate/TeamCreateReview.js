@@ -31,6 +31,11 @@ export default function TeamCreateReview( {navigation}) {
         return false;
     }
 
+    const postTeamMembers = async (teamId) => {
+        const teamMembers = 
+        axios.post(`${URL}/team-members/`, {teamMembers:[{}]})
+    }
+    console.log(teamMembers);
     return(
         <Container>
             <Content>
@@ -83,9 +88,9 @@ export default function TeamCreateReview( {navigation}) {
                         </Left>
                         <Body>
                             <List>
-                                {convertTeamMembers(teamMembers).map(member => (
+                                {teamMembers ? convertTeamMembers(teamMembers).map(member => (
                                         <Text key={member.id+"member"}>{member.name}</Text>
-                                ))}
+                                )) : null}
                             </List>
                         </Body>
                     </ListItem>
