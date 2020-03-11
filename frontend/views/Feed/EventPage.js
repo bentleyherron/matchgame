@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right } from 'native-base';
 
 export default function EventPage({pageContent, eventClick}) {
@@ -37,13 +38,41 @@ export default function EventPage({pageContent, eventClick}) {
 
     const formattedTime = formatTime(datetime);
 
+    const styles = StyleSheet.create({
+      container: {
+          paddingLeft: 15,
+          paddingRight: 15,
+          backgroundColor: '#fafafa'
+      },
+      profileHeaderContainer : {
+          marginBottom: 15,
+          borderRadius: 15,
+      },
+      profileHeader: {
+          marginBottom: 5,
+          borderRadius: 15,
+          backgroundColor: '#fafafa',
+      },
+      eventCategories : {
+          padding: 15,
+          fontWeight: "bold"
+      },
+      eventBody: {
+          borderRadius: 15,
+          padding: 15
+      },
+      profileBodyText: {
+          justifyContent: 'center'
+      }
+  });
+
     return (
-      <Container>
+      <Container style={styles.container}>
         <Header>
-            <Button onPress={() => eventClick()}><Text>Back</Text></Button>
+            <Button rounded onPress={() => eventClick()}><Text>Back</Text></Button>
         </Header>
         <Content padder>
-          <Card>
+          <Card style={styles.eventBody}>
             <CardItem header bordered>
               <Body>
                 <Text>Piedmont Park Soccer</Text>
