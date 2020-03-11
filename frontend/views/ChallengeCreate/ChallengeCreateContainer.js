@@ -9,7 +9,7 @@ import axios from 'axios';
 // add error handling on this (if no location selected, etc.)
 export default function ChallengeCreateContainer({ navigation }) {
 
-    const { userData, sportData } = useContext(UserContext).state;
+    const { userData, sportData, userToken } = useContext(UserContext).state;
     const userCityId = userData.userInfo.city_id;
 
     const {teams} = userData;
@@ -92,7 +92,11 @@ export default function ChallengeCreateContainer({ navigation }) {
           }
       }
         const url = `${URL}/challenges`
-        const response = await axios.post(url, challengeObject);
+        const response = await axios.post(url, challengeObject, {
+          headers: {
+            "x-access-token": userToken
+          }
+        });
         navigation.navigate('Feed', {hasSignedUp:true});
       }catch(err) {
         console.log(err);

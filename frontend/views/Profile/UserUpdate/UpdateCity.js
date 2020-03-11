@@ -5,7 +5,8 @@ import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
 
 export default function UpdateCity({ navigation }) {
-    const {id, city_id}= useContext(UserContext).state.userData.userInfo
+    const {userToken, userData} = useContext(UserContext).state;
+    const {id, city_id}= userData.userInfo;
     const [newCity_Id, setNewCity_Id] = useState(null);
     const [state, setState] = useState(null);
     const [stateList, setStateList] = useState([]);
@@ -53,7 +54,11 @@ export default function UpdateCity({ navigation }) {
                 }
             }
             const url = `${URL}/users/`
-            axios.put(url, userData);
+            axios.put(url, userData, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              });
             navigation.navigate('User Profile');
         }catch(err) {
             console.log(err);

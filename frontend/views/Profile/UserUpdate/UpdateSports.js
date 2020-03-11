@@ -10,7 +10,7 @@ import UserContext from '../../../UserContext';
 // update when database is functional to make sure delete function and post function work
 export default function UpdateSports({ navigation }) {
 
-    const {userData, sportData} = useContext(UserContext).state;
+    const {userData, sportData, userToken} = useContext(UserContext).state;
     const {userInfo, favoriteSports} = userData;
     const [sportsList, setSportsList] = useState(null);
 
@@ -49,7 +49,11 @@ export default function UpdateSports({ navigation }) {
         // delete favorite sports
         try{
             const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
-            axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}}).then(
+            axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}, 
+                headers: {
+                  "x-access-token": userToken
+                }
+              }).then(
                 r => navigation.navigate('User Profile')
             )
         } catch(err) {

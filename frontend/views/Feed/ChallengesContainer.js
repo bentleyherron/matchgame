@@ -10,24 +10,10 @@ export default function ChallengesContainer({setPage, route}) {
     const [challengeArray, setChallengeArray] = useState(null);
     
     const { userData, favoriteSports, userToken } = useContext(UserContext).state;
-    
-    // correct path but need to make cities the same for debugging
-
-    // useEffect(() => {
-    //     axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
-    //         headers: {
-    //             "x-access-token": userToken
-    //         }
-    //     })
-    //     .then((response) => {
-    //         setChallengeArray(response.data);
-    //     })
-        
-    // },[route.params])
 
     useEffect(() => {
         try{
-            axios.get(`${URL}/challenges/city/11`, {
+            axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
                 headers: {
                     "x-access-token": userToken
                 }
@@ -38,7 +24,7 @@ export default function ChallengesContainer({setPage, route}) {
         }catch(err) {
             console.log(err);
         }
-    },[])
+    },[route.params])
 
     return (
         <Container>

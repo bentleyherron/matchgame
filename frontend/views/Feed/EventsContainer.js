@@ -16,12 +16,16 @@ export default function EventsContainer({page}) {
     const [eventIdClicked, setEventIdClicked] = useState(null);
     const [currentEventPageInfo, setCurrentEventPageInfo] = useState(null);
 
-    const { userData, favoriteSports } = useContext(UserContext).state;
+    const { userData, favoriteSports, userToken } = useContext(UserContext).state;
 
     const getAllEventInfo = () => {
         // change the 11 below to ${userData.userInfo.city_id}
         try{
-            axios.get(`${URL}/events/city/11`)
+            axios.get(`${URL}/events/city/${userData.userInfo.city_id}`, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              })
             .then((response) => {
                 setEventArray(response.data)
             })
@@ -54,8 +58,6 @@ export default function EventsContainer({page}) {
     useEffect(() => {
         getAllEventInfo();
     },[])
-
-    console.log(eventArray);
 
     return (
         <Container>

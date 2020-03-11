@@ -15,13 +15,17 @@ export default function Leaderboard() {
     const [teamsFilteredBySport, setTeamsFilteredBySport] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
 
-    const {sportData} = useContext(UserContext).state;
+    const {sportData, userToken, userData} = useContext(UserContext).state;
 
     // grab team data on page load
     // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
         try{
-            axios.get(`${URL}/leaderboard/11`)
+            axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              })
                 .then(
                     r => setTeamData(r.data)
                 )

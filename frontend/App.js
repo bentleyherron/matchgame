@@ -48,31 +48,27 @@ export default function App() {
 
   useEffect(() => {
     if(hasSignedUp) {
-      setIsLoading(true);
-      // axios.get(`${URL}/profile/`, {
-      //   headers: {
-      //     "x-access-token": userToken
-      //   }
-      // }).then(
-      //   response => {
-      //     setUserData(response.data);
-      //     setIsLoading(false)
-      //   });
       try{
-        axios.get(`${URL}/profile/2`)
-          .then(
-            r => {
-              setUserData(r.data)
-              setIsLoading(false)
-            }
-          )
-          
-          axios.get(`${URL}/sports`).then(
-            r => {
-              setSportData(r.data);
-              setIsSportsDataReady(true);
-            }
-            );
+        setIsLoading(true);
+        axios.get(`${URL}/profile/`, {
+          headers: {
+            "x-access-token": userToken
+          }
+        }).then(
+          response => {
+            setUserData(response.data);
+            setIsLoading(false)
+          });
+      }catch(err) {
+        console.log(err)
+      }
+      try{
+        axios.get(`${URL}/sports`).then(
+          r => {
+            setSportData(r.data);
+            setIsSportsDataReady(true);
+          }
+          );
       } catch(err) {
         console.log(err);
       }

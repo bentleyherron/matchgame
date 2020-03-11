@@ -9,7 +9,7 @@ import UserContext from '../../../UserContext';
 // David needs to be able to correctly redirect to the navigation page with new data
 
 export default function UserUpdate({ navigation }) {
-    const {userData} = useContext(UserContext).state;
+    const {userData, userToken} = useContext(UserContext).state;
     const { id, username, nickname, email, photo } = userData.userInfo;
     const { setUserData } = useContext(UserContext).actions;
 
@@ -66,7 +66,11 @@ export default function UserUpdate({ navigation }) {
 
     const deleteAccount = () => {
         try{
-            axios.delete(`${URL}/users/${userId}`)
+            axios.delete(`${URL}/users/${userId}`, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              })
                 .then(
                     r => {
                         navigation.navigate('Signup');
