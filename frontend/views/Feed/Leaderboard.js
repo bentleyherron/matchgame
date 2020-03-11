@@ -18,8 +18,9 @@ export default function Leaderboard() {
     const {sportData} = useContext(UserContext).state;
 
     // grab team data on page load
+    // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
-        axios.get(`${URL}/teams`)
+        axios.get(`${URL}/leaderboard/11`)
             .then(
                 r => setTeamData(r.data)
             )
@@ -46,17 +47,7 @@ export default function Leaderboard() {
 
     const fetchFilteredTeams = async () => {
         const shownTeams = teamData.filter(teamObj => teamObj.sport_id === currentSport.id);
-        setIsLoading(true);
-        Promise.all(shownTeams.map(async teamObj => {
-            const result = await axios.get(`${URL}/teams/${teamObj.id}`)
-            return result.data;
-        }))
-        .then(
-            result => {
-                setTeamsFilteredBySport(result);
-                setIsLoading(false);
-            }
-        )
+        setTeamsFilteredBySport(shownTeams);
     }
 
     // show top scoring teams for region
@@ -90,7 +81,7 @@ export default function Leaderboard() {
             {isLoading ? <Spinner /> : 
             teamsFilteredBySport && teamsFilteredBySport.length > 1 ?
             <List>
-                {teamsFilteredBySport.sort((a, b) => (a.team_score > b.team_score) ? -1 : 1)
+                {teamsFilteredBySport.sort((a, b) => (a.score > b.score) ? -1 : 1)
                         .map((item, index) => (
                             <ListItem key={index + "teamSportScoreObjs"}>
                                 <Left style={{flexDirection: 'column'}}>
@@ -98,8 +89,8 @@ export default function Leaderboard() {
                                     <Text>Score:</Text>
                                 </Left>
                                 <Body style={{flexDirection: 'column'}}>
-                                    <Text>{item.name}</Text>
-                                    <Text>{item.team_score}</Text>
+                                    <Text>{item.team_name}</Text>
+                                    <Text>{item.score}</Text>
                                 </Body>
                             </ListItem>
                                 ))}
