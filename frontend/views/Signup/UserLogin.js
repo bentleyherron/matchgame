@@ -45,16 +45,17 @@ export default function SignupPageOne({ navigation }) {
               <Input 
                 placeholder='Password'
                 name="password"
+                secureTextEntry={true}
                 onChangeText={text => setPassword(text)}/>
             </Item>
           </Form>
           <Button
               rounded
-              onPress={() => {postLogin()}}>
+              style={{marginLeft: 20, marginRight: 20, marginTop: 15, padding: 20, justifyContent: 'center'}}
+              onPress={() => {navigation.navigate('Feed')}}>
               <Text>LOGIN</Text>
           </Button>
-          <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20}}>Don't have an account? <Text note style={{color: 'blue'}}>Register Here</Text></Text>
-          {isLogginIn ? <Spinner /> : null}
+          <Text note onPress={() => navigation.navigate('Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Don't have an account? <Text note style={{color: 'blue'}}>Register here</Text></Text>
         </Content>
       </Container>
     );
