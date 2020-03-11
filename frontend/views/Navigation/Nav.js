@@ -1,5 +1,7 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { Footer, FooterTab, Button, Text, Icon } from 'native-base';
+import { withTheme } from 'react-native-elements';
 export default function Nav( {state, navigation}) {
   const currentRouteKey = state.history[state.history.length - 1];
   const {routes} = state;
@@ -10,31 +12,39 @@ export default function Nav( {state, navigation}) {
   } else {
     routeName = null;
   }
+
+  const styles = StyleSheet.create({
+    footerContainer: {
+      backgroundColor: '#0065ff'
+    },
+    navIcon: {
+      color: 'white'
+    }
+  })
+
   return (
-      <Footer>
-        <FooterTab>
+      <Footer style={styles.footerContainer}>
+        <FooterTab style={styles.footerContainer}>
           <Button onPress={() => {navigation.navigate('Feed')}}>
-            <Icon type="FontAwesome" name="fire"/>
-            <Text>Feed</Text>
+            <Icon type="FontAwesome" name="home" style={styles.navIcon} />
           </Button>
           {routeName === "Feed" ?
-          <Button onPress={() => {
+          <Button bordered rounded small light onPress={() => {
             navigation.navigate('Challenge Create')
             }}>
-            <Icon type="AntDesign" name="pluscircle" />
+              <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW CHALLENGE</Text>
           </Button>
           :
           routeName === "Profile" ?
-          <Button onPress={() => {
+          <Button bordered rounded small light onPress={() => {
             navigation.navigate('Team Create')
             }}>
-            <Icon type="AntDesign" name="pluscircle" />
+            <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW TEAM</Text>
           </Button>
           :
           null }
-          <Button onPress={() => {navigation.navigate('Profile')}}>
-            <Icon type="FontAwesome" name='user'/>
-            <Text>Profile</Text>
+          <Button style={styles.navIcon} onPress={() => {navigation.navigate('Profile')}}>
+            <Icon type="FontAwesome" name='user' style={styles.navIcon} />
           </Button>
         </FooterTab>
       </Footer>

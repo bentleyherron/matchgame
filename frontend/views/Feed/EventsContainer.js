@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { Content, Header, Tab, Tabs, Container, Spinner } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
@@ -56,10 +56,14 @@ export default function EventsContainer({page}) {
         getAllEventInfo();
     },[])
 
-    console.log(currentEventPageInfo);
+    const styles = StyleSheet.create({
+        eventsContainer: {
+            backgroundColor: '#fcfbfc'
+        }
+    });
 
     return (
-        <Container>
+        <Container style={styles.eventsContainer}>
             { eventArray && !eventClicked ? (
                 <FlatList
                 style={{padding: 5}}
