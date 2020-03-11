@@ -6,7 +6,9 @@ import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
 export default function ProfilePage({ navigation }){
-    const { userData, sportData } = useContext(UserContext).state;
+    const {actions, state} = useContext(UserContext);
+    const {setUserData, setUserToken, setHasSignedUp} = actions;
+    const { userData, sportData } = state;
     const {totalScore, teams, userInfo, favoriteSports, teamScores} = userData;
     const {id, nickname, username, city_id, photo } = userInfo;
     const sportsList = sportData;
@@ -29,6 +31,13 @@ export default function ProfilePage({ navigation }){
         return teamObj;
     };
 
+    const logout = () => {
+        setUserData(null);
+        setHasSignedUp(false);
+        setUserToken(null);
+        navigation.navigate('Signup');
+    }
+
     useEffect(() => {
         setReducedTeamScores(getTeamScores(teamScores));
         setUniqueFavSports(getUniques(favoriteSports, "sport_id").map(item => {return {name: sportsList[item.sport_id - 1].name}}));
@@ -46,6 +55,9 @@ export default function ProfilePage({ navigation }){
     return (
         <Container>
             <Content padder>
+                <Right>
+                    <Text onPress={() => logout()}>Logout</Text>
+                </Right>
                 <Card>
                     <CardItem>
                         <Left>
