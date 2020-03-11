@@ -13,8 +13,6 @@ export default function Event({eventObject, eventClick}) {
             id,
          } = eventObject.event;
 
-    const [teamNames, setTeamNames] = useState('');
-
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const datetime = new Date(date);
     const formattedDate = `${month[datetime.getMonth()]} ${datetime.getDate()}`;
@@ -57,7 +55,7 @@ export default function Event({eventObject, eventClick}) {
                     <Thumbnail small source={require("../Profile/soccer.png")} />
                 </Left>
                  <Body>
-                    <Text>{title ? title : null}</Text>
+                    <Text>{title}</Text>
                     <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
                  <Right><Button style={styles.seeEventButton} small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>

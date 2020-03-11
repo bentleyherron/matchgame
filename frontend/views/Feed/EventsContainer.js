@@ -62,6 +62,8 @@ export default function EventsContainer({page}) {
         }
     });
 
+    console.log(currentEventPageInfo);
+
     return (
         <Container style={styles.eventsContainer}>
             { eventArray && !eventClicked ? (
@@ -79,7 +81,7 @@ export default function EventsContainer({page}) {
             ) : null}
             { eventClicked && currentEventPageInfo ? (
                 <EventPage
-                    pageContent = {currentEventPageInfo}
+                    pageContent = {currentEventPageInfo[0]}
                     eventClick={handleEventClick}
                 />
             ) : (null)
