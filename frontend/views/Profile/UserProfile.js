@@ -32,9 +32,6 @@ export default function ProfilePage({ navigation }){
     };
 
     const logout = () => {
-        setUserData(null);
-        setHasSignedUp(false);
-        setUserToken(null);
         navigation.navigate('Signup');
     }
 
