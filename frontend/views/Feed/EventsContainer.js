@@ -18,10 +18,6 @@ export default function EventsContainer({page}) {
 
     const { userData, favoriteSports } = useContext(UserContext).state;
 
-    const getEventTeams = (event_id) => {
-        return axios.get(`${URL}/events/${event_id}`)
-      }
-
     const getAllEventInfo = () => {
         // change the 11 below to ${userData.userInfo.city_id}
         axios.get(`${URL}/events/city/11`)
@@ -52,41 +48,17 @@ export default function EventsContainer({page}) {
     }, [eventClicked])
 
     useEffect(() => {
-        const getCompleteInfo = async() => {
-            const eventInfo = await getAllEventInfo();
-        }
-        getCompleteInfo();
-    },[]);
+        getAllEventInfo();
+    },[])
 
-    useEffect(() => {
-        if (eventArray) {
-            fetchEventTeamNames()
-                .then(r => {
-                    // console.log(r);
-                    setEventTeamsArray(r);
-                })
-                
-        }
-    }, [eventArray])
-
-
-    useEffect(() => {
-        if (eventTeamsArray) {
-            let newArray = [...eventArray];
-            for (let i = 0; i < eventArray.length; i++) {
-                newArray[i].teamNames = eventTeamsArray[i];
-            }
-            console.log(newArray);
-            setCompleteEventArray(newArray);
-        }
-    }, [eventTeamsArray])
+    console.log(eventArray);
 
     return (
         <Container>
             { completeEventArray && !eventClicked ? (
                 <FlatList
                 style={{padding: 5}}
-                data={completeEventArray}
+                data={eventArray}
                 renderItem={ ({ item }) => (
                     <Event
                     keyExtractor={item.id}
