@@ -32,7 +32,6 @@ export default function ChallengesContainer({setPage, route}) {
                     <Challenge
                     keyExtractor={item.id}
                     challenge={item}
-                    expandChallenge={expandChallenge}
                     setPage={setPage}
                     />
                 )}

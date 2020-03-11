@@ -7,13 +7,11 @@ export default function Challenge({ challenge, setPage }) {
             datetime,
             wager,
             message,
-            city_id,
-            is_accepted,
-            latitude,
-            longitude,
-            sport_id
+            is_accepted
            } = challenge;
-
+    
+    // If you are a captain of a team for that particular sport ID and not the team that sent it, you should be able to accept the challenge and post an event
+    
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const date = new Date(datetime);
     const formattedDate = `${month[date.getMonth()]} ${date.getDate()}`;

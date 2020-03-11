@@ -10,6 +10,8 @@ export default function TeamCreateProfile({navigation}) {
     const {teamName, teamSport, teamPhoto} = state;
     const {setTeamName, setTeamSport, imagePickerAsync} = actions;
     const [showSpinner, setShowSpinner] = useState(false);
+    console.log(sportData);
+
     useEffect(() => {
         if(teamPhoto) {
             setShowSpinner(false);

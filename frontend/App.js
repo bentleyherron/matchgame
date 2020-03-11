@@ -33,6 +33,7 @@ export default function App() {
   const [sportData, setSportData] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
   useEffect(() => {
     Font.loadAsync({
@@ -72,20 +73,22 @@ export default function App() {
           }
           );
     }
-  }, [hasSignedUp])
+  }, [hasSignedUp, shouldRefresh])
 
   const userContextValue = {
     state: {
       userData,
       hasSignedUp,
       sportData,
-      userToken
+      userToken,
+      shouldRefresh
     },
     actions: {
       setHasSignedUp,
       setUserData,
       setSportData,
-      setUserToken
+      setUserToken,
+      setShouldRefresh
     }
   }
 
@@ -97,7 +100,7 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Profile" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />

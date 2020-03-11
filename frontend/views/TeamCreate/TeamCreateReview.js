@@ -10,6 +10,7 @@ export default function TeamCreateReview( {navigation}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { teamName, teamSport, teamPhoto, teamMembers } = useContext(TeamContext).state
     const { userData, sportData, userToken } = useContext(UserContext).state;
+    const {setShouldRefresh} = useContext(UserContext).actions;
     const convertTeamMembers = (obj) => {
         const newArr = Object.keys(obj).map(item => {return {id: item, name: obj[item]}});
         return newArr;
@@ -105,7 +106,12 @@ export default function TeamCreateReview( {navigation}) {
                         setIsSubmitting(true);
                         const wasSubmitted = await postNewTeam();
                         setIsSubmitting(wasSubmitted);
-                        !wasSubmitted ? navigation.navigate('User Profile') : console.log('error in submission');
+                        if(!wasSubmitted){
+                            navigation.navigate('User Profile') 
+                            setShouldRefresh(currentState => !currentState)
+                        } else{
+                            console.log('error in submission');
+                        }
                     }}
                     >
                         <Text>Submit</Text>
