@@ -27,11 +27,13 @@ const Tab = createBottomTabNavigator();
 export default function App() {
 
   const [isFontReady, setIsFontReady] = useState(false);
-  const [isUserDataReady, setIsUserDataReady] = useState(false);
   const [isSportsDataReady, setIsSportsDataReady] = useState(false);
-  const [hasSignedUp, setHasSignedUp] = useState(true);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
   const [userData, setUserData] = useState(null);
   const [sportData, setSportData] = useState(null);
+  const [userToken, setUserToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
   useEffect(() => {
     Font.loadAsync({
@@ -42,36 +44,55 @@ export default function App() {
       setIsFontReady(true);
     }
     )
-    axios.get(`${URL}/profile/2`).then(
-      response => {
-        setUserData(response.data);
-        setHasSignedUp(true);
-        setIsUserDataReady(true)
-      });
-      
-      axios.get(`${URL}/sports`).then(
-        r => {
-          setSportData(r.data);
-          setIsSportsDataReady(true);
-        }
-        );
   }, [])
+
+  useEffect(() => {
+    if(hasSignedUp) {
+      try{
+        setIsLoading(true);
+        axios.get(`${URL}/profile/`, {
+          headers: {
+            "x-access-token": userToken
+          }
+        }).then(
+          response => {
+            setUserData(response.data);
+            setIsLoading(false)
+          });
+      }catch(err) {
+        console.log(err)
+      }
+      try{
+        axios.get(`${URL}/sports`).then(
+          r => {
+            setSportData(r.data);
+            setIsSportsDataReady(true);
+          }
+          );
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  }, [hasSignedUp, shouldRefresh])
 
   const userContextValue = {
     state: {
       userData,
       hasSignedUp,
-      sportData
+      sportData,
+      userToken,
+      shouldRefresh
     },
     actions: {
       setHasSignedUp,
       setUserData,
-      setSportData
+      setSportData,
+      setUserToken,
+      setShouldRefresh
     }
   }
-  // hasSignedUp ? "Feed" : "Signup"
-  
-  if (!isFontReady || !isUserDataReady || !isSportsDataReady) {
+
+  if (!isFontReady || isLoading) {
     return <AppLoading />;
   }
   return (
@@ -79,7 +100,7 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Feed" : "Signup"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp ? "Profile" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />

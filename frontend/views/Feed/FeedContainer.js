@@ -6,8 +6,7 @@ import ChallengesContainer from './ChallengesContainer';
 import EventsContainer from './EventsContainer';
 import Search from './SearchContainer';
 
-export default function FeedContainer(){
-
+export default function FeedContainer({route}){
     const [page, setPage] = useState(0);
 
     const styles = StyleSheet.create({
@@ -38,10 +37,13 @@ export default function FeedContainer(){
                 <Tab heading="Challenges" tabStyle={styles.tab} activeTabStyle={styles.tab}>
                     <ChallengesContainer 
                         setPage={setPage}
+                        route={route}
                     />
                 </Tab>
-                <Tab heading="Events" tabStyle={styles.tab} activeTabStyle={styles.tab}>
-                    <EventsContainer />
+                <Tab heading="Events">
+                    <EventsContainer 
+                        page={page}
+                    />
                 </Tab>
                 <Tab heading="Leaders" tabStyle={styles.tab} activeTabStyle={styles.tab}>
                     <Leaderboard />

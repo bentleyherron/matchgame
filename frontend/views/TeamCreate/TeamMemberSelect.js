@@ -17,18 +17,23 @@ export default function TeamMemberSelect({ navigation }) {
     const [userList, setUserList] = useState(null);
     const [currentUserList, setCurrentUserList] = useState(null);
 
+    const {userToken} = useContext(UserContext).state;
     const {state, actions} = useContext(TeamContext);
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
     useEffect(() => {
         if(!userList) {
-            axios.get(`${URL}/users`).then(
-                r => {
-                    setUserList(r.data);
-                    setCurrentUserList(r.data);
-                }
-            )
+            try{
+                axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}}).then(
+                    r => {
+                        setUserList(r.data);
+                        setCurrentUserList(r.data);
+                    }
+                )
+            } catch(err) {
+                console.log(err);
+            }
         }
     }, [])
 

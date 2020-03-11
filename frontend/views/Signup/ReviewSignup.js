@@ -24,22 +24,40 @@ export default function SignupPageFour({ navigation }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const postUser = async () => {
-        const url = `${URL}/users`
-        const response = await axios.post(url, userObject);
-        setUserData(response.data);
-        return response.data.id;
+        try{
+            const url = `${URL}/signup/`
+            const response = await axios.post(url, userObject);
+            console.log(response.data);
+            setUserData(response.data);
+            return response.data;
+        } catch(err) {
+            console.log(err);
+        }
     };
-    const postSports = async (id) => {
-        const url = `${URL}/favorite-sports/`;
-        const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
-        const response = await axios.post(url, sportsArrayObject);
+    const postSports = async (token) => {
+        try{
+            const url = `${URL}/favorite-sports/`;
+            const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
+            const response = await axios.post(url, sportsArrayObject, {
+                headers: {
+                    "x-access-token": token
+                }
+            });
+        } catch(err) {
+            console.log(err);
+        }
         // add error handling here
     };
 
     const postSignupData = async () => {
-        const id = await postUser();
-        postSports(id);
-        return false; // change this for error handling
+        try{
+            const data = await postUser();
+            postSports(data);
+            return false; // change this for error handling
+        } catch(err) {
+            console.log(err);
+            return true;
+        }
     }
 
     return(
@@ -134,7 +152,7 @@ export default function SignupPageFour({ navigation }) {
                         const wasSubmitted = await postSignupData();
                         setIsSubmitting(wasSubmitted);
                         setHasSignedUp(true);
-                        !wasSubmitted ? navigation.navigate('Feed') : console.log('error in submission');
+                        !wasSubmitted ? navigation.navigate('User Login') : console.log('error in submission');
                     }}
                     >
                         <Text>Submit</Text>

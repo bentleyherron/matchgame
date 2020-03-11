@@ -5,7 +5,8 @@ import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
 
 export default function UpdateCity({ navigation }) {
-    const {id, city_id}= useContext(UserContext).state.userData.userInfo
+    const {userToken, userData} = useContext(UserContext).state;
+    const {id, city_id}= userData.userInfo;
     const [newCity_Id, setNewCity_Id] = useState(null);
     const [state, setState] = useState(null);
     const [stateList, setStateList] = useState([]);
@@ -13,35 +14,55 @@ export default function UpdateCity({ navigation }) {
 
     useEffect(() => {
         setNewCity_Id(city_id);
-        axios.get(`${URL}/states/city/${city_id}`)
-            .then(r => {
-                setState(r.data[0].state_id)}
-                )
+        try{
+            axios.get(`${URL}/states/city/${city_id}`)
+                .then(r => {
+                    setState(r.data[0].state_id)}
+                    )
+        }catch(err) {
+            console.log(err);
+        }
     }, [])
 
     useEffect(() => {
-        axios.get(`${URL}/states`)
-            .then(r => setStateList(r.data))
+        try{
+            axios.get(`${URL}/states`)
+                .then(r => setStateList(r.data))
+        }catch(err) {
+            console.log(err);
+        }
     }, []);
 
     useEffect(() => {
         if (state) {
-            axios.get(`${URL}/states/${state}`)
-                .then(r => setCityList(r.data))
+            try{
+                axios.get(`${URL}/states/${state}`)
+                    .then(r => setCityList(r.data))
+            }catch(err) {
+                console.log(err);
+            }
         };
     }, [state]);
 
 
     const submitState = () => {
-        const userData = {
-            user: {
-                id,
-                city_id: newCity_Id
+        try{
+            const userData = {
+                user: {
+                    id,
+                    city_id: newCity_Id
+                }
             }
+            const url = `${URL}/users/`
+            axios.put(url, userData, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              });
+            navigation.navigate('User Profile');
+        }catch(err) {
+            console.log(err);
         }
-        const url = `${URL}/users/`
-        axios.put(url, userData);
-        navigation.navigate('User Profile');
     }
 
     if (!state) {

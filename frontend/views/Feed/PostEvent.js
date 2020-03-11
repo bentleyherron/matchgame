@@ -23,7 +23,7 @@ export default function PostEvent({
 
     const date = datetime;
     const description = message;
-    const { userData } = useContext(UserContext).state;
+    const { userData, userToken } = useContext(UserContext).state;
 
     const team_to_id = userData.teams[0].team_id;
 
@@ -45,9 +45,17 @@ export default function PostEvent({
     }
 
     const postEvent = async () => {
-        const eventUrl = `${URL}/events`;
-        const eventResponse = await axios.post(eventUrl, eventObject);
-        setPage(1);
+        try{
+            const eventUrl = `${URL}/events`;
+            const eventResponse = await axios.post(eventUrl, eventObject, {
+                headers: {
+                  "x-access-token": userToken
+                }
+              });
+            setPage(1);
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(
