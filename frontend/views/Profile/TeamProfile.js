@@ -80,7 +80,9 @@ export default function TeamProfile(){
         profileHeader: {
             marginBottom: 5,
             borderRadius: 15,
-            backgroundColor: '#fafafa',
+            backgroundColor: '#ffffff',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         profileCategories : {
             padding: 15,
@@ -88,7 +90,9 @@ export default function TeamProfile(){
         },
         profileBody: {
             borderRadius: 15,
-            padding: 15
+            padding: 15,
+            backgroundColor: '#ffffff',
+
         },
         profileBodyText: {
             justifyContent: 'center'
@@ -119,11 +123,11 @@ export default function TeamProfile(){
                 {teamSelected ? <Card style={styles.profileHeaderContainer}>
                     <CardItem style={styles.profileHeader}>
                         {teamSelected.photo ? <Left><Thumbnail large source={{uri: teamSelected.photo}} /></Left> : null}
-                        <Body>
+                        <Body style={styles.profileBodyText}>
                             <Text>{teamSelected.team_name}</Text>
                             <Text note>Members: {teamSelected.team_members.length}</Text>
                             <Text note>Score: {teamSelected.score}</Text>
-                            </Body>
+                        </Body>
                     </CardItem>
                 </Card> : null}
 

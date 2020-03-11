@@ -65,7 +65,7 @@ export default function ProfilePage({ navigation }){
             marginTop: 5,
             borderRadius: 15,
             backgroundColor: '#fafafa',
-            justifyContent: "flex-end"
+            justifyContent: "space-around"
         },
         profileHeader: {
             marginBottom: 5,
@@ -88,11 +88,11 @@ export default function ProfilePage({ navigation }){
             <Content padder>
                 <Grid>
                     <Row style={styles.profileButtons}> 
-                        <Button light rounded small><Text onPress={() => logout()}>Logout</Text></Button>
                         <Button light rounded small>
-                                <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} />
-                            </Button>
-
+                                {/* <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} /> */}
+                                <Text>Edit Profile</Text>
+                        </Button>
+                        <Button light rounded small><Text onPress={() => logout()}>Logout</Text></Button>
                     </Row>
                 </Grid>
                 <Card transparent>
