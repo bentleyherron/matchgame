@@ -18,14 +18,16 @@ export default function PostEvent({
         is_accepted,
         latitude,
         longitude,
-        sport_id
+        sport_id,
+        title
        } = challenge;
 
     const date = datetime;
     const description = message;
-    const { userData, userToken } = useContext(UserContext).state;
-
-    const team_to_id = userData.teams[0].team_id;
+    const {state, actions} = useContext(UserContext)
+    const { userData, userToken, sportData } = state;
+    const {setShouldRefresh} = actions;
+    const team_to_id = userData.teams[0].id;
 
     const eventObject = {
         eventTeams: [
@@ -33,26 +35,31 @@ export default function PostEvent({
             team_to_id
     ],
         event: {
-            team_id: 1,
             city_id,
             latitude,
             longitude,
             date,
             description,
             sport_id,
-            is_public: true
+            is_public: true,
+            wager,
+            is_accepted: false,
+            title
         }
     }
 
     const postEvent = async () => {
         try{
-            const eventUrl = `${URL}/events`;
+            const eventUrl = `${URL}/events/`;
+            console.log(eventObject);
             const eventResponse = await axios.post(eventUrl, eventObject, {
                 headers: {
                   "x-access-token": userToken
                 }
               });
             setPage(1);
+            // setShouldRefresh(currentState => !currentState);
+
         }catch(err){
             console.log(err);
         }

@@ -11,6 +11,7 @@ export default function TeamCreateReview( {navigation}) {
     const { teamName, teamSport, teamPhoto, teamMembers } = useContext(TeamContext).state
     const { userData, sportData, userToken } = useContext(UserContext).state;
     const {setShouldRefresh} = useContext(UserContext).actions;
+
     const convertTeamMembers = (obj) => {
         const newArr = Object.keys(obj).map(item => {return {id: item, name: obj[item]}});
         return newArr;
@@ -51,8 +52,6 @@ export default function TeamCreateReview( {navigation}) {
             console.log(err);
         }
     }
-
-
 
     return(
         <Container>
@@ -107,7 +106,7 @@ export default function TeamCreateReview( {navigation}) {
                         <Body>
                             <List>
                                 {teamMembers ? convertTeamMembers(teamMembers).map(member => (
-                                        <Text key={member.id+"member"}>{member.name}</Text>
+                                        <Text key={member.id+"member"}>{member ? member.name : null}</Text>
                                 )) : null}
                             </List>
                         </Body>

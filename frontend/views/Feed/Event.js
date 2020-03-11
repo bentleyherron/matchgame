@@ -46,7 +46,7 @@ export default function Event({eventObject, eventClick}) {
                     <Thumbnail small source={require("../Profile/soccer.png")} />
                 </Left>
                  <Body>
-                    <Text>{event.title}</Text>
+                    <Text>{title ? title : null}</Text>
                     <Text note>{formattedDate} · {formattedTime}</Text>
                  </Body>
                  <Right><Button small rounded onPress={() => eventClick(id)}><Text>See Event</Text></Button></Right>

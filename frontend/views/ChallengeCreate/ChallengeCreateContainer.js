@@ -88,7 +88,7 @@ export default function ChallengeCreateContainer({ navigation }) {
               city_id: userCityId,
               latitude,
               longitude,
-              title: `${sportData[sport].name} at ${location}`
+              title: `${sportData[sport - 1].name} at ${location}`
           }
       }
         const url = `${URL}/challenges`
@@ -132,7 +132,7 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
             <Item style={{paddingVertical:10, paddingRight:10}} fixedLabel >
                 <Label>Sport</Label>
-                {team ? team.sport_id ?  <Text>{team.sport_id}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
+                {team ? team.sport_id ?  <Text>{sportData[team.sport_id - 1].name}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
             </Item>
             <Item fixedLabel>
               <Label>Location</Label>

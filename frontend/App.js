@@ -57,23 +57,25 @@ export default function App() {
         }).then(
           response => {
             setUserData(response.data);
-            setIsLoading(false)
+            setIsLoading(false);
           });
       }catch(err) {
         console.log(err)
       }
-      try{
-        axios.get(`${URL}/sports`).then(
-          r => {
-            setSportData(r.data);
-            setIsSportsDataReady(true);
-          }
-          );
-      } catch(err) {
-        console.log(err);
-      }
+  }}, [hasSignedUp, shouldRefresh])
+
+  useEffect(() => {
+    try{
+      axios.get(`${URL}/sports`).then(
+        r => {
+          setSportData(r.data);
+          setIsSportsDataReady(true);
+        }
+        );
+    } catch(err) {
+      console.log(err);
     }
-  }, [hasSignedUp, shouldRefresh])
+  }, [shouldRefresh])
 
   const userContextValue = {
     state: {
@@ -92,7 +94,7 @@ export default function App() {
     }
   }
 
-  if (!isFontReady || isLoading) {
+  if (!isFontReady || isLoading || !isSportsDataReady) {
     return <AppLoading />;
   }
   return (
