@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-// import {View, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
 
 import { YellowBox } from 'react-native';
@@ -38,8 +38,6 @@ export default function TeamProfile(){
         fetchTeamProfileData();
     },[])
 
-
-
     const captainAdd = 
         <Col>
             <Button rounded>
@@ -56,10 +54,32 @@ export default function TeamProfile(){
         </Container>
         )
     }
+
+    const styles = StyleSheet.create({
+        container: {
+            paddingLeft: 15,
+            paddingRight: 15,
+            backgroundColor: '#fafafa'
+        },
+        profileHeader: {
+            marginBottom: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+        },
+        profileCategories : {
+            padding: 15,
+            fontWeight: "bold"
+        },
+        profileBody: {
+            borderRadius: 15,
+            padding: 15
+        }
+    });
+
     return (
-        <Container padder>
-            <Content padder>
-                <Item picker>
+        <Container style={styles.container}>
+            <Content padder showsVerticalScrollIndicator={false}>
+                <Item>
                         <Picker
                             mode="dropdown"
                             iosIcon={<Icon name="arrow-down" />}

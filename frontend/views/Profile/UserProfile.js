@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, FlatList }  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon, StyleProvider} from 'native-base';
+import { Container, Content, Card, CardItem, ListItem, Left, Grid, Row, Col, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon, StyleProvider} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -52,16 +52,25 @@ export default function ProfilePage({ navigation }){
 
     const styles = StyleSheet.create({
         container: {
-            padding: 15,
+            paddingLeft: 15,
+            paddingRight: 15,
             backgroundColor: '#fafafa'
+        },
+        profileButtons: {
+            marginBottom: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            justifyContent: "flex-end"
         },
         profileHeader: {
             marginBottom: 5,
             borderRadius: 15,
-            backgroundColor: '#fafafa'
+            backgroundColor: '#fafafa',
+            borderBottomWidth: 0
         },
         profileCategories : {
-            padding: 15
+            padding: 15,
+            fontWeight: "bold"
         },
         profileBody: {
             borderRadius: 15,
@@ -71,9 +80,12 @@ export default function ProfilePage({ navigation }){
 
     return (
             <Container style={styles.container}>
-            <Content padder>
+            <Content padder showsVerticalScrollIndicator={false}>
+
+                
+
                 <Card transparent style={styles.profileHeader}>
-                    <CardItem style={styles.profileHeader}>
+                    <ListItem  noBorder avatar style={styles.profileHeader}>
                         <Left>
                             {photo ? <Thumbnail large source={{uri: photo}} /> : null}
                         </Left>
@@ -82,30 +94,34 @@ export default function ProfilePage({ navigation }){
                             <Text note>{nickname}</Text>
                             <Text note>Point Total: {totalScore}</Text>
                         </Body>
-                        <Right style={styles.editIconContainer}>
-                            <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} />
+                        <Right>
+                            <Button light rounded small>
+                                <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} />
+                            </Button>
                         </Right>
-                    </CardItem>
+                    </ListItem>
                 </Card>
 
                 
                 <Card style={styles.profileBody}>
                     <H1 style={styles.profileCategories}>Sports</H1>
                     <CardItem bordered style={styles.profileBody}>
-                        {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
+                        <Body>
+                        {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"} style={{padding: 5}}>{obj.name}</Text>) : null}
+                        </Body>
                     </CardItem>
-                    <H1 style={{padding: 20}}>Teams</H1>
+                    <H1 style={styles.profileCategories}>Teams</H1>
                     {teams ? teams.map((obj, i) => (
                         <CardItem key={i + 'teamcard'} style={styles.profileBody}>
                             <Left>
-                            <Thumbnail large source={{uri: obj.photo}} />
-                                <Body>
+                                <Thumbnail large source={{uri: obj.photo}} />
+                            </Left>
+                            <Body>
                                     <Text>{obj.name}</Text>
                                     {obj.sport_id ? <Text>Sport: {sportsList[obj.sport_id - 1].name}</Text> : null}
                                     {reducedTeamScores ? <Text note>Team Point Total: {reducedTeamScores[obj.id]}</Text> : null}
                                     <Text note>Region: {obj.city_id}</Text>
-                                </Body>
-                            </Left>
+                            </Body>
                         </CardItem>
                     )):
                     null}
