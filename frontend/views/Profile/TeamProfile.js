@@ -73,6 +73,9 @@ export default function TeamProfile(){
         profileBody: {
             borderRadius: 15,
             padding: 15
+        },
+        profileBodyText: {
+            justifyContent: 'center'
         }
     });
 
@@ -91,8 +94,9 @@ export default function TeamProfile(){
                                 )) : null}
                         </Picker>
                     </Item>
-                {teamSelected ? <Card>
-                    <CardItem>
+
+                {teamSelected ? <Card style={styles.profileHeader}>
+                    <CardItem style={styles.profileHeader}>
                         <Left>
                             {/* {teamSelected.photo ? <Thumbnail large source={{uri: teamSelected.photo}} /> : null} */}
                             <Body>
@@ -103,16 +107,17 @@ export default function TeamProfile(){
                         </Left>
                     </CardItem>
                 </Card> : null}
-                {teamSelected ? <Card>
-                    <H1 style={{padding: 20}}>Captain</H1>
+
+                {teamSelected ? <Card style={styles.profileBody}>
+                    <H1 style={styles.profileCategories}>Captain</H1>
                     <CardItem bordered>
                         <Left>
                             <Thumbnail large source={{uri: teamSelected.captain.photo}} />
-                            <Body>
-                                <Text>{teamSelected.captain.username}</Text>
-                                <Text note>{teamSelected.captain.nickname}</Text>
-                            </Body>
                         </Left>
+                        <Body style={styles.profileBodyText}>
+                            <Text>{teamSelected.captain.username}</Text>
+                            <Text note>{teamSelected.captain.nickname}</Text>
+                        </Body>
                     </CardItem>
                     {/* <CardItem>
                         <Left>
@@ -128,19 +133,19 @@ export default function TeamProfile(){
                     </CardItem> */}
                     <Grid>
                         <Col>
-                            <H1 style={{padding: 20}}>Roster</H1>
+                            <H1 style={styles.profileCategories}>Roster</H1>
                         </Col>
                         {isCaptain ? captainAdd : null}
                     </Grid>
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
-                        <CardItem key={i + "team_members"} bordered>
+                        <CardItem key={i + "team_members"}>
                             <Left>
                                 <Thumbnail large source={{uri: member.photo}} />
-                                <Body>
-                                    <Text>{member.username}</Text>
-                                    <Text note>{member.nickname}</Text>
-                                </Body>
                             </Left>
+                            <Body style={styles.profileBodyText}>
+                                <Text>{member.username}</Text>
+                                <Text note>{member.nickname}</Text>
+                            </Body>
                         </CardItem>
                     )) : null}
                 </Card> : null}
