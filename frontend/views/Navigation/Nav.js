@@ -14,8 +14,7 @@ export default function Nav( {state, navigation}) {
       <Footer>
         <FooterTab>
           <Button onPress={() => {navigation.navigate('Feed')}}>
-            <Icon type="FontAwesome" name="fire"/>
-            <Text>Feed</Text>
+            <Icon type="FontAwesome" name="home"/>
           </Button>
           {routeName === "Feed" ?
           <Button onPress={() => {
@@ -34,7 +33,6 @@ export default function Nav( {state, navigation}) {
           null }
           <Button onPress={() => {navigation.navigate('Profile')}}>
             <Icon type="FontAwesome" name='user'/>
-            <Text>Profile</Text>
           </Button>
         </FooterTab>
       </Footer>

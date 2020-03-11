@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {FlatList}  from 'react-native';
-import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon} from 'native-base';
+import { StyleSheet, FlatList }  from 'react-native';
+import { Container, Content, Card, CardItem, Left, Grid, Row, Thumbnail, Body, Text, H1, Accordion, Spinner, Right, Button, Icon, StyleProvider} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -49,36 +49,54 @@ export default function ProfilePage({ navigation }){
             </Container>
         )
     }
+
+    const styles = StyleSheet.create({
+        container: {
+            padding: 15,
+            backgroundColor: '#fafafa'
+        },
+        profileHeader: {
+            marginBottom: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa'
+        },
+        profileCategories : {
+            padding: 15
+        },
+        profileBody: {
+            borderRadius: 15,
+            padding: 15
+        }
+    });
+
     return (
-        <Container>
+            <Container style={styles.container}>
             <Content padder>
-                <Card>
-                    <CardItem>
+                <Card transparent style={styles.profileHeader}>
+                    <CardItem style={styles.profileHeader}>
                         <Left>
                             {photo ? <Thumbnail large source={{uri: photo}} /> : null}
-                            <Body>
-                                <Text>{username}</Text>
-                                <Text note>{nickname}</Text>
-                                <Text note>Point Total: {totalScore}</Text>
-                            </Body>
                         </Left>
-                        <Right>
-                            <Button onPress={() => navigation.navigate('User Update')}>
-                                <Icon type="AntDesign" name="edit" />
-                            </Button>
+                        <Body>
+                            <Text>{username}</Text>
+                            <Text note>{nickname}</Text>
+                            <Text note>Point Total: {totalScore}</Text>
+                        </Body>
+                        <Right style={styles.editIconContainer}>
+                            <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} />
                         </Right>
                     </CardItem>
                 </Card>
 
                 
-                <Card>
-                    <H1 style={{padding: 20}}>Sports</H1>
-                    <CardItem bordered style={{flexDirection: 'column', justifyContent:"flex-start", alignItems:"flex-start"}}>
+                <Card style={styles.profileBody}>
+                    <H1 style={styles.profileCategories}>Sports</H1>
+                    <CardItem bordered style={styles.profileBody}>
                         {uniqueFavSports.length ? uniqueFavSports.map((obj, i) => <Text key={i + "favSport"}>{obj.name}</Text>) : null}
                     </CardItem>
                     <H1 style={{padding: 20}}>Teams</H1>
                     {teams ? teams.map((obj, i) => (
-                        <CardItem key={i + 'teamcard'}>
+                        <CardItem key={i + 'teamcard'} style={styles.profileBody}>
                             <Left>
                             <Thumbnail large source={{uri: obj.photo}} />
                                 <Body>
@@ -91,13 +109,10 @@ export default function ProfilePage({ navigation }){
                         </CardItem>
                     )):
                     null}
-                {/* 
-                <H1 style={{padding: 20}}>Record</H1>
-                <CardItem>
-                    <Accordion dataArray={dataArray} expanded={0}/>
-                </CardItem> */}
                 </Card>
             </Content>
-        </Container>
+            </Container>
+       
     );
+
 }
