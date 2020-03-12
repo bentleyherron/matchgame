@@ -17,7 +17,6 @@ export default function SignupPageOne({ navigation }) {
     useEffect(() => {
       if(hasSignedUp) {
         setUserToken(null);
-        setUserData(null);
         setHasSignedUp(false);
       }
     }, [])

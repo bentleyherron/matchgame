@@ -166,7 +166,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
                 <Text note>{formattedDate} · {formattedTime}</Text>
                 <Text note>{city_state}</Text>
               </Body>
-              <Right><Thumbnail small source={{uri: photo}}></Thumbnail></Right>
+              {photo ? <Right><Thumbnail small source={{uri: photo}}></Thumbnail></Right> : null}
             </CardItem>
             <CardItem bordered style={styles.eventCategoryContainer}>
               <Body>
