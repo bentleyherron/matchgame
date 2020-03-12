@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, StatusBar} from 'react-native';
 import { Header, Grid, Row, Col, Left, Body, Right, Button, Text } from 'native-base';
+import { withTheme } from 'react-native-elements';
 export default function ProfileHeader({navigation}) {
 
     const styles = StyleSheet.create({
         headerContainer : {
-            height: 120, 
-            flexDirection: 'column',
-            marginTop:StatusBar.currentHeight, 
+            height: 130, 
+            flexDirection: 'column', 
+            marginTop:StatusBar.currentHeight,
             paddingTop: 35,
             borderWidth:1,
             backgroundColor: '#0065ff',
@@ -16,7 +17,7 @@ export default function ProfileHeader({navigation}) {
         },
         logoContainer : {
             justifyContent: 'center',
-            paddingBottom: 11
+            paddingBottom: 1
         },
         matchgameLogo: {
             fontSize: 25,
@@ -24,10 +25,14 @@ export default function ProfileHeader({navigation}) {
             color: 'white',
         },
         profileButtonsContainer : {
+            height: 50,
             justifyContent: 'space-around',
             paddingBottom: 3,
             backgroundColor: '#1551a9',
             marginLeft: 0
+        },
+        profileButtonText : {
+            color: 'white'
         }
     });
 
@@ -39,10 +44,10 @@ export default function ProfileHeader({navigation}) {
                 </Row>
                 <Row style={styles.profileButtonsContainer}>
                     <Button transparent onPress={() => navigation.navigate('User Profile')}>
-                        <Text uppercase={false}>Your Profile</Text>
+                        <Text style={styles.profileButtonText} uppercase={false}>Your Profile</Text>
                     </Button>
                     <Button transparent onPress={() => navigation.navigate('Team Profile')}>
-                        <Text uppercase={false}>
+                        <Text style={styles.profileButtonText} uppercase={false}>
                             Your Teams
                         </Text>
                     </Button>
