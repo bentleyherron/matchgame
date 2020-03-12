@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right } from 'native-base';
+import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right, Icon } from 'native-base';
 
 export default function EventPage({pageContent, eventClick}) {
 
@@ -45,6 +45,10 @@ export default function EventPage({pageContent, eventClick}) {
           paddingRight: 15,
           backgroundColor: '#fafafa'
       },
+      returnButton: {
+        margin: 10,
+        justifyContent: 'center'
+      },
       profileHeaderContainer : {
           marginBottom: 15,
           borderRadius: 15,
@@ -54,8 +58,10 @@ export default function EventPage({pageContent, eventClick}) {
           borderRadius: 15,
           backgroundColor: '#fafafa',
       },
-      eventCategories : {
-          padding: 15,
+      eventCategoryContainer : {
+        paddingBottom: 15
+      },
+      eventCategoryTitle : {
           fontWeight: "bold"
       },
       eventBody: {
@@ -64,6 +70,17 @@ export default function EventPage({pageContent, eventClick}) {
       },
       profileBodyText: {
           justifyContent: 'center'
+      },
+      eventButtonsRow: {
+        justifyContent: 'space-around',
+        margin: 10
+      },
+      eventButton: {
+        backgroundColor: '#02A456'
+      },
+      eventTeamText: {
+        alignItems: 'center',
+        justifyContent: 'center'
       }
   });
 
@@ -71,53 +88,60 @@ export default function EventPage({pageContent, eventClick}) {
 
     return (
       <Container style={styles.container}>
-        <Header>
-            <Button rounded onPress={() => eventClick()}><Text>Back</Text></Button>
-        </Header>
-        <Content padder>
+        
+        <Content padder showsVerticalScrollIndicator={false}>
+          <Button bordered rounded style={styles.returnButton} onPress={() => eventClick()}><Text>Return to Event Feed</Text></Button>
           <Card style={styles.eventBody}>
-            <CardItem header bordered>
+            <CardItem header bordered style={styles.eventCategoryContainer}>
               <Body>
-                <Text>{title}</Text>
+                <Text style={styles.eventCategoryTitle}>{title}</Text>
                 <Text note>{formattedDate} · {formattedTime}</Text>
                 <Text note>{city_state}</Text>
               </Body>
-              <Right><Thumbnail source={{uri: photo}}></Thumbnail></Right>
+              <Right><Thumbnail small source={{uri: photo}}></Thumbnail></Right>
             </CardItem>
-            <CardItem bordered>
+            <CardItem bordered style={styles.eventCategoryContainer}>
               <Body>
-                <Text>Points Wagered:</Text>
+                <Text style={styles.eventCategoryTitle}>Points Wagered:</Text>
               </Body>
-              <Right><H2>{wager}</H2></Right>
+              <Right><Text>{wager}</Text></Right>
             </CardItem>
-            <CardItem header>
-              <Text>Teams</Text>
+            <CardItem>
+              <Text style={styles.eventCategoryTitle}>Teams</Text>
             </CardItem>
-            <CardItem bordered> 
-              <Left>
-                <Body>
-                  <Thumbnail source={{uri: eventTeams[0].eventTeam.photo}}></Thumbnail>
-                  <Text>{eventTeams[0].eventTeam.team_name}</Text>
+            <CardItem> 
+              <Left style={styles.eventTeamText}>
+                <Body style={styles.eventTeamText}>
+                  {eventTeams[0].eventTeam.photo ? (
+                    <Thumbnail source={{uri: eventTeams[0].eventTeam.photo}}></Thumbnail>) : <Thumbnail source={require("../Profile/soccer.png")}></Thumbnail> }
+                    <Text>{eventTeams[0].eventTeam.team_name}</Text>
                 </Body>
               </Left>
-              <Right>
+              <Right style={styles.eventTeamText}>
                 <Body>
-                  <Thumbnail source={{uri: eventTeams[1].eventTeam.photo}}></Thumbnail>
-                  <Text>{eventTeams[1].eventTeam.team_name}</Text>
+                  {eventTeams[1].eventTeam.photo ? (
+                      <Thumbnail source={{uri: eventTeams[1].eventTeam.photo}}></Thumbnail>
+                  ) : <Thumbnail source={require("../Profile/soccer.png")}></Thumbnail>}
+                    <Text>{eventTeams[1].eventTeam.team_name}</Text>
                 </Body>
-                </Right>
+              </Right>
             </CardItem>
             <CardItem>
               <Body>
-                <Text>Event Details</Text>
+                <Text style={styles.eventCategoryTitle}>Event Details</Text>
                 <Text note>
                   {description}
                 </Text>
               </Body>
             </CardItem>
           </Card>
-          <Button rounded><Text>Map Location</Text></Button>
-          <Button rounded><Text>Cancel</Text></Button>
+          <Grid>
+            <Row style={styles.eventButtonsRow}>
+              <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
+              <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button>
+            </Row>
+          </Grid>
+          
         </Content>
       </Container>
     );
