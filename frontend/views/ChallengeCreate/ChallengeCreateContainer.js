@@ -186,6 +186,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                 name="location"
                 onChangeText={text => setLocation(text)}
                 onSubmitEditing={async () => getGoogleLocation(location)}
+                onBlur={async () => getGoogleLocation(location)}
                 />
             </Item>
             {googleData ? 

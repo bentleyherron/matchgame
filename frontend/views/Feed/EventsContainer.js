@@ -69,7 +69,7 @@ export default function EventsContainer({page}) {
             backgroundColor: '#fcfbfc'
         }
     });
-
+    console.log(eventArray);
     if(isLoading) {
         return (
             <Container>

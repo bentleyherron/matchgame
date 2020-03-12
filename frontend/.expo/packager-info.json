@@ -1,17 +1,9 @@
 {
-  "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-<<<<<<< HEAD
-  "packagerPid": 5299,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null,
-=======
-  "packagerPid": 2157,
-  "expoServerNgrokUrl": "https://a6-rzd.anonymous.frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.a6-rzd.anonymous.frontend.exp.direct",
-  "ngrokPid": 2176,
->>>>>>> fe9327968f8152151f64ee6a2b4dddae31602372
-  "webpackServerPort": null
+  "devToolsPort": 19002,
+  "packagerPort": 19003,
+  "packagerPid": 6257
 }

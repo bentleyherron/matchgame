@@ -38,7 +38,7 @@ export default function SignupPageTwo({ navigation }) {
                 
 
                 
-                <Button primary rounded style={styles.pickPhotoButton} onPress={() => {openImagePicker();setShowSpinner(true)}}>
+                <Button primary rounded style={styles.pickPhotoButton} onPress={() => openImagePicker()}>
                     <Text>Upload</Text>
                 </Button>
             </Content>
