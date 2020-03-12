@@ -115,10 +115,10 @@ export default function SearchContainer() {
     return (
         <Content>
             {isSearching ? (
-                <Header searchBar rounded>
+                <Header searchBar>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search" value={input} onChangeText={setInput} />
+                        <Input  value={input} onChangeText={setInput} />
                         <Button transparent onPress={() => getFakeSearch(input)}>
                             <Text>Search</Text>
                         </Button>
