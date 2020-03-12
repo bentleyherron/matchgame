@@ -78,7 +78,7 @@ export default function SignupPageOne({ navigation }) {
                 placeholder='Email'
                 name="email"
                 onChangeText={text => setEmail(text)}
-                onSubmitEditing={async () => validateEmail()}
+                onBlur={async () => validateEmail()}
                 />
             </Item>
             <Item fixedLabel success={usernameError}>
@@ -86,7 +86,7 @@ export default function SignupPageOne({ navigation }) {
                 name="username"
                 placeholder='User Name'
                 onChangeText={text => setUsername(text)}
-                onSubmitEditing={async () => validateUsername()}
+                onBlur={async () => validateUsername()}
                 />
             </Item>
             <Item fixedLabel>
@@ -100,7 +100,8 @@ export default function SignupPageOne({ navigation }) {
                 placeholder='Password'
                 name="password"
                 secureTextEntry={true}
-                onChangeText={text => setPassword(text)}/>
+                onChangeText={text => setPassword(text)}
+                />
             </Item>
             <Item selected={true}
                   onPress={() => setAgreedToTerms(!agreedToTerms)}
