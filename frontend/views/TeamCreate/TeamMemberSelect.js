@@ -24,6 +24,7 @@ export default function TeamMemberSelect({ navigation }) {
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
+    // make add team member and remove team member individual buttons
     useEffect(() => {
         if(!userList) {
             axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
@@ -78,7 +79,7 @@ export default function TeamMemberSelect({ navigation }) {
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search" value={searchInput} onChangeText={setSearchInput} />
+                        <Input placeholder="Search" value={searchInput} onChangeText={setSearchInput} onSubmitEditing={() => filterUsers(searchInput)} />
                         <Button transparent onPress={() => filterUsers(searchInput)}>
                             <Text>Search</Text>
                         </Button>

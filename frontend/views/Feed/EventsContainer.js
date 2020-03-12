@@ -13,10 +13,13 @@ export default function EventsContainer({page}) {
     const [eventClicked, setEventClicked] = useState(false);
     const [eventIdClicked, setEventIdClicked] = useState(null);
     const [currentEventPageInfo, setCurrentEventPageInfo] = useState(null);
+    const [resetPage, setResetPage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { userData, favoriteSports, userToken } = useContext(UserContext).state;
 
     const getAllEventInfo = () => {
+        setIsLoading(true);
         axios.get(`${URL}/events/city/${userData.userInfo.city_id}`, {
             headers: {
                 "x-access-token": userToken
@@ -24,6 +27,7 @@ export default function EventsContainer({page}) {
             })
         .then((response) => {
             setEventArray(response.data)
+            setIsLoading(false);
         })
         .catch(() => {
             Toast.show({
@@ -58,13 +62,21 @@ export default function EventsContainer({page}) {
 
     useEffect(() => {
         getAllEventInfo();
-    },[])
+    },[resetPage, page])
 
     const styles = StyleSheet.create({
         eventsContainer: {
             backgroundColor: '#fcfbfc'
         }
     });
+
+    if(isLoading) {
+        return (
+            <Container>
+                <Spinner />
+            </Container>
+        )
+    }
 
     return (
         <Container style={styles.eventsContainer}>
@@ -85,6 +97,7 @@ export default function EventsContainer({page}) {
                 <EventPage
                     pageContent = {currentEventPageInfo[0]}
                     eventClick={handleEventClick}
+                    resetPage={setResetPage}
                 />
             ) : (null)
             }

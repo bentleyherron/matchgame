@@ -6,7 +6,7 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 
-export default function ChallengesContainer({setPage, route}) {
+export default function ChallengesContainer({setPage, route, page}) {
     const [challengeArray, setChallengeArray] = useState(null);
     
     const { userData, favoriteSports, userToken } = useContext(UserContext).state;
@@ -29,7 +29,7 @@ export default function ChallengesContainer({setPage, route}) {
                 navigation.navigate('Signup')
             }, 5000)
         })
-    },[route.params])
+    },[route.params, page])
 
     return (
         <Container>

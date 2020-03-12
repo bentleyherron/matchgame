@@ -184,7 +184,7 @@ export default function UserUpdate({ navigation }) {
                             </Button>
                         </Body>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <Left>
                             <Text>
                                 Favorite Sports:
@@ -195,8 +195,8 @@ export default function UserUpdate({ navigation }) {
                                 <Text>Update Favorite Sports</Text>
                             </Button>
                         </Body>
-                    </ListItem>
-                    <ListItem>
+                    </ListItem> */}
+                    {/* <ListItem>
                         <Left>
                             <Label>Delete Account</Label>
                         </Left>
@@ -205,7 +205,7 @@ export default function UserUpdate({ navigation }) {
                                 <Text>Submit</Text>
                             </Button>
                         </Body>
-                    </ListItem>
+                    </ListItem> */}
                 </List>
                 {isSubmitting ? <Spinner /> : null}
             </Content>

@@ -8,13 +8,6 @@ import SignupContext from './SignupContext';
 export default function SignupPageTwo({ navigation }) {
     const { openImagePicker, setSelectedImage } = useContext(SignupContext).actions;
     const { selectedImage } = useContext(SignupContext).state;
-    const [showSpinner, setShowSpinner] = useState(false);
-
-    useEffect(() => {
-        if(selectedImage) {
-            setShowSpinner(false);
-        }
-    }, [selectedImage])
 
     const styles = StyleSheet.create({
         contentContainer: {
@@ -37,7 +30,6 @@ export default function SignupPageTwo({ navigation }) {
     return(
         <Container>
             <Content style={styles.contentContainer}>
-                {showSpinner && selectedImage ? <Spinner /> : null}
                 <Card transparent style={styles.profilePhotoContainer}>
                     <CardItem transparent style={styles.profilePhotoContainer}>
                         {selectedImage ? <Thumbnail large source={{ uri: selectedImage }} /> : null}
@@ -49,7 +41,6 @@ export default function SignupPageTwo({ navigation }) {
                 <Button primary rounded style={styles.pickPhotoButton} onPress={() => {openImagePicker();setShowSpinner(true)}}>
                     <Text>Upload</Text>
                 </Button>
-                
             </Content>
             <Footer>
                 <FooterTab>
