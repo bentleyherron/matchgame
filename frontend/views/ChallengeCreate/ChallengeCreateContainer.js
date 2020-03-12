@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import {StyleSheet} from 'react-native';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
@@ -101,8 +102,17 @@ export default function ChallengeCreateContainer({ navigation }) {
       }catch(err) {
         console.log(err);
       }
-      
   }
+
+  const styles = StyleSheet.create({
+    postChallengeButton: {
+      margin: 15,
+      backgroundColor: '#02A456',
+      justifyContent: 'center'
+    }
+  });
+
+
 
     return(
         <Container>
@@ -208,8 +218,8 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
           </Form>
         </Content>
-        <Button onPress={() => postChallenge()}>
-          <Text>Post Challenge</Text>
+        <Button rounded style={styles.postChallengeButton} onPress={() => postChallenge()}>
+          <Text>POST CHALLENGE</Text>
         </Button>
 
       </Container>

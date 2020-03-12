@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
+import {StyleSheet} from 'react-native';
 import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right } from 'native-base';
 import {FlatList} from 'react-native';
 
@@ -47,9 +48,16 @@ export default function TeamMemberSelect({ navigation }) {
         return newArr;
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            backgroundColor: '#fafafa'
+        },
+
+    });
+
     return(
         <Container>
-            <Content>
+            <Content style={styles.container}>
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -59,7 +67,7 @@ export default function TeamMemberSelect({ navigation }) {
                         </Button>
                     </Item>
                 </Header>
-                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
+                    {/* <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1> */}
                     <FlatList
                         data={currentUserList}
                         renderItem={ ({ item }) => (
@@ -94,14 +102,14 @@ export default function TeamMemberSelect({ navigation }) {
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                    <Text>PREV</Text>
+                    <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
                     onPress={() => {navigation.navigate('teamReview')}}
                     >
-                    <Text>NEXT</Text>
+                    <Text style={{fontSize: 15}}>NEXT</Text>
                     </Button>
                 </FooterTab>
             </Footer>

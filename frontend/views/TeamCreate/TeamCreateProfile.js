@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Content, Form, Item, Input, Picker, Spinner, Text, Button, Icon, Footer, FooterTab, Left, Right} from 'native-base';
-import {Image} from 'react-native';
+import {Container, Content, Form, Item, Input, Picker, Spinner, Text, Button, Icon, Footer, FooterTab, Body, Left, Right, Thumbnail} from 'native-base';
+import {Image, StyleSheet} from 'react-native';
 import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
 
@@ -17,6 +17,17 @@ export default function TeamCreateProfile({navigation}) {
         }
     })
     console.log(teamSport);
+
+    const styles = StyleSheet.create({
+        pickPhotoButton: {
+            justifyContent: 'center',
+            backgroundColor: '#02A456'
+        },
+        teamPhoto: {
+            marginRight: 15
+        }
+    });
+
     return(
         <Container>
         <Content>
@@ -41,14 +52,14 @@ export default function TeamCreateProfile({navigation}) {
                     </Picker>
                 </Item>
                 <Item style={{paddingTop: 10, paddingBottom: 10}}>
-                    <Left>
-                        <Button primary onPress={() => {imagePickerAsync();setShowSpinner(true)}} >
+                    <Body>
+                        <Button rounded style={styles.pickPhotoButton} onPress={() => {imagePickerAsync();setShowSpinner(true)}} >
                             <Text>Pick a team photo</Text>
                         </Button>
-                    </Left>
+                    </Body>
                     <Right>
                         {showSpinner && teamPhoto ? <Spinner /> : null}
-                        {teamPhoto ? <Image style={{width: 100, height: 100, marginRight: 10}} source={{uri: teamPhoto}} /> : null}
+                        {teamPhoto ? <Thumbnail large style={styles.teamPhoto} source={{uri: teamPhoto}} /> : null}
                     </Right>
                 </Item>
             </Form>
@@ -61,7 +72,7 @@ export default function TeamCreateProfile({navigation}) {
                 navigation.navigate('teamMemberSelect'); 
             }}
             >
-              <Text>NEXT</Text>
+              <Text style={{fontSize: 15}}>NEXT</Text>
             </Button>
           </FooterTab>
         </Footer>
