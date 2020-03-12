@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
-import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner, Thumbnail, ListItem} from 'native-base';
+import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner, Thumbnail, ListItem, Icon} from 'native-base';
 import {URL} from 'react-native-dotenv';
 import axios from 'axios';
 

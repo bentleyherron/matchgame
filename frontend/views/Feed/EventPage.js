@@ -17,7 +17,8 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
         wager,
         title,
         latitude,
-        longitude
+        longitude,
+        winner_id
     } = pageContent.event;
 
     const {eventTeams} = pageContent;
@@ -190,6 +191,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
                 <Text note>
                   {description}
                 </Text>
+                {winner_id ? <Text note>Winner: {eventTeams.find(element => element.eventTeam.team_id === winner_id).eventTeam.team_name}</Text> : null}
               </Body>
             </CardItem>
           </Card>

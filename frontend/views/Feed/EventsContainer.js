@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
 import { FlatList, StyleSheet } from 'react-native';
-import { Content, Header, Tab, Tabs, Container, Spinner, Toast } from 'native-base';
+import { Content, Header, Tab, Tabs, Container, Spinner, Toast, Icon } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
