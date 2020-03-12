@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Image } from 'react-native';
-import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner } from 'native-base';
+import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Thumbnail } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import SignupContext from './SignupContext';
@@ -156,7 +156,7 @@ export default function SignupPageFour({ navigation }) {
                             <Text>Picture:</Text>
                         </Left>
                         <Body>
-                            <Image style={{width: 100, height: 100}} source={{uri: selectedImage}} />
+                            <Thumbnail large source={{uri: selectedImage}} />
                         </Body>
                     </ListItem>
                 </List>
@@ -167,7 +167,7 @@ export default function SignupPageFour({ navigation }) {
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                        <Text>PREV</Text>
+                        <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
@@ -176,7 +176,7 @@ export default function SignupPageFour({ navigation }) {
                         postSignupData();
                     }}
                     >
-                        <Text>Submit</Text>
+                        <Text style={{fontSize: 15}}>SUBMIT</Text>
                     </Button>
                 </FooterTab>
             </Footer>

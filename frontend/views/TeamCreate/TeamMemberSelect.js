@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right, Toast } from 'native-base';
+import {StyleSheet} from 'react-native';
+import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right, Toast } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
@@ -54,9 +55,26 @@ export default function TeamMemberSelect({ navigation }) {
         return newArr;
     }
 
+    const styles = StyleSheet.create({
+        container: {
+            backgroundColor: '#fafafa'
+        },
+        userSelectContainer: {
+            marginLeft: 15,
+            marginRight: 15,
+            padding: 15,
+            backgroundColor: '#ffffff',
+            borderRadius: 15
+        },
+        userSelectContent: {
+            flexDirection: 'column',
+            backgroundColor: '#ffffff',
+        }
+    });
+
     return(
         <Container>
-            <Content>
+            <Content style={styles.container}>
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -66,6 +84,31 @@ export default function TeamMemberSelect({ navigation }) {
                         </Button>
                     </Item>
                 </Header>
+                    <Card style={styles.userSelectContainer}>
+                        <CardItem>
+                            <Text style={{fontWeight: 'bold'}}>Users Selected</Text>
+                        </CardItem>
+                        <CardItem>
+                            <FlatList
+                                data={convertTeamMembers(teamMembers)}
+                                renderItem={ ({ item }) => (
+                                    <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
+                                        <Left>
+                                            <Text>
+                                                {item.name}
+                                            </Text>
+                                        </Left>
+                                        <Right>
+                                            <Button rounded warning small onPress={() => handleTeamMemberAdd(item.id, item.name)}>
+                                                <Text>
+                                                    Remove
+                                                </Text>
+                                            </Button>
+                                        </Right>
+                                    </Item>
+                                )} />
+                        </CardItem>
+                    </Card>
                 {isLoading ? <Spinner /> : 
                 <Content>
                     <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
@@ -78,41 +121,20 @@ export default function TeamMemberSelect({ navigation }) {
                             handleSelect={handleTeamMemberAdd}
                             />
                         )} />
-                    <H1 style={{textAlign: "center", padding: 10}}>Users Selected</H1>
-                    <FlatList
-                        data={convertTeamMembers(teamMembers)}
-                        renderItem={ ({ item }) => (
-                            <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
-                                <Left>
-                                    <Text>
-                                        {item.name}
-                                    </Text>
-                                </Left>
-                                <Right>
-                                    <Button onPress={() => handleTeamMemberAdd(item.id, item.name)}>
-                                        <Text>
-                                            Remove
-                                        </Text>
-                                    </Button>
-                                </Right>
-                            </Item>
-                        )} />
-                </Content>
-                }
-            </Content>
+                </Content>}
         <Footer>
                 <FooterTab>
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                    <Text>PREV</Text>
+                    <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
                     onPress={() => {navigation.navigate('teamReview')}}
                     >
-                    <Text>NEXT</Text>
+                    <Text style={{fontSize: 15}}>NEXT</Text>
                     </Button>
                 </FooterTab>
             </Footer>
