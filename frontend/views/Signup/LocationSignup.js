@@ -34,25 +34,23 @@ export default function LocationSignup({ navigation }) {
     }, []);
 
     useEffect(() => {
-        async function fetchCityData() {
-            try{
-                setIsLoading(true)
-                const url = `${URL}/states/${state}`;
-                const results = await axios.get(url);
-                setCityList(results.data);
-                setIsLoading(false);
-            } catch(err) {
-                Toast.show({
-                    text: "Something went wrong, redirecting to login",
-                    buttonText: "Okay"
-                })
-                setTimeout(() => {
-                    navigation.navigate('User Login')
-                }, 5000)
-            }
-        }
         if (state) {
+            setIsLoading(true);
             axios.get(`${URL}/states/${state}`)
+                .then(
+                r => {
+                    setCityList(r.data);
+                    setIsLoading(false);
+                }
+                ).catch(() => {
+                    Toast.show({
+                        text: "Something went wrong, redirecting to login",
+                        buttonText: "Okay"
+                    })
+                    setTimeout(() => {
+                        navigation.navigate('User Login')
+                    }, 5000)
+                })
         };
     }, [state]);
 

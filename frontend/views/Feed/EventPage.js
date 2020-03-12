@@ -104,12 +104,17 @@ export default function EventPage({pageContent, eventClick}) {
   }
   const[winner, setWinner] = useState(null);
   const [canSelectWinner, setCanSelectWinner] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setCanSelectWinner(maySelectWinner());
   }, [])
   // make this a post score page
   const postResults = () => {
+    if(isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
     // post scores
     axios.all(eventTeams.map(obj => {
       let currentScoreObject = {
@@ -125,12 +130,17 @@ export default function EventPage({pageContent, eventClick}) {
       .then(
         axios.put(`${URL}/scores/`, {event:{id, winner_id: winner}},{headers:{"x-access-token": userToken}})
       )
+      .then(r => {
+        setIsSubmitting(false);
+        eventClick();
+      })
       .catch(() => {
         Toast.show({
           text: "Could not submit data",
           buttonText: "Okay"
         })
       })
+    
   }
     return (
       <Container style={styles.container}>
@@ -182,8 +192,8 @@ export default function EventPage({pageContent, eventClick}) {
             </CardItem>
           </Card>
           <Grid>
+            {canSelectWinner ? 
             <Row style={styles.eventButtonsRow}>
-              {canSelectWinner ? 
               <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
@@ -193,10 +203,12 @@ export default function EventPage({pageContent, eventClick}) {
                   {eventTeams.length ? eventTeams.map((obj, index) => (
                       <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.id} key={index + 'winner'} />
                   )) : null}
-                  </Picker> : null}
+                  </Picker>
+              <Button rounded style={styles.eventButton}><Text>Submit</Text></Button>
+              {isSubmitting ? <Spinner /> : null}
               {/* <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
               <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button> */}
-            </Row>
+            </Row> : null}
           </Grid>
           
         </Content>

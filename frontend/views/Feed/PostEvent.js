@@ -27,6 +27,7 @@ export default function PostEvent({
     const {state, actions} = useContext(UserContext)
     const { userData, userToken, sportData } = state;
     const {setShouldRefresh} = actions;
+    // THIS NEEDS TO BE UPDATED TO BE WHATEVER TEAM ACCEPTED THE CHALLENGE THROUGH MODAL
     const team_to_id = userData.teams[1].id;
 
     const eventObject = {
@@ -58,7 +59,6 @@ export default function PostEvent({
               });
             setPage(1);
             setShouldRefresh(currentState => !currentState);
-
         }catch(err){
                 Toast.show({
                     text: "Unable to submit",
