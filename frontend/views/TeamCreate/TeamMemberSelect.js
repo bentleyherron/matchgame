@@ -16,6 +16,7 @@ export default function TeamMemberSelect({ navigation }) {
     const [searchInput, setSearchInput] = useState(null);
     const [userList, setUserList] = useState(null);
     const [currentUserList, setCurrentUserList] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {userToken} = useContext(UserContext).state;
     const {state, actions} = useContext(TeamContext);
@@ -59,6 +60,8 @@ export default function TeamMemberSelect({ navigation }) {
                         </Button>
                     </Item>
                 </Header>
+                {isLoading ? <Spinner /> : 
+                <Content>
                     <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
                     <FlatList
                         data={currentUserList}
@@ -88,6 +91,8 @@ export default function TeamMemberSelect({ navigation }) {
                                 </Right>
                             </Item>
                         )} />
+                </Content>
+                }
             </Content>
         <Footer>
                 <FooterTab>

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Spinner } from 'native-base';
+import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Spinner, Toast } from 'native-base';
 import SignupContext from './SignupContext';
 import UserContext from '../../UserContext';
 import axios from 'axios';
@@ -17,7 +17,6 @@ export default function SignupPageOne({ navigation }) {
 
     const postLogin = async () => {
       setIsLoggingIn(true);
-      try{
         axios.post(`${URL}/login/`, {user: {
           email,
           password
@@ -26,10 +25,12 @@ export default function SignupPageOne({ navigation }) {
           setHasSignedUp(true);
           setIsLoggingIn(false);
           navigation.navigate('Profile');
-        })
-      } catch(err) {
-        console.log(err);
-      }
+        }).catch(
+          Toast.show({
+            text: "Email and/or password are incorrect",
+            buttonText: 'Okay'
+          })
+        )
     }
     return (
       <Container>
