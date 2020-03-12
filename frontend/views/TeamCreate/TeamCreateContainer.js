@@ -13,7 +13,7 @@ const Stack =  createStackNavigator();
 
 export default function TeamCreateContainer({ navigation }) {
     const [teamName, setTeamName] = useState('');
-    const [teamSport, setTeamSport] = useState('');
+    const [teamSport, setTeamSport] = useState(1);
     const [teamPhoto, setTeamPhoto] = useState('');
     const [teamMembers, setTeamMembers] = useState({});
 
