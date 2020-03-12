@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet} from 'react-native';
 import { Header, Grid, Row, Col, Left, Body, Right, Button, Text } from 'native-base';
+import { withTheme } from 'react-native-elements';
 export default function ProfileHeader({navigation}) {
 
     const styles = StyleSheet.create({
@@ -27,6 +28,9 @@ export default function ProfileHeader({navigation}) {
             paddingBottom: 3,
             backgroundColor: '#1551a9',
             marginLeft: 0
+        },
+        profileButtonText : {
+            color: 'white'
         }
     });
 
@@ -38,10 +42,10 @@ export default function ProfileHeader({navigation}) {
                 </Row>
                 <Row style={styles.profileButtonsContainer}>
                     <Button transparent onPress={() => navigation.navigate('User Profile')}>
-                        <Text uppercase={false}>Your Profile</Text>
+                        <Text style={styles.profileButtonText} uppercase={false}>Your Profile</Text>
                     </Button>
                     <Button transparent onPress={() => navigation.navigate('Team Profile')}>
-                        <Text uppercase={false}>
+                        <Text style={styles.profileButtonText} uppercase={false}>
                             Your Teams
                         </Text>
                     </Button>

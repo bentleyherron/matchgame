@@ -85,7 +85,7 @@ export default function ProfilePage({ navigation }){
 
     return (
         <Container style={styles.container}>
-            <Content padder>
+            <Content padder showsVerticalScrollIndicator={false}>
                 <Grid>
                     <Row style={styles.profileButtons}> 
                         <Button light rounded small>

@@ -71,14 +71,15 @@ export default function TeamProfile(){
             marginLeft: 10,
             marginRight: 10,
             paddingLeft: 10,
-            paddingRight: 10
+            paddingRight: 10,
+            justifyContent: 'center'
         },
         profileHeaderContainer : {
-            marginBottom: 15,
+            // marginBottom: 15,
             borderRadius: 15,
+            padding: 15
         },
         profileHeader: {
-            marginBottom: 5,
             borderRadius: 15,
             backgroundColor: '#ffffff',
             justifyContent: 'center',
@@ -126,7 +127,7 @@ export default function TeamProfile(){
                         <Body style={styles.profileBodyText}>
                             <Text>{teamSelected.team_name}</Text>
                             <Text note>Members: {teamSelected.team_members.length}</Text>
-                            <Text note>Score: {teamSelected.score}</Text>
+                            <Text note>Team Score: {teamSelected.score}</Text>
                         </Body>
                     </CardItem>
                 </Card> : null}
