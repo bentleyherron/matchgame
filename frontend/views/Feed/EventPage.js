@@ -1,18 +1,26 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right, Icon } from 'native-base';
-
+import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right, Icon, Picker, Toast } from 'native-base';
+import UserContext from '../../UserContext';
+import axios from 'axios';
+import {URL} from 'react-native-dotenv';
 export default function EventPage({pageContent, eventClick}) {
-
+  const {userToken} = useContext(UserContext).state;
+  const {teams, userInfo} = useContext(UserContext).state.userData
     const {
         city_state,
+        id,
         date,
         description,
         sport_id,
         photo,
         wager,
-        title
+        title,
+        latitude,
+        longitude
     } = pageContent.event;
+
+    console.log(teams);
 
     const {eventTeams} = pageContent;
 
@@ -84,6 +92,46 @@ export default function EventPage({pageContent, eventClick}) {
       }
   });
 
+  const maySelectWinner = () => {
+    const userCaptainTeamIds = {};
+    teams.forEach(obj => {
+      if(obj.captain_id === userInfo.id) {
+        userCaptainTeamIds[obj.id] = true;
+      }
+    });
+    const userInEventArr = eventTeams.filter(obj => userCaptainTeamIds[obj.eventTeam.id]);
+    return userInEventArr.length > 0;
+  }
+  const[winner, setWinner] = useState(null);
+  const [canSelectWinner, setCanSelectWinner] = useState(null);
+
+  useEffect(() => {
+    setCanSelectWinner(maySelectWinner());
+  }, [])
+  // make this a post score page
+  const postResults = () => {
+    // post scores
+    axios.all(eventTeams.map(obj => {
+      let currentScoreObject = {
+        score: {
+          team_id: obj.eventTeam.id,
+          event_id: obj.eventTeam.event_id,
+          score: winner === obj.eventTeam.id ? wager : wager * -1
+        }
+      }
+      return axios.post(`${URL}/scores/`, currentScoreObject, {headers:{"x-access-token": userToken}})
+    }
+      ))
+      .then(
+        axios.put(`${URL}/scores/`, {event:{id, winner_id: winner}},{headers:{"x-access-token": userToken}})
+      )
+      .catch(() => {
+        Toast.show({
+          text: "Could not submit data",
+          buttonText: "Okay"
+        })
+      })
+  }
     return (
       <Container style={styles.container}>
         
@@ -135,8 +183,19 @@ export default function EventPage({pageContent, eventClick}) {
           </Card>
           <Grid>
             <Row style={styles.eventButtonsRow}>
-              <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
-              <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button>
+              {canSelectWinner ? 
+              <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholder="Winner"
+              selectedValue={winner}
+              onValueChange={setWinner}>
+                  {eventTeams.length ? eventTeams.map((obj, index) => (
+                      <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.id} key={index + 'winner'} />
+                  )) : null}
+                  </Picker> : null}
+              {/* <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
+              <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button> */}
             </Row>
           </Grid>
           

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
-<<<<<<< HEAD
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion, Spinner, Item, Picker, Icon, Toast } from 'native-base';
-=======
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
->>>>>>> 6d552bafa0235a2b3b2983b5cc7e4cd174b106fe
+import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon, Toast } from 'native-base';
 
 import { YellowBox } from 'react-native';
 import axios from 'axios';

@@ -114,8 +114,8 @@ export default function Leaderboard() {
                                     <Text>Score:</Text>
                                 </Left>
                                 <Body style={{flexDirection: 'column'}}>
-                                    <Text>{item.team_name}</Text>
-                                    <Text>{item.score}</Text>
+                                    <Text>{item.name}</Text>
+                                    <Text>{item.team_score}</Text>
                                 </Body>
                             </CardItem>
                                 ))}
