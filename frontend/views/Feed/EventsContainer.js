@@ -74,7 +74,7 @@ export default function EventsContainer({page}) {
                 data={eventArray}
                 renderItem={ ({ item }) => (
                     <Event
-                    keyExtractor={item.id}
+                    key={item.id + "event"}
                     eventObject={item}
                     eventClick={handleEventClick}
                     />

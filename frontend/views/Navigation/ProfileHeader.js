@@ -9,6 +9,7 @@ export default function ProfileHeader({navigation}) {
             height: 130, 
             marginTop:StatusBar.currentHeight,
             flexDirection: 'column', 
+            marginTop:StatusBar.currentHeight,
             paddingTop: 35,
             borderWidth:1,
             backgroundColor: '#0065ff',

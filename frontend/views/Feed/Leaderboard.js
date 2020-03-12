@@ -18,8 +18,6 @@ export default function Leaderboard() {
 
     const {sportData, userToken, userData} = useContext(UserContext).state;
 
-    // grab team data on page load
-    // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
         axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
             headers: {
@@ -132,8 +130,8 @@ export default function Leaderboard() {
                                     </Body>
                                 </Left>
                                 <Body style={{flexDirection: 'column'}}>
-                                    <Text>{item.name}</Text>
-                                    <Text>{item.team_score}</Text>
+                                    <Text>{item.team_name}</Text>
+                                    <Text>{item.score}</Text>
                                 </Body>
                             </CardItem>)
                             )}

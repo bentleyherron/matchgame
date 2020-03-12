@@ -12,6 +12,7 @@ import { Root, Text, Container } from "native-base";
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 
+import MapPage from './views/Feed/MapPage';
 import ErrorPage from './views/Navigation/ErrorPage';
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
@@ -103,6 +104,7 @@ export default function App() {
               <Tab.Screen name="Feed" component={Feed} />
               <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
               <Tab.Screen name="Error" component={ErrorPage} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
+              <Tab.Screen name="Map" component={MapPage} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
             </Tab.Navigator>
           </UserContext.Provider>
         </Root>
