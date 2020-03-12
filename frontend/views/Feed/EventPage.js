@@ -6,6 +6,7 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 export default function EventPage({pageContent, eventClick, resetPage}) {
   const {userToken, userData} = useContext(UserContext).state;
+  const {setShouldRefresh} = useContext(UserContext).actions;
   const {teams, userInfo} = userData
     const {
         city_state,
@@ -88,6 +89,13 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
       eventTeamText: {
         alignItems: 'center',
         justifyContent: 'center'
+      },
+      eventWinner: {
+        borderRadius: 15,
+        padding: 15
+      },
+      eventWinnerLabel: {
+        fontWeight: "bold"
       }
   });
 
@@ -135,6 +143,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
         setIsSubmitting(false);
         eventClick();
         resetPage(currentState => !currentState);
+        setShouldRefresh(currentState => !currentState);
       })
       .catch(() => {
         Toast.show({
@@ -191,13 +200,14 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
                 <Text note>
                   {description}
                 </Text>
-                {winner_id ? <Text note>Winner: {eventTeams.find(element => element.eventTeam.team_id === winner_id).eventTeam.team_name}</Text> : null}
+                {winner_id ? <Text note style={styles.eventWinnerLabel}>Winner: {eventTeams.find(element => element.eventTeam.team_id === winner_id).eventTeam.team_name}</Text> : null}
               </Body>
             </CardItem>
           </Card>
-          <Grid>
             {canSelectWinner ? 
-            <Row style={styles.eventButtonsRow}>
+            <Card style={styles.eventWinner}>
+              <CardItem>
+              <Label>Who Won?</Label>
               <Picker
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
@@ -212,8 +222,8 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
               {isSubmitting ? <Spinner /> : null}
               {/* <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
               <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button> */}
-            </Row> : null}
-          </Grid>
+              </CardItem>
+            </Card> : null}
           
         </Content>
       </Container>
