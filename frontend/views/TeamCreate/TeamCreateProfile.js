@@ -15,7 +15,6 @@ export default function TeamCreateProfile({navigation}) {
         if(teamPhoto) {
             setShowSpinner(false);
         }
-    })
     }, [teamPhoto])
     
     const styles = StyleSheet.create({

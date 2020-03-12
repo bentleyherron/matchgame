@@ -29,14 +29,14 @@ export default function Nav( {state, navigation}) {
             <Icon type="FontAwesome" name="home" style={styles.navIcon} />
           </Button>
           {routeName === "Feed" ?
-          <Button bordered rounded small light onPress={() => {
+          <Button warning rounded small onPress={() => {
             navigation.navigate('Challenge Create')
             }}>
-              <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW CHALLENGE</Text>
+              <Text style={{fontSize: 10, fontWeight: 'bold', color: 'white'}}>NEW CHALLENGE</Text>
           </Button>
           :
           routeName === "Profile" ?
-          <Button bordered rounded small light onPress={() => {
+          <Button rounded small light onPress={() => {
             navigation.navigate('Team Create')
             }}>
             <Text style={{fontSize: 10, fontWeight: 'bold'}}>NEW TEAM</Text>

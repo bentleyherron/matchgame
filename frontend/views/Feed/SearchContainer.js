@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import axios from 'axios';
 import { Content, Text, Header, Input, Left, Right, Item, Icon, Button, Segment } from 'native-base';
 import { FlatList } from 'react-native';
@@ -112,8 +113,17 @@ export default function SearchContainer() {
         setIsSearching(false);
     }
 
+    const styles = StyleSheet.create({
+        searchContainer: {
+            paddingLeft: 20,
+            paddingRight: 20,
+            backgroundColor: '#fafafa'
+        },
+        
+    });
+
     return (
-        <Content>
+        <Content showsVerticalScrollIndicator={false}>
             {isSearching ? (
                 <Header searchBar>
                     <Item>
@@ -144,6 +154,7 @@ export default function SearchContainer() {
         }
             <FlatList
                 data={searchResults}
+                style={styles.searchContainer}
                 renderItem={ ({ item }) => (
                     <PlayerTeamCard
                     keyExtractor={item.id}

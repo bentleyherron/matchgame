@@ -74,7 +74,7 @@ export default function TeamMemberSelect({ navigation }) {
 
     return(
         <Container>
-            <Content style={styles.container}>
+            <Content style={styles.container} showsVerticalScrollIndicator={false}>
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -111,7 +111,6 @@ export default function TeamMemberSelect({ navigation }) {
                     </Card>
                 {isLoading ? <Spinner /> : 
                 <Content>
-                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
                     <FlatList
                         data={currentUserList}
                         renderItem={ ({ item }) => (
@@ -122,22 +121,23 @@ export default function TeamMemberSelect({ navigation }) {
                             />
                         )} />
                 </Content>}
-        <Footer>
-                <FooterTab>
-                    <Button
-                    onPress={() => {navigation.goBack()}}
-                    >
-                    <Text style={{fontSize: 15}}>PREV</Text>
-                    </Button>
-                </FooterTab>
-                <FooterTab>
-                    <Button
-                    onPress={() => {navigation.navigate('teamReview')}}
-                    >
-                    <Text style={{fontSize: 15}}>NEXT</Text>
-                    </Button>
-                </FooterTab>
-            </Footer>
+            </Content>
+            <Footer>
+                    <FooterTab>
+                        <Button
+                        onPress={() => {navigation.goBack()}}
+                        >
+                        <Text style={{fontSize: 15}}>PREV</Text>
+                        </Button>
+                    </FooterTab>
+                    <FooterTab>
+                        <Button
+                        onPress={() => {navigation.navigate('teamReview')}}
+                        >
+                        <Text style={{fontSize: 15}}>NEXT</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
         </Container>
   );
 }

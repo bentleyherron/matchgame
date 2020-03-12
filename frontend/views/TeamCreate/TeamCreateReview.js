@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { Container, Content, List, ListItem, Left, Body, Text, Spinner, Footer, FooterTab, Button, Toast } from 'native-base';
+import { Container, Content, List, ListItem, Left, Body, Text, Spinner, Footer, FooterTab, Button, Toast, Thumbnail } from 'native-base';
 import {Image} from 'react-native';
 import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
@@ -100,7 +100,7 @@ export default function TeamCreateReview( {navigation}) {
                             <Text>Picture:</Text>
                         </Left>
                         <Body>
-                            <Image style={{width: 100, height: 100}} source={{uri: teamPhoto}} />
+                            <Thumbnail large source={{uri: teamPhoto}} />
                         </Body>
                     </ListItem>
                     <ListItem>
@@ -133,7 +133,7 @@ export default function TeamCreateReview( {navigation}) {
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                        <Text>PREV</Text>
+                        <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
@@ -142,7 +142,7 @@ export default function TeamCreateReview( {navigation}) {
                         postNewTeam();
                     }}
                     >
-                        <Text>Submit</Text>
+                        <Text style={{fontSize: 15}}>SUBMIT</Text>
                     </Button>
                 </FooterTab>
             </Footer>
