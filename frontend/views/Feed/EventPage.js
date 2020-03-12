@@ -143,6 +143,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
       })
     
   }
+
     return (
       <Container style={styles.container}>
         

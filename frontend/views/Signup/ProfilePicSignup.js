@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab, Spinner } from 'native-base';
+import {StyleSheet} from 'react-native';
+import { Container, Content, Text, Button, Thumbnail, Footer, FooterTab, Spinner, Card, CardItem } from 'native-base';
 import SignupContext from './SignupContext';
 
 // figure out how to set default image if user doesn't select one
@@ -8,12 +9,37 @@ export default function SignupPageTwo({ navigation }) {
     const { openImagePicker, setSelectedImage } = useContext(SignupContext).actions;
     const { selectedImage } = useContext(SignupContext).state;
 
+    const styles = StyleSheet.create({
+        contentContainer: {
+            paddingLeft: 15,
+            paddingRight: 15,
+            backgroundColor: '#fafafa',
+        },
+        pickPhotoButton: {
+            marginTop: 15,
+            justifyContent: 'center',
+            backgroundColor: '#02A456'
+        },
+        profilePhotoContainer: {
+            marginTop: 15,
+            justifyContent: 'center',
+            backgroundColor: '#fafafa'
+        }
+    });
+
     return(
         <Container>
-            <Content contentContainerStyle={{justifyContent: "center", alignItems: "center", margin: 30}}>
-                {selectedImage ? <Thumbnail style={{margin: 30}} large source={{ uri: selectedImage }} /> : null}
-                <Button primary onPress={() => openImagePicker()}>
-                    <Text>Pick a photo</Text>
+            <Content style={styles.contentContainer}>
+                <Card transparent style={styles.profilePhotoContainer}>
+                    <CardItem transparent style={styles.profilePhotoContainer}>
+                        {selectedImage ? <Thumbnail large source={{ uri: selectedImage }} /> : null}
+                    </CardItem>
+                </Card>
+                
+
+                
+                <Button primary rounded style={styles.pickPhotoButton} onPress={() => {openImagePicker();setShowSpinner(true)}}>
+                    <Text>Upload</Text>
                 </Button>
             </Content>
             <Footer>
@@ -21,7 +47,7 @@ export default function SignupPageTwo({ navigation }) {
                     <Button
                     onPress={() => navigation.goBack()}
                     >
-                    <Text>PREV</Text>
+                    <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
@@ -30,7 +56,7 @@ export default function SignupPageTwo({ navigation }) {
                         navigation.navigate('Favorite Sports');
                     }}
                     >
-                    <Text>NEXT</Text>
+                    <Text style={{fontSize: 15}}>NEXT</Text>
                     </Button>
                 </FooterTab>
             </Footer>

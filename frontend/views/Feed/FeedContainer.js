@@ -11,8 +11,8 @@ export default function FeedContainer({route}){
 
     const styles = StyleSheet.create({
         headerContainer : {
-            height: 80,
-            paddingTop: 35,
+            height: 60,
+            paddingTop: 12,
             marginTop:StatusBar.currentHeight,
             backgroundColor: '#0065ff'
         },

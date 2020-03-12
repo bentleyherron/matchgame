@@ -6,11 +6,12 @@ export default function ProfileHeader({navigation}) {
 
     const styles = StyleSheet.create({
         headerContainer : {
-            height: 130, 
+            height: 110, 
+            marginTop:StatusBar.currentHeight,
             flexDirection: 'column', 
             marginTop:StatusBar.currentHeight,
-            paddingTop: 35,
-            borderWidth:1,
+            paddingTop: 12,
+            borderWidth: 0,
             backgroundColor: '#0065ff',
             paddingLeft: 0,
             paddingRight: 0

@@ -75,6 +75,7 @@ export default function PostEvent({
     return(
         <Button
             rounded
+            style={{backgroundColor: '#02A456'}}
             onPress={() => postEvent()}>
             <Text>Accept</Text>
         </Button>

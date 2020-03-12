@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet } from 'react-native';
-import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinner, Left, Body, Toast } from 'native-base';
+import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinner, Left, Right, Body, Toast } from 'native-base';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
@@ -81,8 +81,8 @@ export default function Leaderboard() {
 
     const styles = StyleSheet.create({
         leaderboardContainer: {
-            paddingLeft: 15,
-            paddingRight: 15,
+            paddingLeft: 20,
+            paddingRight: 20,
             backgroundColor: '#fafafa'
         },
         boardCard: {
@@ -106,14 +106,10 @@ export default function Leaderboard() {
             <Card style={styles.boardCard}>
                 {teamsFilteredBySport.sort((a, b) => (a.score > b.score) ? -1 : 1)
                         .map((item, index) => (
-                            <CardItem style={styles.boardCard} key={index + "teamSportScoreObjs"}>
-                                <Left style={{flexDirection: 'column'}}>
-                                    <Text>Name:</Text>
-                                    <Text>Score:</Text>
-                                </Left>
+                            <CardItem bordered style={styles.boardCard} key={index + "teamSportScoreObjs"}>
                                 <Body style={{flexDirection: 'column'}}>
-                                    <Text>{item.team_name}</Text>
-                                    <Text>{item.score}</Text>
+                                    <Text>Name: {item.team_name}</Text>
+                                    <Text>Score: {item.score}</Text>
                                 </Body>
                             </CardItem>
                                 ))}
