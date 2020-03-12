@@ -16,16 +16,16 @@ export default function TeamCreateProfile({navigation}) {
             setShowSpinner(false);
         }
     })
-    console.log(teamSport);
-
+    }, [teamPhoto])
+    
     const styles = StyleSheet.create({
-        pickPhotoButton: {
-            justifyContent: 'center',
-            backgroundColor: '#02A456'
-        },
-        teamPhoto: {
-            marginRight: 15
-        }
+    pickPhotoButton: {
+        justifyContent: 'center',
+        backgroundColor: '#02A456'
+    },
+    teamPhoto: {
+        marginRight: 15
+    }
     });
 
     return(

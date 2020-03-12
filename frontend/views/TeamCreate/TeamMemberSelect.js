@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right } from 'native-base';
+import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right, Toast } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
@@ -17,24 +17,31 @@ export default function TeamMemberSelect({ navigation }) {
     const [searchInput, setSearchInput] = useState(null);
     const [userList, setUserList] = useState(null);
     const [currentUserList, setCurrentUserList] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const {userToken} = useContext(UserContext).state;
+    const {userToken, userData} = useContext(UserContext).state;
     const {state, actions} = useContext(TeamContext);
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
     useEffect(() => {
         if(!userList) {
-            try{
-                axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}}).then(
-                    r => {
-                        setUserList(r.data);
-                        setCurrentUserList(r.data);
-                    }
-                )
-            } catch(err) {
-                console.log(err);
-            }
+            axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
+            .then(
+                r => {
+                    const otherUsers = r.data.filter(obj => obj.id !== userData.userInfo.id)
+                    setUserList(otherUsers);
+                    setCurrentUserList(otherUsers);
+                }
+            ).catch(() => {
+                Toast.show({
+                    text: "Error occurred. Try again later",
+                    buttonText: "Okay"
+                });
+                setTimeout(() => {
+                    navigation.navigate('Signup')
+                }, 5000);
+            })
         }
     }, [])
 
@@ -102,6 +109,9 @@ export default function TeamMemberSelect({ navigation }) {
                                 )} />
                         </CardItem>
                     </Card>
+                {isLoading ? <Spinner /> : 
+                <Content>
+                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
                     <FlatList
                         data={currentUserList}
                         renderItem={ ({ item }) => (
@@ -111,8 +121,7 @@ export default function TeamMemberSelect({ navigation }) {
                             handleSelect={handleTeamMemberAdd}
                             />
                         )} />
-                    
-            </Content>
+                </Content>}
         <Footer>
                 <FooterTab>
                     <Button

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { List, ListItem, Text, Content, Picker, Container, Spinner, Left, Body } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinner, Left, Body, Toast } from 'native-base';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
@@ -17,21 +18,24 @@ export default function Leaderboard() {
 
     const {sportData, userToken, userData} = useContext(UserContext).state;
 
-    // grab team data on page load
-    // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
-        try{
-            axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
-                headers: {
-                  "x-access-token": userToken
-                }
-              })
-                .then(
-                    r => setTeamData(r.data)
-                )
-        }catch(err) {
-            console.log(err);
-        }
+        axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
+            headers: {
+                "x-access-token": userToken
+            }
+            })
+            .then(
+                r => setTeamData(r.data)
+            )
+            .catch(() => {
+                Toast.show({
+                    text: "Unable to access the leaderboard",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('Feed')
+                }, 5000)
+            })
     }, [])
 
 
@@ -75,23 +79,34 @@ export default function Leaderboard() {
         );
     }
 
+    const styles = StyleSheet.create({
+        leaderboardContainer: {
+            paddingLeft: 15,
+            paddingRight: 15,
+            backgroundColor: '#fafafa'
+        },
+        boardCard: {
+            borderRadius: 15
+        }
+    });
+
     return (
-        <Content>
-            <Picker
-            note
-            mode="dropdown"
-            selectedValue={currentSport}
-            onValueChange={setCurrentSport}
-            >
-                {regionSportList ? regionSportList.map(sportObj => (<Picker.Item key={sportObj.id + "sportId"} label={sportObj.name} value={sportObj} />)) : null}
-            </Picker>
+        <Content style={styles.leaderboardContainer}>
+                <Picker
+                note
+                mode="dropdown"
+                selectedValue={currentSport}
+                onValueChange={setCurrentSport}
+                >
+                    {regionSportList ? regionSportList.map(sportObj => (<Picker.Item key={sportObj.id + "sportId"} label={sportObj.name} value={sportObj} />)) : null}
+                </Picker>
 
             {isLoading ? <Spinner /> : 
             teamsFilteredBySport && teamsFilteredBySport.length > 1 ?
-            <List>
+            <Card style={styles.boardCard}>
                 {teamsFilteredBySport.sort((a, b) => (a.score > b.score) ? -1 : 1)
                         .map((item, index) => (
-                            <ListItem key={index + "teamSportScoreObjs"}>
+                            <CardItem style={styles.boardCard} key={index + "teamSportScoreObjs"}>
                                 <Left style={{flexDirection: 'column'}}>
                                     <Text>Name:</Text>
                                     <Text>Score:</Text>
@@ -100,25 +115,27 @@ export default function Leaderboard() {
                                     <Text>{item.team_name}</Text>
                                     <Text>{item.score}</Text>
                                 </Body>
-                            </ListItem>
+                            </CardItem>
                                 ))}
-            </List> : 
+            </Card> : 
             teamsFilteredBySport ?
-            <List>
+            <Card style={styles.boardCard}>
             {teamsFilteredBySport
                     .map((item, index) => (
-                            <ListItem key={index + "teamSportScoreObjs"}>
-                                <Left style={{flexDirection: 'column'}}>
-                                    <Text>Name:</Text>
-                                    <Text>Score:</Text>
+                            <CardItem style={styles.boardCard} key={index + "teamSportScoreObjs"}>
+                                <Left>
+                                    <Body>
+                                        <Text>Name:</Text>
+                                        <Text>Score:</Text>
+                                    </Body>
                                 </Left>
                                 <Body style={{flexDirection: 'column'}}>
-                                    <Text>{item.name}</Text>
-                                    <Text>{item.team_score}</Text>
+                                    <Text>{item.team_name}</Text>
+                                    <Text>{item.score}</Text>
                                 </Body>
-                            </ListItem>)
+                            </CardItem>)
                             )}
-            </List> :
+            </Card> :
             null
             }
         </Content>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
-import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem} from 'native-base';
+import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem, Toast} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 
@@ -51,10 +51,19 @@ export default function ChallengeCreateContainer({ navigation }) {
           setLatitude(geometry.location.lat);
           setLongitude(geometry.location.lng);
         } else {
-          console.log('No candidates for location entered');
+            Toast.show({
+                text: "No locations match input",
+                buttonText: "Okay"
+            })
         }
       } catch(err) {
-        console.log(err);
+          Toast.show({
+              text: "Unable to access Google, please try again later",
+              buttonText: "Okay"
+          })
+          setTimeout(() => {
+              navigation.navigate('Feed')
+          }, 5000)
       }
     }
 
@@ -78,31 +87,57 @@ export default function ChallengeCreateContainer({ navigation }) {
     }
 
     const postChallenge = async () => {
-      try{
-        const challengeObject = {
-          challenge: {
-              sport_id: sport,
-              datetime,
-              wager,
-              message,
-              team_from_id: team.id,
-              city_id: userCityId,
-              latitude,
-              longitude,
-              title: `${sportData[sport - 1].name} at ${location}`
-          }
-      }
-        const url = `${URL}/challenges`
-        const response = await axios.post(url, challengeObject, {
-          headers: {
-            "x-access-token": userToken
-          }
-        });
-        navigation.navigate('Feed', {hasSignedUp:true});
-      }catch(err) {
-        console.log(err);
+      if(sport && datetime && location && wager) {
+        try{
+          const challengeObject = {
+            challenge: {
+                sport_id: sport,
+                datetime,
+                wager,
+                message,
+                team_from_id: team.id,
+                city_id: userCityId,
+                latitude,
+                longitude,
+                title: `${sportData[sport - 1].name} at ${location}`
+            }
+        }
+          const url = `${URL}/challenges`
+          const response = await axios.post(url, challengeObject, {
+            headers: {
+              "x-access-token": userToken
+            }
+          });
+          navigation.navigate('Feed', {hasSignedUp:true});
+        }catch(err) {
+            Toast.show({
+                text: "Unable to submit",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('Feed')
+            }, 5000)
+        }
+      } else {
+        Toast.show({
+          text: "Must fill out all fields to post challenge",
+          buttonText: "Okay",
+          position: 'top'
+        })
       }
   }
+    useEffect(() => {
+      if(teams.length === 1) {
+        Toast.show({
+          text: "You are not a member of any teams. Create or join a team first.",
+          buttonText: "Okay",
+          position: "top"
+        })
+        setTimeout(() => {
+          navigation.navigate('Profile');
+        }, 2000)
+      }
+    }, [])
 
   const styles = StyleSheet.create({
     postChallengeButton: {
@@ -132,7 +167,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                     onValueChange={team => {setTeam(team); setSport(team.sport_id)}}
               >
                 {teams ? (
-                  teams.map(team => {
+                  teams.slice(1).map(team => {
                     return (
                       <Picker.Item key={team.id + "team"} label={team.name} value={team} />
                     );

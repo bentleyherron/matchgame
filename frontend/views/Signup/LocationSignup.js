@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner, Toast} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import SignupContext from './SignupContext';
@@ -21,7 +21,13 @@ export default function LocationSignup({ navigation }) {
                 setStateList(results.data);
                 setIsLoading(false);
             } catch(err) {
-                console.log(err);
+                Toast.show({
+                    text: "Something went wrong, redirecting to login",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('User Login')
+                }, 5000)
             }
         }
         fetchStateData();
@@ -36,11 +42,17 @@ export default function LocationSignup({ navigation }) {
                 setCityList(results.data);
                 setIsLoading(false);
             } catch(err) {
-                console.log(err);
+                Toast.show({
+                    text: "Something went wrong, redirecting to login",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('User Login')
+                }, 5000)
             }
         }
         if (state) {
-            fetchCityData();
+            axios.get(`${URL}/states/${state}`)
         };
     }, [state]);
 
