@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://kv-zmk.jmcwhorter150.frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.kv-zmk.jmcwhorter150.frontend.exp.direct",
+  "ngrokPid": 7890,
   "devToolsPort": 19002,
   "packagerPort": 19003,
-  "packagerPid": 6257
+  "packagerPid": 7881
 }
