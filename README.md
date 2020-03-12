@@ -1,7 +1,7 @@
 # Matchga.me
 
 ## Problem Solved:
-
+- Matchgame provides users with a platform to create and accept sports pickup-games. Users can form teams, wager points and compete for top rank in their respective sport.  
 
 ## Screenshots:
 ![Desktop]()
