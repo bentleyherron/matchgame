@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Container, Content, Form, Item, Input, Left, Right, Radio, Button, Text, Spinner, Toast } from 'native-base';
 import SignupContext from './SignupContext';
 import UserContext from '../../UserContext';
@@ -7,13 +7,20 @@ import {URL} from 'react-native-dotenv';
 
 export default function SignupPageOne({ navigation }) {
 
-    // TODO: add validation for login
-    // ADD FAILURE ERROR HANDLING
     const {actions, state} = useContext(UserContext);
-    const {setUserToken, setHasSignedUp} = actions;
+    const {userToken, hasSignedUp, userData} = state;
+    const {setUserToken, setHasSignedUp, setUserData} = actions;
     const {email, password} = useContext(SignupContext).state;
     const { setUsername, setEmail, setPassword } = useContext(SignupContext).actions;
     const [isLogginIn, setIsLoggingIn] = useState(false);
+
+    useEffect(() => {
+      if(hasSignedUp) {
+        setUserToken(null);
+        setUserData(null);
+        setHasSignedUp(false);
+      }
+    }, [])
 
     const postLogin = async () => {
       setIsLoggingIn(true);
