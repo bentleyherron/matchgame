@@ -184,7 +184,7 @@ export default function UserUpdate({ navigation }) {
                             </Button>
                         </Body>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <Left>
                             <Text>
                                 Favorite Sports:
@@ -195,7 +195,7 @@ export default function UserUpdate({ navigation }) {
                                 <Text>Update Favorite Sports</Text>
                             </Button>
                         </Body>
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem>
                         <Left>
                             <Label>Delete Account</Label>

@@ -27,7 +27,7 @@ export default function PostEvent({
     const {state, actions} = useContext(UserContext)
     const { userData, userToken, sportData } = state;
     const {setShouldRefresh} = actions;
-    const team_to_id = userData.teams[0].id;
+    const team_to_id = userData.teams[1].id;
 
     const eventObject = {
         eventTeams: [
@@ -57,7 +57,7 @@ export default function PostEvent({
                 }
               });
             setPage(1);
-            // setShouldRefresh(currentState => !currentState);
+            setShouldRefresh(currentState => !currentState);
 
         }catch(err){
                 Toast.show({
