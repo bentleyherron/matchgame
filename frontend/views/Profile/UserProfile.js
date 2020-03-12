@@ -87,8 +87,7 @@ export default function ProfilePage({ navigation }){
                 <Grid>
                     <Row style={styles.profileButtons}> 
                         <Button light rounded small>
-                                {/* <Icon type="AntDesign" name="edit" onPress={() => navigation.navigate('User Update')} /> */}
-                                <Text>Edit Profile</Text>
+                                <Text onPress={() => navigation.navigate('User Update')}>Edit Profile</Text>
                         </Button>
                         <Button light rounded small><Text onPress={() => logout()}>Logout</Text></Button>
                     </Row>

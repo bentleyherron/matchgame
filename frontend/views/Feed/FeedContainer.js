@@ -49,9 +49,9 @@ export default function FeedContainer({route}){
                 <Tab heading="Leaders" tabStyle={styles.tab} activeTabStyle={styles.tab}>
                     <Leaderboard />
                 </Tab>
-                <Tab heading="Search" tabStyle={styles.tab} activeTabStyle={styles.tab}>
+                {/* <Tab heading="Search" tabStyle={styles.tab} activeTabStyle={styles.tab}>
                     <Search />
-                </Tab>
+                </Tab> */}
             </Tabs>
         </Container>
     );
