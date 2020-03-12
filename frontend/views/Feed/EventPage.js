@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right, Icon, Picker, Toast } from 'native-base';
+import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, Thumbnail, Body, Label, Card, CardItem, Item, Left, Right, Icon, Picker, Toast, Spinner } from 'native-base';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
-export default function EventPage({pageContent, eventClick}) {
-  const {userToken} = useContext(UserContext).state;
-  const {teams, userInfo} = useContext(UserContext).state.userData
+export default function EventPage({pageContent, eventClick, resetPage}) {
+  const {userToken, userData} = useContext(UserContext).state;
+  const {teams, userInfo} = userData
     const {
         city_state,
         id,
@@ -19,8 +19,6 @@ export default function EventPage({pageContent, eventClick}) {
         latitude,
         longitude
     } = pageContent.event;
-
-    console.log(teams);
 
     const {eventTeams} = pageContent;
 
@@ -93,13 +91,16 @@ export default function EventPage({pageContent, eventClick}) {
   });
 
   const maySelectWinner = () => {
+    if(pageContent.event.winner_id) {
+      return false;
+    }
     const userCaptainTeamIds = {};
     teams.forEach(obj => {
       if(obj.captain_id === userInfo.id) {
         userCaptainTeamIds[obj.id] = true;
       }
     });
-    const userInEventArr = eventTeams.filter(obj => userCaptainTeamIds[obj.eventTeam.id]);
+    const userInEventArr = eventTeams.filter(obj => userCaptainTeamIds[obj.eventTeam.team_id]);
     return userInEventArr.length > 0;
   }
   const[winner, setWinner] = useState(null);
@@ -116,23 +117,23 @@ export default function EventPage({pageContent, eventClick}) {
     }
     setIsSubmitting(true);
     // post scores
-    axios.all(eventTeams.map(obj => {
-      let currentScoreObject = {
-        score: {
-          team_id: obj.eventTeam.id,
+    const scores = {
+      scores: eventTeams.map(obj => {
+        return {
+          team_id: obj.eventTeam.team_id,
           event_id: obj.eventTeam.event_id,
-          score: winner === obj.eventTeam.id ? wager : wager * -1
+          score: winner === obj.eventTeam.team_id ? wager : Math.abs(wager) * -1
         }
-      }
-      return axios.post(`${URL}/scores/`, currentScoreObject, {headers:{"x-access-token": userToken}})
+      })
     }
-      ))
+    axios.post(`${URL}/scores/`, scores, {headers:{"x-access-token": userToken}})
       .then(
-        axios.put(`${URL}/scores/`, {event:{id, winner_id: winner}},{headers:{"x-access-token": userToken}})
+        axios.put(`${URL}/events/`, {event:{id, winner_id: winner}},{headers:{"x-access-token": userToken}})
       )
       .then(r => {
         setIsSubmitting(false);
         eventClick();
+        resetPage(currentState => !currentState);
       })
       .catch(() => {
         Toast.show({
@@ -201,10 +202,10 @@ export default function EventPage({pageContent, eventClick}) {
               selectedValue={winner}
               onValueChange={setWinner}>
                   {eventTeams.length ? eventTeams.map((obj, index) => (
-                      <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.id} key={index + 'winner'} />
+                      <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.team_id} key={index + 'winner'} />
                   )) : null}
                   </Picker>
-              <Button rounded style={styles.eventButton}><Text>Submit</Text></Button>
+              <Button rounded style={styles.eventButton} onPress={() => {!isSubmitting ? postResults() : null}}><Text>Submit</Text></Button>
               {isSubmitting ? <Spinner /> : null}
               {/* <Button rounded style={styles.eventButton}><Text>Map Location</Text></Button>
               <Button rounded style={styles.eventButton}><Text>Cancel</Text></Button> */}

@@ -39,6 +39,7 @@ export default function FeedContainer({route}){
                     <ChallengesContainer 
                         setPage={setPage}
                         route={route}
+                        page={page}
                     />
                 </Tab>
                 <Tab heading="Events" tabStyle={styles.tab} activeTabStyle={styles.tab}>

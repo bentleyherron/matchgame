@@ -19,7 +19,8 @@ export default function PostEvent({
         latitude,
         longitude,
         sport_id,
-        title
+        title,
+        id
        } = challenge;
 
     const date = datetime;
@@ -50,24 +51,25 @@ export default function PostEvent({
     }
 
     const postEvent = async () => {
-        try{
             const eventUrl = `${URL}/events/`;
-            const eventResponse = await axios.post(eventUrl, eventObject, {
-                headers: {
-                  "x-access-token": userToken
-                }
-              });
-            setPage(1);
-            setShouldRefresh(currentState => !currentState);
-        }catch(err){
-                Toast.show({
-                    text: "Unable to submit",
-                    buttonText: "Okay"
+            axios.post(eventUrl, eventObject, {headers: {"x-access-token": userToken}})
+                .then(r => {
+                    axios.put(`${URL}/challenges/`, {challenge:{id, team_to_id, is_accepted: true}}, {headers: {"x-access-token": userToken}})
+                    .then(r => {
+                        setPage(1);
+                        // setShouldRefresh(currentState => !currentState);
+                    })
                 })
-                setTimeout(() => {
-                    navigation.navigate('Feed')
-                }, 5000);
-        }
+                .catch(() => {
+                    Toast.show({
+                        text: "Unable to submit",
+                        buttonText: "Okay"
+                    })
+                    setTimeout(() => {
+                        navigation.navigate('Feed')
+                    }, 5000);
+                }
+                );
     }
 
     return(
