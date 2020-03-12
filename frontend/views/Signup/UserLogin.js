@@ -28,7 +28,8 @@ export default function SignupPageOne({ navigation }) {
         }).catch(
           Toast.show({
             text: "Login information invalid",
-            buttonText: 'Okay'
+            buttonText: 'Okay',
+            position: 'top'
           })
         )
     }

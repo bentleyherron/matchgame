@@ -26,14 +26,25 @@ export default function TeamProfile({navigation}){
     const fetchTeamProfileData = async () => {
         try{
             const teamArr = getUniques(userData.teams, "id");
-            const dataResults = await Promise.all(teamArr.map(async teamObj => {
-                const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
-                    headers: {
-                      "x-access-token": userToken
-                    }});
-                return teamProfile.data;
-            }));
-            setTeamData(dataResults);
+            if(teamArr.length > 1) {
+                const dataResults = await Promise.all(teamArr.slice(1).map(async teamObj => {
+                    const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                        headers: {
+                          "x-access-token": userToken
+                        }});
+                    return teamProfile.data;
+                }));
+                setTeamData(dataResults);
+            } else {
+                const dataResults = await Promise.all(teamArr.map(async teamObj => {
+                    const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                        headers: {
+                          "x-access-token": userToken
+                        }});
+                    return teamProfile.data;
+                }));
+                setTeamData(dataResults);
+            }
         }catch(err) {
             Toast.show({
                 text: "Error occurred. Try again later",
