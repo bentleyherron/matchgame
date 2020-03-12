@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
+import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
 
 import { YellowBox } from 'react-native';
 import axios from 'axios';
@@ -77,13 +77,20 @@ export default function TeamProfile(){
         profileHeaderContainer : {
             // marginBottom: 15,
             borderRadius: 15,
-            padding: 15
+            padding: 15,
+            backgroundColor: '#ffffff',
+            
         },
+    
         profileHeader: {
             borderRadius: 15,
             backgroundColor: '#ffffff',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            color: 'white'
+        },
+        profileHeaderText: {
+            color: 'white'
         },
         profileCategories : {
             padding: 15,
@@ -124,8 +131,8 @@ export default function TeamProfile(){
                 {teamSelected ? <Card style={styles.profileHeaderContainer}>
                     <CardItem style={styles.profileHeader}>
                         {teamSelected.photo ? <Left><Thumbnail large source={{uri: teamSelected.photo}} /></Left> : null}
-                        <Body style={styles.profileBodyText}>
-                            <Text>{teamSelected.team_name}</Text>
+                        <Body>
+                            <Text style={{fontWeight: 'bold', marginBottom:2}}>{teamSelected.team_name}</Text>
                             <Text note>Members: {teamSelected.team_members.length}</Text>
                             <Text note>Team Score: {teamSelected.score}</Text>
                         </Body>
@@ -133,7 +140,7 @@ export default function TeamProfile(){
                 </Card> : null}
 
                 {teamSelected ? <Card style={styles.profileBody}>
-                    <H1 style={styles.profileCategories}>Captain</H1>
+                    <H3 style={styles.profileCategories}>Captain</H3>
                     <CardItem bordered>
                         <Left>
                             <Thumbnail large source={{uri: teamSelected.captain.photo}} />
@@ -157,7 +164,7 @@ export default function TeamProfile(){
                     </CardItem> */}
                     <Grid>
                         <Col>
-                            <H1 style={styles.profileCategories}>Roster</H1>
+                            <H3 style={styles.profileCategories}>Roster</H3>
                         </Col>
                         {isCaptain ? captainAdd : null}
                     </Grid>

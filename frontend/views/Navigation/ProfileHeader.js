@@ -6,7 +6,7 @@ export default function ProfileHeader({navigation}) {
 
     const styles = StyleSheet.create({
         headerContainer : {
-            height: 120, 
+            height: 130, 
             flexDirection: 'column', 
             paddingTop: 35,
             borderWidth:1,
@@ -16,7 +16,7 @@ export default function ProfileHeader({navigation}) {
         },
         logoContainer : {
             justifyContent: 'center',
-            paddingBottom: 11
+            paddingBottom: 1
         },
         matchgameLogo: {
             fontSize: 25,
@@ -24,6 +24,7 @@ export default function ProfileHeader({navigation}) {
             color: 'white',
         },
         profileButtonsContainer : {
+            height: 50,
             justifyContent: 'space-around',
             paddingBottom: 3,
             backgroundColor: '#1551a9',
