@@ -118,6 +118,18 @@ export default function ChallengeCreateContainer({ navigation }) {
       }
       
   }
+    useEffect(() => {
+      if(teams.length === 1) {
+        Toast.show({
+          text: "You are not a member of any teams. Create or join a team first.",
+          buttonText: "Okay",
+          position: "top"
+        })
+        setTimeout(() => {
+          navigation.navigate('Profile');
+        }, 2000)
+      }
+    }, [])
 
     return(
         <Container>
@@ -137,7 +149,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                     onValueChange={team => {setTeam(team); setSport(team.sport_id)}}
               >
                 {teams ? (
-                  teams.map(team => {
+                  teams.slice(1).map(team => {
                     return (
                       <Picker.Item key={team.id + "team"} label={team.name} value={team} />
                     );
