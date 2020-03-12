@@ -48,7 +48,7 @@ export default function SignupPageThree({ navigation }) {
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                    <Text>PREV</Text>
+                    <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
@@ -66,7 +66,7 @@ export default function SignupPageThree({ navigation }) {
                         
                     }}
                     >
-                    <Text>NEXT</Text>
+                    <Text style={{fontSize: 15}}>NEXT</Text>
                     </Button>
                 </FooterTab>
             </Footer>

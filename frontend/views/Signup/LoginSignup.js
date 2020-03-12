@@ -102,7 +102,7 @@ export default function SignupPageOne({ navigation }) {
                 secureTextEntry={true}
                 onChangeText={text => setPassword(text)}/>
             </Item>
-            <Item selected={true}
+            {/* <Item selected={true}
                   onPress={() => setAgreedToTerms(!agreedToTerms)}
                   style={{padding:10}}
                   >
@@ -116,7 +116,7 @@ export default function SignupPageOne({ navigation }) {
               <Body>
                 <Text note >I agree to the terms of service</Text>
               </Body>
-            </Item>
+            </Item> */}
           </Form>
           <Text note onPress={() => navigation.navigate('User Login')} style={{margin: 20, padding: 20, textAlign: 'center'}}>Already have an account? <Text note style={{color: 'blue'}}>Sign in</Text></Text>
           

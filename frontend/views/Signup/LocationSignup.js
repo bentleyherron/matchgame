@@ -84,14 +84,14 @@ export default function LocationSignup({ navigation }) {
                     <Button
                     onPress={() => {navigation.goBack()}}
                     >
-                    <Text>PREV</Text>
+                    <Text style={{fontSize: 15}}>PREV</Text>
                     </Button>
                 </FooterTab>
                 <FooterTab>
                     <Button
                     onPress={() => {navigation.navigate('Profile Pic')}}
                     >
-                    <Text>NEXT</Text>
+                    <Text style={{fontSize: 15}}>NEXT</Text>
                     </Button>
                 </FooterTab>
             </Footer>
