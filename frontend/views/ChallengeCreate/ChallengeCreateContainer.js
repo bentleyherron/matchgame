@@ -86,35 +86,43 @@ export default function ChallengeCreateContainer({ navigation }) {
     }
 
     const postChallenge = async () => {
-      try{
-        const challengeObject = {
-          challenge: {
-              sport_id: sport,
-              datetime,
-              wager,
-              message,
-              team_from_id: team.id,
-              city_id: userCityId,
-              latitude,
-              longitude,
-              title: `${sportData[sport - 1].name} at ${location}`
-          }
-      }
-        const url = `${URL}/challenges`
-        const response = await axios.post(url, challengeObject, {
-          headers: {
-            "x-access-token": userToken
-          }
-        });
-        navigation.navigate('Feed', {hasSignedUp:true});
-      }catch(err) {
-          Toast.show({
-              text: "Unable to submit",
-              buttonText: "Okay"
-          })
-          setTimeout(() => {
-              navigation.navigate('Feed')
-          }, 5000)
+      if(sport && datetime && location && wager) {
+        try{
+          const challengeObject = {
+            challenge: {
+                sport_id: sport,
+                datetime,
+                wager,
+                message,
+                team_from_id: team.id,
+                city_id: userCityId,
+                latitude,
+                longitude,
+                title: `${sportData[sport - 1].name} at ${location}`
+            }
+        }
+          const url = `${URL}/challenges`
+          const response = await axios.post(url, challengeObject, {
+            headers: {
+              "x-access-token": userToken
+            }
+          });
+          navigation.navigate('Feed', {hasSignedUp:true});
+        }catch(err) {
+            Toast.show({
+                text: "Unable to submit",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('Feed')
+            }, 5000)
+        }
+      } else {
+        Toast.show({
+          text: "Must fill out all fields to post challenge",
+          buttonText: "Okay",
+          position: 'top'
+        })
       }
       
   }
