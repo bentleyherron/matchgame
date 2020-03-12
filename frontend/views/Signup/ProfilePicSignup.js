@@ -7,24 +7,14 @@ import SignupContext from './SignupContext';
 export default function SignupPageTwo({ navigation }) {
     const { openImagePicker, setSelectedImage } = useContext(SignupContext).actions;
     const { selectedImage } = useContext(SignupContext).state;
-    const [showSpinner, setShowSpinner] = useState(false);
-
-    useEffect(() => {
-        if(selectedImage) {
-            setShowSpinner(false);
-        }
-    }, [selectedImage])
 
     return(
         <Container>
-            <Content>
-                <Content />
-                {showSpinner && selectedImage ? <Spinner /> : null}
-                {selectedImage ? <Thumbnail large source={{ uri: selectedImage }} /> : null}
-                <Button primary onPress={() => {openImagePicker();setShowSpinner(true)}}>
+            <Content contentContainerStyle={{justifyContent: "center", alignItems: "center", margin: 30}}>
+                {selectedImage ? <Thumbnail style={{margin: 30}} large source={{ uri: selectedImage }} /> : null}
+                <Button primary onPress={() => openImagePicker()}>
                     <Text>Pick a photo</Text>
                 </Button>
-                
             </Content>
             <Footer>
                 <FooterTab>

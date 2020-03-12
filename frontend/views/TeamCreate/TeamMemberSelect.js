@@ -23,6 +23,7 @@ export default function TeamMemberSelect({ navigation }) {
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
+    // make add team member and remove team member individual buttons
     useEffect(() => {
         if(!userList) {
             axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
@@ -60,7 +61,7 @@ export default function TeamMemberSelect({ navigation }) {
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search" value={searchInput} onChangeText={setSearchInput} />
+                        <Input placeholder="Search" value={searchInput} onChangeText={setSearchInput} onSubmitEditing={() => filterUsers(searchInput)} />
                         <Button transparent onPress={() => filterUsers(searchInput)}>
                             <Text>Search</Text>
                         </Button>
@@ -68,16 +69,6 @@ export default function TeamMemberSelect({ navigation }) {
                 </Header>
                 {isLoading ? <Spinner /> : 
                 <Content>
-                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
-                    <FlatList
-                        data={currentUserList}
-                        renderItem={ ({ item }) => (
-                            <PlayerTeamCard
-                            keyExtractor={item.id}
-                            cardData={item}
-                            handleSelect={handleTeamMemberAdd}
-                            />
-                        )} />
                     <H1 style={{textAlign: "center", padding: 10}}>Users Selected</H1>
                     <FlatList
                         data={convertTeamMembers(teamMembers)}
@@ -96,6 +87,16 @@ export default function TeamMemberSelect({ navigation }) {
                                     </Button>
                                 </Right>
                             </Item>
+                        )} />
+                    <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1>
+                    <FlatList
+                        data={currentUserList}
+                        renderItem={ ({ item }) => (
+                            <PlayerTeamCard
+                            keyExtractor={item.id}
+                            cardData={item}
+                            handleSelect={handleTeamMemberAdd}
+                            />
                         )} />
                 </Content>
                 }
