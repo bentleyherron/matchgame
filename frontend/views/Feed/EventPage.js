@@ -132,6 +132,7 @@ export default function EventPage({pageContent, eventClick}) {
         })
       })
   }
+
     return (
       <Container style={styles.container}>
         

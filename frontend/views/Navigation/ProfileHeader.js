@@ -7,6 +7,7 @@ export default function ProfileHeader({navigation}) {
     const styles = StyleSheet.create({
         headerContainer : {
             height: 130, 
+            marginTop:StatusBar.currentHeight,
             flexDirection: 'column', 
             marginTop:StatusBar.currentHeight,
             paddingTop: 35,
