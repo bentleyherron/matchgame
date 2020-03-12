@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right } from 'native-base';
+import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
@@ -52,7 +52,17 @@ export default function TeamMemberSelect({ navigation }) {
         container: {
             backgroundColor: '#fafafa'
         },
-
+        userSelectContainer: {
+            marginLeft: 15,
+            marginRight: 15,
+            padding: 15,
+            backgroundColor: '#ffffff',
+            borderRadius: 15
+        },
+        userSelectContent: {
+            flexDirection: 'column',
+            backgroundColor: '#ffffff',
+        }
     });
 
     return(
@@ -67,7 +77,31 @@ export default function TeamMemberSelect({ navigation }) {
                         </Button>
                     </Item>
                 </Header>
-                    {/* <H1 style={{textAlign: "center", padding: 10}}>Select Users</H1> */}
+                    <Card style={styles.userSelectContainer}>
+                        <CardItem>
+                            <Text style={{fontWeight: 'bold'}}>Users Selected</Text>
+                        </CardItem>
+                        <CardItem>
+                            <FlatList
+                                data={convertTeamMembers(teamMembers)}
+                                renderItem={ ({ item }) => (
+                                    <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
+                                        <Left>
+                                            <Text>
+                                                {item.name}
+                                            </Text>
+                                        </Left>
+                                        <Right>
+                                            <Button rounded warning small onPress={() => handleTeamMemberAdd(item.id, item.name)}>
+                                                <Text>
+                                                    Remove
+                                                </Text>
+                                            </Button>
+                                        </Right>
+                                    </Item>
+                                )} />
+                        </CardItem>
+                    </Card>
                     <FlatList
                         data={currentUserList}
                         renderItem={ ({ item }) => (
@@ -77,25 +111,7 @@ export default function TeamMemberSelect({ navigation }) {
                             handleSelect={handleTeamMemberAdd}
                             />
                         )} />
-                    <H1 style={{textAlign: "center", padding: 10}}>Users Selected</H1>
-                    <FlatList
-                        data={convertTeamMembers(teamMembers)}
-                        renderItem={ ({ item }) => (
-                            <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
-                                <Left>
-                                    <Text>
-                                        {item.name}
-                                    </Text>
-                                </Left>
-                                <Right>
-                                    <Button onPress={() => handleTeamMemberAdd(item.id, item.name)}>
-                                        <Text>
-                                            Remove
-                                        </Text>
-                                    </Button>
-                                </Right>
-                            </Item>
-                        )} />
+                    
             </Content>
         <Footer>
                 <FooterTab>
