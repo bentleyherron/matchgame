@@ -12,16 +12,19 @@ export default function SignupPageThree({ navigation }) {
     const [sportsList, setSportsList] = useState(null);
 
     useEffect(() => {
-        async function fetchSportsData() {
-            try{
-                const url = `${URL}/sports`;
-                const response = await axios.get(url);
-                setSportsList(response.data);
-            } catch(err) {
-                console.log(err);
-            }
-        }
-        fetchSportsData();
+        axios.get(`${URL}/sports`)
+            .then( r => {
+                setSportsList(r.data)
+            })
+            .catch(() => {
+                Toast.show({
+                    text: "Could not get sports list. Try again later",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('User Login');
+                })
+            })
     }, [])
     
     return(

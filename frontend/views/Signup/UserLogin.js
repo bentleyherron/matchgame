@@ -27,7 +27,7 @@ export default function SignupPageOne({ navigation }) {
           navigation.navigate('Profile');
         }).catch(
           Toast.show({
-            text: "Email and/or password are incorrect",
+            text: "Login information invalid",
             buttonText: 'Okay'
           })
         )

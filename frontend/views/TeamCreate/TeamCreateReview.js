@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { Container, Content, List, ListItem, Left, Body, Text, Spinner, Footer, FooterTab, Button } from 'native-base';
+import { Container, Content, List, ListItem, Left, Body, Text, Spinner, Footer, FooterTab, Button, Toast } from 'native-base';
 import {Image} from 'react-native';
 import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
@@ -20,10 +20,18 @@ export default function TeamCreateReview( {navigation}) {
     const postTeamMembers = async (teamId) => {
         let addTeamMembers = {teamMembers:Object.keys(teamMembers).map(item => {return {player_id: item, team_id:teamId}})};
         axios.post(`${URL}/team-members/`, addTeamMembers, {headers:{"x-access-token": userToken}})
+        .catch(() => {
+            Toast.show({
+                text: "Error occurred. Try again later",
+                buttonText: "Okay"
+            });
+            setTimeout(() => {
+                navigation.navigate('Signup')
+            }, 5000);
+        })
     }
 
     const postNewTeam = async () => {
-        try{
             setIsSubmitting(true);
             axios.post(`${URL}/teams/`, {
                 "team": {
@@ -47,11 +55,17 @@ export default function TeamCreateReview( {navigation}) {
                         }
                     )
                 }
-            );
-        }catch(err){
-            console.log(err);
+            )
+            .catch(() => {
+                Toast.show({
+                    text: "Error occurred. Try again later",
+                    buttonText: "Okay"
+                });
+                setTimeout(() => {
+                    navigation.navigate('Signup')
+                }, 5000);
+            })
         }
-    }
 
     return(
         <Container>

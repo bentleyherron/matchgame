@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
+import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, Accordion, Spinner, Item, Picker, Icon, Toast } from 'native-base';
 
 import { YellowBox } from 'react-native';
 import axios from 'axios';
@@ -13,7 +13,7 @@ const dataArray = [
     { title: "Ultimate Frisbee", content: "Games" }
   ];
 
-export default function TeamProfile(){
+export default function TeamProfile({navigation}){
     const { userData, sportData, userToken } = useContext(UserContext).state;
     const [isCaptain, setIsCaptain] = useState(false);
     const [teamData, setTeamData] = useState(null);
@@ -35,7 +35,14 @@ export default function TeamProfile(){
             }));
             setTeamData(dataResults);
         }catch(err) {
-            console.log(err);
+            Toast.show({
+                text: "Error occurred. Try again later",
+                buttonText: "Okay"
+            });
+            setTimeout(() => {
+                navigation.navigate('Signup')
+            }, 5000);
+
         }
     }
 

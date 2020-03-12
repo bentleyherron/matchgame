@@ -30,7 +30,7 @@ export default function SignupContainer() {
           return;
         }
     
-        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0.5, aspect:[100, 100]});
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0.3, aspect:[100, 100]});
 
         if (pickerResult.cancelled === true) {
             return;

@@ -43,22 +43,25 @@ export default function UpdateSports({ navigation }) {
     }
 
     const postFavSports = () => {
-        // put = sport_id and user_id,
-        // del = id, user_id
 
         // delete favorite sports
-        try{
-            const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
-            axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}, 
-                headers: {
-                  "x-access-token": userToken
-                }
-              }).then(
-                r => navigation.navigate('User Profile')
-            )
-        } catch(err) {
-            console.log(err);
-        }
+        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
+        axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}, 
+            headers: {
+                "x-access-token": userToken
+            }
+            }).then(
+            r => navigation.navigate('User Profile')
+        )
+        .catch(() => {
+            Toast.show({
+                text: "Unable to access the database",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('Profile')
+            }, 5000)
+        })
     }
 
     return(

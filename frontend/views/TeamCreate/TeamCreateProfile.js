@@ -15,8 +15,8 @@ export default function TeamCreateProfile({navigation}) {
         if(teamPhoto) {
             setShowSpinner(false);
         }
-    })
-    console.log(teamSport);
+    }, [teamPhoto])
+
     return(
         <Container>
         <Content>

@@ -71,20 +71,3 @@ export default function TeamCreateContainer({ navigation }) {
         </TeamContext.Provider>
     );
 }
-
-// team name
-// team region
-// team captain (is user)
-// team sport
-// rating (posted as 5 automatically)
-// photo
-// is_solo (false)
-// team_members
-
-// one page = name, sport, photo
-// second page = members
-// third page = review and submit (post team id and then post team_members) first get team id, then post each member to database as that team id
-
-// create container to hold three pages and navigate through them (stack navigator)
-// then create each individual page and form (copy from user signup)
-// then put team creation to + button functionality

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right } from 'native-base';
+import {Container, Content, Header, Item, Input, Icon, Button, Footer, FooterTab, H1, Text, Left, Right, Toast } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
@@ -25,16 +25,21 @@ export default function TeamMemberSelect({ navigation }) {
 
     useEffect(() => {
         if(!userList) {
-            try{
-                axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}}).then(
-                    r => {
-                        setUserList(r.data);
-                        setCurrentUserList(r.data);
-                    }
-                )
-            } catch(err) {
-                console.log(err);
-            }
+            axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}})
+            .then(
+                r => {
+                    setUserList(r.data);
+                    setCurrentUserList(r.data);
+                }
+            ).catch(() => {
+                Toast.show({
+                    text: "Error occurred. Try again later",
+                    buttonText: "Okay"
+                });
+                setTimeout(() => {
+                    navigation.navigate('Signup')
+                }, 5000);
+            })
         }
     }, [])
 

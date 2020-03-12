@@ -66,7 +66,6 @@ export default function Challenge({ challenge, setPage }) {
     }
 
     const formattedTime = formatTime(date);
-    console.log(didCreateChallenge);
     return (
         <ListItem avatar>
               <Left>

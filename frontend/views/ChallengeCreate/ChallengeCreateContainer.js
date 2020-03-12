@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem} from 'native-base';
+import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem, Toast} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
 
@@ -50,10 +50,19 @@ export default function ChallengeCreateContainer({ navigation }) {
           setLatitude(geometry.location.lat);
           setLongitude(geometry.location.lng);
         } else {
-          console.log('No candidates for location entered');
+            Toast.show({
+                text: "No locations match input",
+                buttonText: "Okay"
+            })
         }
       } catch(err) {
-        console.log(err);
+          Toast.show({
+              text: "Unable to access Google, please try again later",
+              buttonText: "Okay"
+          })
+          setTimeout(() => {
+              navigation.navigate('Feed')
+          }, 5000)
       }
     }
 
@@ -99,7 +108,13 @@ export default function ChallengeCreateContainer({ navigation }) {
         });
         navigation.navigate('Feed', {hasSignedUp:true});
       }catch(err) {
-        console.log(err);
+          Toast.show({
+              text: "Unable to submit",
+              buttonText: "Okay"
+          })
+          setTimeout(() => {
+              navigation.navigate('Feed')
+          }, 5000)
       }
       
   }

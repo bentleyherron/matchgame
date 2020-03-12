@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner} from 'native-base';
+import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner, Toast} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
@@ -14,55 +14,75 @@ export default function UpdateCity({ navigation }) {
 
     useEffect(() => {
         setNewCity_Id(city_id);
-        try{
             axios.get(`${URL}/states/city/${city_id}`)
                 .then(r => {
                     setState(r.data[0].state_id)}
                     )
-        }catch(err) {
-            console.log(err);
-        }
+                .catch(() => {
+                    Toast.show({
+                        text: "Unable to access the database",
+                        buttonText: "Okay"
+                    })
+                    setTimeout(() => {
+                        navigation.navigate('Profile')
+                    }, 5000)
+                })
     }, [])
 
     useEffect(() => {
-        try{
-            axios.get(`${URL}/states`)
-                .then(r => setStateList(r.data))
-        }catch(err) {
-            console.log(err);
-        }
+        axios.get(`${URL}/states`)
+            .then(r => setStateList(r.data))
+            .catch(() => {
+                Toast.show({
+                    text: "Unable to access the database",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('Profile')
+                }, 5000)
+            })
     }, []);
 
     useEffect(() => {
         if (state) {
-            try{
-                axios.get(`${URL}/states/${state}`)
-                    .then(r => setCityList(r.data))
-            }catch(err) {
-                console.log(err);
-            }
+            axios.get(`${URL}/states/${state}`)
+                .then(r => setCityList(r.data))
+                .catch(() => {
+                    Toast.show({
+                        text: "Unable to access the database",
+                        buttonText: "Okay"
+                    })
+                    setTimeout(() => {
+                        navigation.navigate('Profile')
+                    }, 5000)
+                })
         };
     }, [state]);
 
 
     const submitState = () => {
-        try{
-            const userData = {
-                user: {
-                    id,
-                    city_id: newCity_Id
-                }
+        const userData = {
+            user: {
+                id,
+                city_id: newCity_Id
             }
-            const url = `${URL}/users/`
-            axios.put(url, userData, {
-                headers: {
-                  "x-access-token": userToken
-                }
-              });
-            navigation.navigate('User Profile');
-        }catch(err) {
-            console.log(err);
         }
+        const url = `${URL}/users/`
+        axios.put(url, userData, {
+            headers: {
+                "x-access-token": userToken
+            }
+            })
+            .catch(() => {
+            Toast.show({
+                text: "Unable to access the database",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('Profile')
+            }, 5000)
+        })
+        navigation.navigate('User Profile');
     }
 
     if (!state) {

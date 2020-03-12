@@ -30,7 +30,10 @@ export default function SignupPageOne({ navigation }) {
           setUsernameError(true);
         }
       } catch(err) {
-        console.log(err);
+        Toast.show({
+          text: "Unable to validate username",
+          buttonText: "Okay"
+      });
       }
       }
 
@@ -57,7 +60,10 @@ export default function SignupPageOne({ navigation }) {
         }
         setEmailError(true);
       } catch(err) {
-        console.log(err);
+        Toast.show({
+          text: "Unable to validate email",
+          buttonText: "Okay"
+      });
       }
     }
 

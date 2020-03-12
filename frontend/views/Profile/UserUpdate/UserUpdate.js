@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail } from 'native-base';
+import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail, Toast } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
@@ -45,7 +45,6 @@ export default function UserUpdate({ navigation }) {
     }, [])
     
     const updateUser = async () => {
-        console.log(userId);
         if (userId) {
             let userObject = {
                 "user": {
@@ -59,27 +58,43 @@ export default function UserUpdate({ navigation }) {
             photo !== newPhoto ? userObject = {"user": {...userObject.user, photo: newPhoto}} : console.log('photo not changed');
             newPassword ? userObject = {"user": {...userObject.user, password: newPassword}} : console.log('password not changed');
             const url = `${URL}/users/`;
-            const response = await axios.put(url, userObject);
+            try{
+                const response = await axios.put(url, userObject);
+            }catch{
+                Toast.show({
+                    text: "Unable to update user",
+                    buttonText: "Okay"
+                });
+                setTimeout(() => {
+                    navigation.navigate('Profile')
+                }, 5000)
+            }
             return false;
         }
     };
 
     const deleteAccount = () => {
-        try{
-            axios.delete(`${URL}/users/${userId}`, {
-                headers: {
-                  "x-access-token": userToken
+        axios.delete(`${URL}/users/${userId}`, {
+            headers: {
+                "x-access-token": userToken
+            }
+            })
+            .then(
+                r => {
+                    navigation.navigate('Signup');
                 }
-              })
-                .then(
-                    r => {
-                        navigation.navigate('Signup');
-                    }
-                )
-        } catch(err) {
-            console.log(err);
+            )
+            .catch(() => {
+                Toast.show({
+                    text: "Unable to delete account",
+                    buttonText: "Okay"
+                });
+                setTimeout(() => {
+                    navigation.navigate('Profile')
+                }, 5000)
+            })
         }
-    }
+
 
     // const postSports = async (id) => {
     //     const url = `${URL}/favorite-sports/`;

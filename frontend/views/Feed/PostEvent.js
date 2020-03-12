@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar } from 'native-base';
+import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar, Toast } from 'native-base';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 import axios from 'axios';
@@ -51,7 +51,6 @@ export default function PostEvent({
     const postEvent = async () => {
         try{
             const eventUrl = `${URL}/events/`;
-            console.log(eventObject);
             const eventResponse = await axios.post(eventUrl, eventObject, {
                 headers: {
                   "x-access-token": userToken
@@ -61,7 +60,13 @@ export default function PostEvent({
             // setShouldRefresh(currentState => !currentState);
 
         }catch(err){
-            console.log(err);
+                Toast.show({
+                    text: "Unable to submit",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('Feed')
+                }, 5000);
         }
     }
 
