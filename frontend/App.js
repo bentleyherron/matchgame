@@ -12,7 +12,7 @@ import { Root, Text, Container } from "native-base";
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 
-
+import ErrorPage from './views/Navigation/ErrorPage';
 import Nav from './views/Navigation/Nav';
 import Profile from './views/Profile/ProfileContainer';
 import Feed from './views/Feed/FeedContainer';
@@ -48,33 +48,27 @@ export default function App() {
 
   useEffect(() => {
     if(hasSignedUp) {
-      try{
-        setIsLoading(true);
-        axios.get(`${URL}/profile/`, {
-          headers: {
-            "x-access-token": userToken
-          }
-        }).then(
-          response => {
-            setUserData(response.data);
-            setIsLoading(false);
-          });
-      }catch(err) {
-        console.log(err)
-      }
+      setIsLoading(true);
+      axios.get(`${URL}/profile/`, {
+        headers: {
+          "x-access-token": userToken
+        }
+      }).then(
+        response => {
+          setUserData(response.data);
+          setIsLoading(false);
+        }).catch((err) => {
+          console.log(err);
+        })
   }}, [hasSignedUp, shouldRefresh])
 
   useEffect(() => {
-    try{
-      axios.get(`${URL}/sports`).then(
-        r => {
-          setSportData(r.data);
-          setIsSportsDataReady(true);
-        }
-        );
-    } catch(err) {
-      console.log(err);
-    }
+    axios.get(`${URL}/sports`).then(
+      r => {
+        setSportData(r.data);
+        setIsSportsDataReady(true);
+      })
+      .catch((err) => console.log(err))
   }, [shouldRefresh])
 
   const userContextValue = {
@@ -108,6 +102,7 @@ export default function App() {
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
               <Tab.Screen name="Feed" component={Feed} />
               <Tab.Screen name="Team Create" component={TeamCreate} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
+              <Tab.Screen name="Error" component={ErrorPage} options={{tabBarVisible: false, showLabel: false, showIcon: false}} />
             </Tab.Navigator>
           </UserContext.Provider>
         </Root>

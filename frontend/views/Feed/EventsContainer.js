@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
 import { FlatList, StyleSheet } from 'react-native';
-import { Content, Header, Tab, Tabs, Container, Spinner } from 'native-base';
+import { Content, Header, Tab, Tabs, Container, Spinner, Toast } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
@@ -17,19 +17,23 @@ export default function EventsContainer({page}) {
     const { userData, favoriteSports, userToken } = useContext(UserContext).state;
 
     const getAllEventInfo = () => {
-        // change the 11 below to ${userData.userInfo.city_id}
-        try{
-            axios.get(`${URL}/events/city/${userData.userInfo.city_id}`, {
-                headers: {
-                  "x-access-token": userToken
-                }
-              })
-            .then((response) => {
-                setEventArray(response.data)
+        axios.get(`${URL}/events/city/${userData.userInfo.city_id}`, {
+            headers: {
+                "x-access-token": userToken
+            }
             })
-        } catch(err) {
-            console.log(err);
-        }
+        .then((response) => {
+            setEventArray(response.data)
+        })
+        .catch(() => {
+            Toast.show({
+                text: "Unable to access the database",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('Profile')
+            }, 5000)
+        })
     };
 
     const handleEventClick = (eventId) => {
@@ -61,8 +65,6 @@ export default function EventsContainer({page}) {
             backgroundColor: '#fcfbfc'
         }
     });
-
-    console.log(currentEventPageInfo);
 
     return (
         <Container style={styles.eventsContainer}>

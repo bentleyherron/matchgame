@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet} from 'react-native';
+import { StyleSheet, StatusBar} from 'react-native';
 import { Header, Grid, Row, Col, Left, Body, Right, Button, Text } from 'native-base';
 import { withTheme } from 'react-native-elements';
 export default function ProfileHeader({navigation}) {
@@ -7,6 +7,7 @@ export default function ProfileHeader({navigation}) {
     const styles = StyleSheet.create({
         headerContainer : {
             height: 130, 
+            marginTop:StatusBar.currentHeight,
             flexDirection: 'column', 
             paddingTop: 35,
             borderWidth:1,

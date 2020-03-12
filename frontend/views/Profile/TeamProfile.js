@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
-import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon } from 'native-base';
+import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon, Toast } from 'native-base';
 
 import { YellowBox } from 'react-native';
 import axios from 'axios';
@@ -13,7 +13,7 @@ const dataArray = [
     { title: "Ultimate Frisbee", content: "Games" }
   ];
 
-export default function TeamProfile(){
+export default function TeamProfile({navigation}){
     const { userData, sportData, userToken } = useContext(UserContext).state;
     const [isCaptain, setIsCaptain] = useState(false);
     const [teamData, setTeamData] = useState(null);
@@ -26,16 +26,34 @@ export default function TeamProfile(){
     const fetchTeamProfileData = async () => {
         try{
             const teamArr = getUniques(userData.teams, "id");
-            const dataResults = await Promise.all(teamArr.map(async teamObj => {
-                const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
-                    headers: {
-                      "x-access-token": userToken
-                    }});
-                return teamProfile.data;
-            }));
-            setTeamData(dataResults);
+            if(teamArr.length > 1) {
+                const dataResults = await Promise.all(teamArr.slice(1).map(async teamObj => {
+                    const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                        headers: {
+                          "x-access-token": userToken
+                        }});
+                    return teamProfile.data;
+                }));
+                setTeamData(dataResults);
+            } else {
+                const dataResults = await Promise.all(teamArr.map(async teamObj => {
+                    const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                        headers: {
+                          "x-access-token": userToken
+                        }});
+                    return teamProfile.data;
+                }));
+                setTeamData(dataResults);
+            }
         }catch(err) {
-            console.log(err);
+            Toast.show({
+                text: "Error occurred. Try again later",
+                buttonText: "Okay"
+            });
+            setTimeout(() => {
+                navigation.navigate('Signup')
+            }, 5000);
+
         }
     }
 

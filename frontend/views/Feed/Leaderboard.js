@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet } from 'react-native';
-import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinner, Left, Body } from 'native-base';
+import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinner, Left, Body, Toast } from 'native-base';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
@@ -21,18 +21,23 @@ export default function Leaderboard() {
     // grab team data on page load
     // change to leaderboard/${userData.userInfo.city_id} and add context
     useEffect(() => {
-        try{
-            axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
-                headers: {
-                  "x-access-token": userToken
-                }
-              })
-                .then(
-                    r => setTeamData(r.data)
-                )
-        }catch(err) {
-            console.log(err);
-        }
+        axios.get(`${URL}/leaderboard/${userData.userInfo.city_id}`, {
+            headers: {
+                "x-access-token": userToken
+            }
+            })
+            .then(
+                r => setTeamData(r.data)
+            )
+            .catch(() => {
+                Toast.show({
+                    text: "Unable to access the leaderboard",
+                    buttonText: "Okay"
+                })
+                setTimeout(() => {
+                    navigation.navigate('Feed')
+                }, 5000)
+            })
     }, [])
 
 

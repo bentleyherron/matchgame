@@ -34,9 +34,6 @@ export default function ProfilePage({ navigation }){
     const logout = () => {
         navigation.navigate('Signup');
         setShouldRefresh(currentState => !currentState);
-        setUserData(null);
-        setUserToken(null);
-        setHasSignedUp(false);
     }
 
     useEffect(() => {

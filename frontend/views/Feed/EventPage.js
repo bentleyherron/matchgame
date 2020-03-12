@@ -84,8 +84,6 @@ export default function EventPage({pageContent, eventClick}) {
       }
   });
 
-  console.log()
-
     return (
       <Container style={styles.container}>
         

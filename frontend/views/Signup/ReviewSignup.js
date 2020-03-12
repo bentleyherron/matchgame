@@ -30,36 +30,43 @@ export default function SignupPageFour({ navigation }) {
             const response = await axios.post(url, userObject);
             return response.data;
         } catch(err) {
-            console.log(err);
+            Toast.show({
+                text: "Something went wrong, redirecting to login",
+                buttonText: "Okay"
+            })
+            navigation.navigate('User Login')
         }
     };
     const postSports = async () => {
-        try{
-            axios.post(`${URL}/login/`, {user: {
-                email,
-                password
-              }}).then(
-                  r => {
-                      console.log(r.data.token);
-                      setUserToken(r.data.token);
-                      const url = `${URL}/favorite-sports/`;
-                      const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
-                      axios.post(url, sportsArrayObject, {
-                          headers: {
-                              "x-access-token": r.data.token
-                          }
-                      }).then(
-                          r => {
-                              setIsSubmitting(false);
-                              setHasSignedUp(true);
-                              navigation.navigate('User Login');
-                          }
-                      )
-                  }
-              )
-        } catch(err) {
-            console.log(err);
-        }
+        axios.post(`${URL}/login/`, {user: {
+            email,
+            password
+            }}).then(
+                r => {
+                    console.log(r.data.token);
+                    setUserToken(r.data.token);
+                    const url = `${URL}/favorite-sports/`;
+                    const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};
+                    axios.post(url, sportsArrayObject, {
+                        headers: {
+                            "x-access-token": r.data.token
+                        }
+                    }).then(
+                        r => {
+                            setIsSubmitting(false);
+                            setHasSignedUp(true);
+                            navigation.navigate('User Login');
+                        }
+                    )
+                }
+            ).catch(() => {
+                Toast.show({
+                    text: "Something went wrong, redirecting to login",
+                    buttonText: "Okay"
+                });
+                navigation.navigate('User Login')
+            })
+
     };
 
     const postSignupData = async () => {
@@ -68,8 +75,13 @@ export default function SignupPageFour({ navigation }) {
             postSports(data);
             return false; // change this for error handling
         } catch(err) {
-            console.log(err);
-            return true;
+            Toast.show({
+                text: "Something went wrong, redirecting to login",
+                buttonText: "Okay"
+            })
+            setTimeout(() => {
+                navigation.navigate('User Login')
+            }, 5000)
         }
     }
 
