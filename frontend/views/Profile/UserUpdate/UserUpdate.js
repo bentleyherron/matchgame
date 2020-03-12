@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail, Toast } from 'native-base';
+import { Container, Label, List, ListItem, Left, Body, Right, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail, Toast } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
@@ -90,24 +90,11 @@ export default function UserUpdate({ navigation }) {
                     buttonText: "Okay"
                 });
                 setTimeout(() => {
-                    navigation.navigate('Profile')
-                }, 5000)
+                    navigation.navigate('User Profile')
+                }, 3000)
             })
         }
 
-
-    // const postSports = async (id) => {
-    //     const url = `${URL}/favorite-sports/`;
-    //     const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: id}})};
-    //     const response = await axios.post(url, sportsArrayObject);
-    //     // add error handling here
-    // };
-
-    // const postSignupData = async () => {
-    //     const id = await postUser();
-    //     postSports(id);
-    //     return false; // change this for error handling
-    // }
     return(
         <Container>
             <Content>
@@ -170,15 +157,20 @@ export default function UserUpdate({ navigation }) {
                     </ListItem>
                     <ListItem>
                         <Left>
-                            <Text>Picture:</Text>
+                            <Left>
+                                <Text>Picture:</Text>
+                            </Left>
+                            <Body>
+                                {newPhoto ? <Thumbnail large source={{ uri: newPhoto }} /> : null}
+                            </Body>
                         </Left>
                         <Body>
                             {showSpinner ? <Spinner /> : null}
-                            {newPhoto ? <Thumbnail large source={{ uri: newPhoto }} /> : null}
                             <Button primary onPress={() => {openImagePickerAsync();setShowSpinner(true)}}>
                                 <Text>Update Photo</Text>
                             </Button>
                         </Body>
+
                     </ListItem>
                     <ListItem>
                         <Left>

@@ -18,18 +18,19 @@ export default function TeamMemberSelect({ navigation }) {
     const [currentUserList, setCurrentUserList] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    const {userToken} = useContext(UserContext).state;
+    const {userToken, userData} = useContext(UserContext).state;
     const {state, actions} = useContext(TeamContext);
     const {teamMembers} = state;
     const {handleTeamMemberAdd} = actions;
 
     useEffect(() => {
         if(!userList) {
-            axios.get(`${URL}/users/`, {headers: {"x-access-token": userToken}})
+            axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
             .then(
                 r => {
-                    setUserList(r.data);
-                    setCurrentUserList(r.data);
+                    const otherUsers = r.data.filter(obj => obj.id !== userData.userInfo.id)
+                    setUserList(otherUsers);
+                    setCurrentUserList(otherUsers);
                 }
             ).catch(() => {
                 Toast.show({
