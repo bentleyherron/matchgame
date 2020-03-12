@@ -2,16 +2,19 @@
   "name": "frontend",
   "displayName": "frontend",
   "expo": {
-    "name": "frontend",
-    "slug": "frontend",
-    "privacy": "unlisted",
+    "name": "Matchgame",
+    "slug": "matchgame",
     "sdkVersion": "36.0.0",
     "version": "1.0.0",
+    "icon": "./icon.png",
     "entryPoint": "node_modules/expo/AppEntry.js",
     "platforms": [
-      "ios",
       "android",
       "web"
-    ]
+    ],
+  "android": {
+    "package": "me.matchga.matchgame",
+    "versionCode": 1
+    }
   }
 }

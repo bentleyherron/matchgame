@@ -24,6 +24,7 @@ import UserContext from './UserContext';
 import TeamContext from './views/TeamCreate/TeamContext';
 
 const Tab = createBottomTabNavigator();
+console.disableYellowBox = true;
 
 export default function App() {
 
