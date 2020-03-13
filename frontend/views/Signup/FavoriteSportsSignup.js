@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab, Toast } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import SignupContext from './SignupContext';
 
 export default function SignupPageThree({ navigation }) {
@@ -33,7 +34,7 @@ export default function SignupPageThree({ navigation }) {
             {
                 sportsList ? sportsList.map((sport) => {
                     return (
-                        <ListItem onPress={() => onSportSelect(sport)} key={sport.id + 'r'}>
+                        <ListItem onPress={() => onSportSelect(sport)} key={uuid()}>
                             <Left>
                                 <Text>{sport.name}</Text>
                             </Left>

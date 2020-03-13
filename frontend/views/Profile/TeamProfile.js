@@ -5,6 +5,7 @@ import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbn
 import { YellowBox } from 'react-native';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
 
 const dataArray = [
@@ -139,7 +140,7 @@ export default function TeamProfile({navigation}){
                                     teamData.map((team, index) => {
                                         if(!team.is_solo) {
                                             return(
-                                                <Picker.Item label={team.team_name} value={team} key={index + 'team'} />
+                                                <Picker.Item label={team.team_name} value={team} key={uuid()} />
                                             );
                                         }})
                                 : null}
@@ -187,7 +188,7 @@ export default function TeamProfile({navigation}){
                         {isCaptain ? captainAdd : null}
                     </Grid>
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
-                        <CardItem key={i + "team_members"}>
+                        <CardItem key={uuid()}>
                             <Left>
                                 <Thumbnail large source={{uri: member.photo}} />
                             </Left>

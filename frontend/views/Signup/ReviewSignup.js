@@ -3,6 +3,7 @@ import { Image } from 'react-native';
 import { Container, List, ListItem, Left, Body, Text, Button, Footer, FooterTab, Content, Spinner, Thumbnail } from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import SignupContext from './SignupContext';
 import UserContext from '../../UserContext';
 
@@ -146,7 +147,7 @@ export default function SignupPageFour({ navigation }) {
                         <Body>
                             <List>
                                 {sports.map((sport) => (
-                                        <Text key={sport.id+"sport"}>{sport.name}</Text>
+                                        <Text key={uuid()}>{sport.name}</Text>
                                 ))}
                             </List>
                         </Body>

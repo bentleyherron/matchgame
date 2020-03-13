@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 import { Container, Content, Form, Item, Input, Body, Left, Right, Radio, Button, Text, DatePicker, Picker, Icon, Header, Label, Textarea, Card, H3,  CardItem, Toast} from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {URL, GOOGLE_API_KEY} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 
 import UserContext from '../../UserContext';
 import axios from 'axios';
@@ -24,7 +25,6 @@ export default function ChallengeCreateContainer({ navigation }) {
     const [sport, setSport] = useState(null);
     const [message, setMessage] = useState('');
     const [googleData, setGoogleData] = useState(null);
-
     const [teamNames, setTeamNames] = useState('');
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -126,18 +126,19 @@ export default function ChallengeCreateContainer({ navigation }) {
         })
       }
   }
-    useEffect(() => {
-      if(teams.length === 1) {
-        Toast.show({
-          text: "You are not a member of any teams. Create or join a team first.",
-          buttonText: "Okay",
-          position: "top"
-        })
-        setTimeout(() => {
-          navigation.navigate('Profile');
-        }, 2000)
-      }
-    }, [])
+
+  useEffect(() => {
+    if(teams.length === 1) {
+      Toast.show({
+        text: "You are not a member of any teams. Create or join a team first.",
+        buttonText: "Okay",
+        position: "top"
+      })
+      setTimeout(() => {
+        navigation.navigate('Profile');
+      }, 2000)
+    }
+  }, [])
 
   const styles = StyleSheet.create({
     postChallengeButton: {
@@ -169,7 +170,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                 {teams ? (
                   teams.slice(1).map(team => {
                     return (
-                      <Picker.Item key={team.id + "team"} label={team.name} value={team} />
+                      <Picker.Item key={uuid()} label={team.name} value={team} />
                     );
                   })
                 ) : null}
@@ -193,7 +194,7 @@ export default function ChallengeCreateContainer({ navigation }) {
             <Item style={{flexDirection:"column"}}>
               <H3 style={{paddingTop:10}}>Did you mean?</H3>
               {googleData.map((obj, i) => (
-                <Card key={i + "Google Card"} style={{height:120, minWidth: 350}} onPress={() => selectGoogleCard(obj)}>
+                <Card key={uuid()} style={{height:120, minWidth: 350}} onPress={() => selectGoogleCard(obj)}>
                   <CardItem button onPress={() => selectGoogleCard(obj)}>
                     <Left>
                       <Text>Name</Text>

@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Text, Card, CardItem, ListItem, Left, Body, Right, Title, Thumbnail} from 'native-base';
 import {Image} from 'react-native';
+import uuid from 'react-uuid';
 
 export default function PlayerTeamCard({cardData, handleSelect}) {
     const { photo, username, sports, player_rating, id } = cardData;
@@ -32,7 +33,7 @@ export default function PlayerTeamCard({cardData, handleSelect}) {
                     <Text>Sports:</Text>
                 </Left>
                 <Body>
-                    {sports.map((item, i) => <Text key={i + "J"}>{item}</Text>)}
+                    {sports.map((item, i) => <Text key={uuid()}>{item}</Text>)}
                 </Body>
             </CardItem> */}
         </Card>

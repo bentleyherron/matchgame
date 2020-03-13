@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner, Toast} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import SignupContext from './SignupContext';
 
 export default function LocationSignup({ navigation }) {
@@ -66,7 +67,7 @@ export default function LocationSignup({ navigation }) {
                             selectedValue={state}
                             onValueChange={setState}>
                                 {stateList.length ? stateList.map((state, index) => (
-                                    <Picker.Item label={state.state_name} value={state.id} key={index + 'state'} />
+                                    <Picker.Item label={state.state_name} value={state.id} key={uuid()} />
                                 )) : null}
                         </Picker>
                     </Item>
@@ -80,7 +81,7 @@ export default function LocationSignup({ navigation }) {
                         onValueChange={setLocationId}
                         >
                             {cityList.map((city, i) => (
-                                <Picker.Item label={city.city} value={city} key={i + 'city'} />
+                                <Picker.Item label={city.city} value={city} key={uuid()} />
                             ))}
                         </Picker>
                     </Item>

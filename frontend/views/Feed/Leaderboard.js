@@ -4,6 +4,7 @@ import { List, ListItem, Card, CardItem, Text, Content, Picker, Container, Spinn
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 
 
 // get all teams in a region and sort by sport
@@ -98,7 +99,7 @@ export default function Leaderboard() {
                 selectedValue={currentSport}
                 onValueChange={setCurrentSport}
                 >
-                    {regionSportList ? regionSportList.map(sportObj => (<Picker.Item key={sportObj.id + "sportId"} label={sportObj.name} value={sportObj} />)) : null}
+                    {regionSportList ? regionSportList.map(sportObj => (<Picker.Item key={uuid()} label={sportObj.name} value={sportObj} />)) : null}
                 </Picker>
 
             {isLoading ? <Spinner /> : 
@@ -106,7 +107,7 @@ export default function Leaderboard() {
             <Card style={styles.boardCard}>
                 {teamsFilteredBySport.sort((a, b) => (a.score > b.score) ? -1 : 1)
                         .map((item, index) => (
-                            <CardItem bordered style={styles.boardCard} key={index + "teamSportScoreObjs"}>
+                            <CardItem bordered style={styles.boardCard} key={uuid()}>
                                 <Body style={{flexDirection: 'column'}}>
                                     <Text>Name: {item.team_name}</Text>
                                     <Text>Score: {item.score}</Text>
@@ -118,7 +119,7 @@ export default function Leaderboard() {
             <Card style={styles.boardCard}>
             {teamsFilteredBySport
                     .map((item, index) => (
-                            <CardItem style={styles.boardCard} key={index + "teamSportScoreObjs"}>
+                            <CardItem style={styles.boardCard} key={uuid()}>
                                 <Left>
                                     <Body>
                                         <Text>Name:</Text>

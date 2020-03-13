@@ -5,6 +5,7 @@ import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 
 export default function TeamCreateReview( {navigation}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -120,7 +121,7 @@ export default function TeamCreateReview( {navigation}) {
                         <Body>
                             <List>
                                 {teamMembers ? convertTeamMembers(teamMembers).map(member => (
-                                        <Text key={member.id+"member"}>{member ? member.name : null}</Text>
+                                        <Text key={uuid()}>{member ? member.name : null}</Text>
                                 )) : null}
                             </List>
                         </Body>

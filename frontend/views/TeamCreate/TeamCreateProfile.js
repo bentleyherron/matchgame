@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Container, Content, Form, Item, Input, Picker, Spinner, Text, Button, Icon, Footer, FooterTab, Body, Left, Right, Thumbnail} from 'native-base';
 import {Image, StyleSheet} from 'react-native';
+import uuid from 'react-uuid';
 import TeamContext from './TeamContext';
 import UserContext from '../../UserContext';
 
@@ -46,7 +47,7 @@ export default function TeamCreateProfile({navigation}) {
                         selectedValue={teamSport || 1}
                         onValueChange={setTeamSport}>
                             {sportData.length ? sportData.map((obj, index) => (
-                                <Picker.Item label={obj.name} value={obj.id} key={index + 'sport'} />
+                                <Picker.Item label={obj.name} value={obj.id} key={uuid()} />
                             )) : null}
                     </Picker>
                 </Item>

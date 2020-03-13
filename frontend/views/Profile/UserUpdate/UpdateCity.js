@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Text, Content, Container, Picker, Form, Item, Icon, Button, Footer, FooterTab, Spinner, Toast} from 'native-base';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import UserContext from '../../../UserContext';
 
 export default function UpdateCity({ navigation }) {
@@ -106,7 +107,7 @@ export default function UpdateCity({ navigation }) {
                             selectedValue={state}
                             onValueChange={setState}>
                                 {stateList.length ? stateList.map((state, index) => (
-                                    <Picker.Item label={state.state_name} value={state.id} key={index + 'state'} />
+                                    <Picker.Item label={state.state_name} value={state.id} key={uuid()} />
                                 )) : null}
                         </Picker>
                     </Item>
@@ -120,7 +121,7 @@ export default function UpdateCity({ navigation }) {
                         onValueChange={setNewCity_Id}
                         >
                             {cityList.map((city, i) => (
-                                <Picker.Item label={city.city} value={city.id} key={i + 'city'} />
+                                <Picker.Item label={city.city} value={city.id} key={uuid()} />
                             ))}
                         </Picker>
                     </Item>

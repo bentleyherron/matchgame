@@ -4,6 +4,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { Content, Header, Tab, Tabs, Container, Spinner, Toast, Icon } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
 import EventPage from './EventPage';
 
@@ -86,7 +87,7 @@ export default function EventsContainer({page}) {
                 data={eventArray}
                 renderItem={ ({ item }) => (
                     <Event
-                    key={item.id + "event"}
+                    key={uuid()}
                     eventObject={item}
                     eventClick={handleEventClick}
                     />

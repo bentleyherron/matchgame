@@ -4,6 +4,8 @@ import { Container, Header, Content, Col, Row, Grid, Button, Text, H1, H2, H3, T
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
+
 export default function EventPage({pageContent, eventClick, resetPage}) {
   const {userToken, userData} = useContext(UserContext).state;
   const {setShouldRefresh} = useContext(UserContext).actions;
@@ -215,7 +217,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
               selectedValue={winner}
               onValueChange={setWinner}>
                   {eventTeams.length ? eventTeams.map((obj, index) => (
-                      <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.team_id} key={index + 'winner'} />
+                      <Picker.Item label={obj.eventTeam.team_name} value={obj.eventTeam.team_id} key={uuid()} />
                   )) : null}
                   </Picker>
               <Button rounded style={styles.eventButton} onPress={() => {!isSubmitting ? postResults() : null}}><Text>Submit</Text></Button>

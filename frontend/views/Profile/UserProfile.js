@@ -3,6 +3,7 @@ import { StyleSheet, FlatList }  from 'react-native';
 import { Container, Content, Card, CardItem, ListItem, Left, Grid, Row, Col, Thumbnail, Body, Text, H1, H2, H3, Accordion, Spinner, Right, Button, Icon, StyleProvider} from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
 
 export default function ProfilePage({ navigation }){
@@ -143,7 +144,7 @@ export default function ProfilePage({ navigation }){
                     {
                         if(!obj.is_solo) {
                             return (
-                            <CardItem key={i + 'teamcard'}>
+                            <CardItem key={uuid()}>
                                 <Left>
                                  <Thumbnail large source={{uri: obj.photo}} />
                                 </Left>

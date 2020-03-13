@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Content, ListItem, Text, Radio, Button, Right, Left, Footer, FooterTab, Toast } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 import UserContext from '../../../UserContext';
 
 
@@ -70,7 +71,7 @@ export default function UpdateSports({ navigation }) {
             {
                 sportData && sportsList ? sportData.map((sport) => {
                     return (
-                        <ListItem onPress={() => updateSportList(sport.id)} key={sport.id + 'r'}>
+                        <ListItem onPress={() => updateSportList(sport.id)} key={uuid()}>
                             <Left>
                                 <Text>{sport.name}</Text>
                             </Left>
