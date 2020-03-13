@@ -10,7 +10,7 @@ import UserContext from '../../../UserContext';
 
 export default function UserUpdate({ navigation }) {
     const {userData, userToken} = useContext(UserContext).state;
-    const { id, username, nickname, email, photo } = userData.userInfo;
+    const { id, username, nickname, email, photo, city_state } = userData.userInfo;
     const { setUserData } = useContext(UserContext).actions;
 
     const [newUsername, setNewUsername] = useState(username);
@@ -94,6 +94,7 @@ export default function UserUpdate({ navigation }) {
                 }, 3000)
             })
         }
+    console.log(userData.teams[0].city_state);
 
     return(
         <Container>
@@ -174,9 +175,16 @@ export default function UserUpdate({ navigation }) {
                     </ListItem>
                     <ListItem>
                         <Left>
-                            <Text>
-                                City:
-                            </Text>
+                            <Left>
+                                <Text>
+                                    City:
+                                </Text>
+                            </Left>
+                            <Body>
+                                <Text>
+                                    {userData.teams[0].city_state}
+                                </Text>
+                            </Body>
                         </Left>
                         <Body>
                             <Button onPress={() => {navigation.navigate('City Update')}}>
