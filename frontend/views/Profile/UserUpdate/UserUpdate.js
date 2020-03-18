@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Image } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Container, Label, List, ListItem, Left, Body, Right, Text, Button, Footer, FooterTab, Content, Spinner, Input, Thumbnail, Toast } from 'native-base';
 import axios from 'axios';
@@ -94,7 +94,17 @@ export default function UserUpdate({ navigation }) {
                 }, 3000)
             })
         }
-    console.log(userData.teams[0].city_state);
+
+    const styles = StyleSheet.create({
+        LinkButtons: {
+            color: "#ffffff",
+            padding: 15,
+            marginTop: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            justifyContent: "space-around"
+        },
+    })
 
     return(
         <Container>
@@ -199,7 +209,7 @@ export default function UserUpdate({ navigation }) {
                             </Text>
                         </Left>
                         <Body>
-                            <Button onPress={() => {navigation.navigate('Sport Update')}}>
+                            <Button style={styles.LinkButtons} onPress={() => {navigation.navigate('Sport Update')}}>
                                 <Text>Update Favorite Sports</Text>
                             </Button>
                         </Body>

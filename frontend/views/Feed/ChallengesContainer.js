@@ -8,7 +8,7 @@ import UserContext from '../../UserContext';
 
 export default function ChallengesContainer({setPage, route, page}) {
     const [challengeArray, setChallengeArray] = useState(null);
-    const { userData, favoriteSports, userToken } = useContext(UserContext).state;
+    const { userData, userToken } = useContext(UserContext).state;
     // get team name from challenge
     useEffect(() => {
         axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
@@ -18,10 +18,6 @@ export default function ChallengesContainer({setPage, route, page}) {
         })
         .then((response) => {
             setChallengeArray(response.data);
-            response.data.map(obj => {
-                axios.get(`${URL}/teams/${obj.team_from_id}`)
-            })
-            axios.get(`${URL}/teams/`)
         })
         .catch(() => {
             Toast.show({
