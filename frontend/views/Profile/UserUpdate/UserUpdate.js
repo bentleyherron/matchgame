@@ -6,8 +6,6 @@ import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import UserContext from '../../../UserContext';
 
-// David needs to be able to correctly redirect to the navigation page with new data
-
 export default function UserUpdate({ navigation }) {
     const {userData, userToken} = useContext(UserContext).state;
     const { id, username, nickname, email, photo, city_state } = userData.userInfo;
