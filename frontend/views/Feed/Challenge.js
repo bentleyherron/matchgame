@@ -92,14 +92,16 @@ export default function Challenge({ challenge, setPage }) {
               <Right>
                 {/* <Text note>3:50 pm</Text> */}
                 {isCaptain ? 
-                is_accepted || !isCaptain[sport_id] || didCreateChallenge[team_from_id]
-                ? null
-                : (<PostEvent
+                !is_accepted && isCaptain[sport_id] && !didCreateChallenge[team_from_id]
+                ?
+                   (<PostEvent
                       challenge={challenge}
                       setPage={setPage}
                     />)
                 :
-                null 
+                null
+                :
+                null
                 }
                 
               </Right>
