@@ -48,7 +48,7 @@ export default function App() {
     {id: 8, name: "Softball", family: "FontAwesome5", icon:"baseball-ball"},
     {id: 9, name: "Baseball", family: "FontAwesome5", icon:"baseball-ball"},
     {id: 10, name: "Bowling", family: "FontAwesome5", icon:"bowling-ball"},
-    {id: 11, name: "Kickball", family: "FontAwesome5", icon:"circle"},
+    {id: 11, name: "Kickball", family: "FontAwesome", icon:"circle"},
     {id: 12, name: "Beer Pong", family: "MaterialCommunityIcons", icon:"beer"},
     {id: 13, name: "Cornhole", family: "MaterialCommunityIcons", icon:"corn"},
     {id: 14, name: "Volleyball", family: "FontAwesome5", icon:"volleyball-ball"},

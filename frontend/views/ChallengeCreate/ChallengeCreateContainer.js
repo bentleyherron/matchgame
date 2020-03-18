@@ -22,12 +22,25 @@ export default function ChallengeCreateContainer({ navigation }) {
     const [longitude, setLongitude] = useState(null);
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
+    const [isGoodWager, setIsGoodWager] = useState(false);
     const [sport, setSport] = useState(null);
     const [message, setMessage] = useState('');
     const [googleData, setGoogleData] = useState(null);
     const [teamNames, setTeamNames] = useState('');
     
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const checkWager = () => {
+      if (wager < 1) {
+        Toast.show({
+          text: "Wagers must be greater than zero",
+          buttonText: "Okay",
+          position: "top"
+        })
+      } else {
+        setIsGoodWager(true);
+      }
+    }
 
     const showDatePicker = () => {
       setDatePickerVisibility(true);
@@ -116,8 +129,14 @@ export default function ChallengeCreateContainer({ navigation }) {
             })
             setTimeout(() => {
                 navigation.navigate('Feed')
-            }, 5000)
+            }, 3000)
         }
+      } else if (!isGoodWager) {
+        Toast.show({
+          text: "Must have a wager greater than zero to post challenge",
+          buttonText: "Okay",
+          position: "top"
+        })
       } else {
         Toast.show({
           text: "Must fill out all fields to post challenge",
@@ -236,7 +255,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                    <Text>{formatTime(datetime)}</Text>
                 </Right> : null}
             </Item>
-            <Item fixedLabel>
+            <Item fixedLabel success={isGoodWager}>
               <Label>How many points do you wager?</Label>
               <Right>
                 <Input
@@ -244,6 +263,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                   keyboardType={'numeric'}
                   placeHolderTextStyle={{ color: "#d3d3d3" }}
                   onChangeText={text => setWager(text)}
+                  onBlur={() => checkWager()}
                   ></Input>
               </Right>
             </Item>

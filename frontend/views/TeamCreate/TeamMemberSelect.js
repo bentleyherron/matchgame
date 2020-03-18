@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet} from 'react-native';
-import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right, Toast } from 'native-base';
+import {Container, Content, Header, Item, Card, CardItem, Input, Icon, Button, Footer, FooterTab, H1, Text, Body, Left, Right, Toast, Spinner } from 'native-base';
 import {FlatList} from 'react-native';
 
 import TeamContext from './TeamContext';
@@ -27,12 +27,14 @@ export default function TeamMemberSelect({ navigation }) {
     // make add team member and remove team member individual buttons
     useEffect(() => {
         if(!userList) {
+            setIsLoading(true);
             axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
             .then(
                 r => {
                     const otherUsers = r.data.filter(obj => obj.id !== userData.userInfo.id)
                     setUserList(otherUsers);
                     setCurrentUserList(otherUsers);
+                    setIsLoading(false);
                 }
             ).catch(() => {
                 Toast.show({
@@ -72,6 +74,16 @@ export default function TeamMemberSelect({ navigation }) {
             backgroundColor: '#ffffff',
         }
     });
+
+    if (isLoading) {
+        return (
+            <Container>
+                <Content>
+                    <Spinner />
+                </Content>
+            </Container>
+        )
+    }
 
     return(
         <Container>
