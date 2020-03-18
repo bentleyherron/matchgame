@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {Text, Body, Left, Right,  ListItem, Avatar, Icon } from 'native-base';
+import {Text, Body, Left, Right,  ListItem, Avatar, Button, Icon } from 'native-base';
 import PostEvent from './PostEvent';
 import UserContext from '../../UserContext';
 
@@ -14,12 +14,13 @@ export default function Challenge({ challenge, setPage }) {
             team_from_name
            } = challenge;
 
-    const {userData, sportIcons} = useContext(UserContext).state;
+    const {userData, sportIcons, sportData} = useContext(UserContext).state;
     const {teams, userInfo} = userData;
     const {id} = userInfo;
 
     const [isCaptain, setisCaptain] = useState(null);
     const [didCreateChallenge, setDidCreateChallenge] = useState(null);
+    const [showIcon, setShowIcon] = useState(true);
     
     const checkCaptainAndSport = () => {
         const isCaptain = {};
@@ -75,7 +76,13 @@ export default function Challenge({ challenge, setPage }) {
     return (
         <ListItem avatar>
               <Left>
-                <Icon style={{fontSize:18}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
+                <Button onPress={() => setShowIcon(!showIcon)}>
+                  {showIcon ? 
+                  <Icon style={{fontSize:18}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
+                  :
+                  <Text>{sportData[sport_id - 1].name}</Text>
+                  }
+                </Button>
               </Left>
               <Body>
                 <Text>{team_from_name} Issued Challenge</Text>

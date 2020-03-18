@@ -9,10 +9,12 @@ import UserContext from '../../UserContext';
 
 export default function ChallengesContainer({setPage, route, page}) {
     const [challengeArray, setChallengeArray] = useState(null);
-    const [sportSelected, setSportSelected] = useState(null);
+    const [sportSelected, setSportSelected] = useState("All");
     const [currentChallengeArray, setCurrentChallengeArray] = useState(null);
     const { userData, userToken, sportData } = useContext(UserContext).state;
     let {favoriteSports} = userData;
+    const pickerList = ["All", "Favorite Sports", ...favoriteSports];
+
     useEffect(() => {
         axios.get(`${URL}/challenges/city/${userData.userInfo.city_id}`, {
             headers: {
@@ -21,6 +23,7 @@ export default function ChallengesContainer({setPage, route, page}) {
         })
         .then((response) => {
             setChallengeArray(response.data);
+            setCurrentChallengeArray(response.data);
         })
         .catch(() => {
             Toast.show({
@@ -35,7 +38,13 @@ export default function ChallengesContainer({setPage, route, page}) {
 
     useEffect(() => {
         if (challengeArray) {
-            setCurrentChallengeArray(challengeArray.filter(obj => obj.sport_id === sportSelected))
+            if (sportSelected === "All") {
+                setCurrentChallengeArray(challengeArray);
+            } else if (sportSelected === "Favorite Sports") {
+                setCurrentChallengeArray(challengeArray.filter(obj => favoriteSports.find(el => el.sport_id === obj.sport_id)))
+            } else {
+                setCurrentChallengeArray(challengeArray.filter(obj => obj.sport_id === sportSelected))
+            }
         }
     }, [sportSelected]);
 
@@ -57,9 +66,9 @@ export default function ChallengesContainer({setPage, route, page}) {
                     placeholder="Favorite Sport"
                     selectedValue={sportSelected}
                     onValueChange={setSportSelected}>
-                        {favoriteSports ? favoriteSports.map(sport => (
-                            <Picker.Item label={sportData[sport.sport_id - 1].name} value={sport.sport_id} key={uuid()} />
-                        )) : null}
+                        {pickerList.map(sport => 
+                            <Picker.Item label={typeof sport === "string" ? sport : sportData[sport.sport_id - 1].name} value={typeof sport === "string" ? sport : sport.sport_id} key={uuid()} />
+                        )}
                 </Picker>
                 <FlatList
                     data={currentChallengeArray}
