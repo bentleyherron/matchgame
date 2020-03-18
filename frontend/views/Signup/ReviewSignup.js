@@ -157,7 +157,9 @@ export default function SignupPageFour({ navigation }) {
                             <Text>Picture:</Text>
                         </Left>
                         <Body>
+                            {selectedImage ? 
                             <Thumbnail large source={{uri: selectedImage}} />
+                            : null}
                         </Body>
                     </ListItem>
                 </List>

@@ -32,7 +32,9 @@ export default function PlayerTeamCard({cardData, handleSelect}) {
         <Card style={styles.profileBody}>
             <ListItem avatar style={styles.memberCard} noBorder>
                 <Left style={styles.memberPhotoContainer}>
+                    {photo ? 
                     <Thumbnail small source={{uri: photo}} />
+                    : null}
                 </Left>
                 <Body>
                     <Text>{username}</Text>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar, Icon } from 'native-base';
+import {Text, Body, Left, Right,  ListItem, Avatar, Icon } from 'native-base';
 import PostEvent from './PostEvent';
 import UserContext from '../../UserContext';
 

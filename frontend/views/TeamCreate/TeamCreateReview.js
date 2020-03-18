@@ -101,7 +101,9 @@ export default function TeamCreateReview( {navigation}) {
                             <Text>Picture:</Text>
                         </Left>
                         <Body>
+                            {teamPhoto ? 
                             <Thumbnail large source={{uri: teamPhoto}} />
+                            : null}
                         </Body>
                     </ListItem>
                     <ListItem>

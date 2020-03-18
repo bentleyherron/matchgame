@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {StyleSheet} from 'react-native';
-import { Text, Card, CardItem, H1, Button, Left, Right, Body, Spinner, Thumbnail, ListItem, Icon} from 'native-base';
+import { Text, Button, Left, Right, Body, ListItem, Icon} from 'native-base';
 import UserContext from '../../UserContext';
 
 export default function Event({eventObject, eventClick}) {

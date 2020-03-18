@@ -129,7 +129,9 @@ export default function ProfilePage({ navigation }){
                             return (
                             <CardItem key={uuid()}>
                                 <Left>
-                                 <Thumbnail large source={{uri: obj.photo}} />
+                                    {obj.photo ? 
+                                    <Thumbnail large source={{uri: obj.photo}} />
+                                    : null}
                                 </Left>
                                 <Body>
                                     <Text>{obj.name}</Text>

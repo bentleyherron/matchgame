@@ -20,7 +20,9 @@ export default function PlayerTeamCard({cardData, handleSelect}) {
         <Card style={styles.searchCard} onPress={() => {console.log('clicked item');handleSelect(id, username)}}>
             <CardItem noBorder>
                 <Left>
+                    {photo ? 
                     <Thumbnail source={{uri: photo}} />
+                    : null}
                 </Left>
                 <Body>
                     <Text>{username}</Text>

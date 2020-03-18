@@ -162,7 +162,9 @@ export default function TeamProfile({navigation}){
                     <H3 style={styles.profileCategories}>Captain</H3>
                     <CardItem bordered>
                         <Left>
+                            {teamSelected.captain.photo ? 
                             <Thumbnail large source={{uri: teamSelected.captain.photo}} />
+                            : null}
                         </Left>
                         <Body style={styles.profileBodyText}>
                             <Text>{teamSelected.captain.username}</Text>
@@ -190,7 +192,9 @@ export default function TeamProfile({navigation}){
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
                         <CardItem key={uuid()}>
                             <Left>
+                                {member.photo ? 
                                 <Thumbnail large source={{uri: member.photo}} />
+                                : null}  
                             </Left>
                             <Body style={styles.profileBodyText}>
                                 <Text>{member.username}</Text>

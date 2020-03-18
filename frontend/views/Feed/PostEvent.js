@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, CardItem, H1, Text, Body, Left, Right, Button, Thumbnail, ListItem, Avatar, Toast } from 'native-base';
+import { Text, Button, Avatar, Toast } from 'native-base';
 import {URL} from 'react-native-dotenv';
 import UserContext from '../../UserContext';
 import axios from 'axios';
