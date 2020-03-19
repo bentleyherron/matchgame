@@ -16,18 +16,16 @@ export default function ChallengeCreateContainer({ navigation }) {
 
     const {teams} = userData;
 
-    const [team, setTeam] = useState('');
+    const [team, setTeam] = useState(teams[1]);
     const [location, setLocation] = useState('');
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [datetime, setDatetime] = useState('');
     const [wager, setWager] = useState(0);
     const [isGoodWager, setIsGoodWager] = useState(false);
-    const [sport, setSport] = useState(null);
+    const [sport, setSport] = useState(teams[1].sport_id);
     const [message, setMessage] = useState('');
     const [googleData, setGoogleData] = useState(null);
-    const [teamNames, setTeamNames] = useState('');
-    
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const checkWager = () => {
