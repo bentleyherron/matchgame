@@ -80,6 +80,7 @@ export default function ChallengeCreateContainer({ navigation }) {
 
     const selectGoogleCard = (obj) => {
         const {geometry, name } = obj;
+        setLocation(name);
         setLatitude(geometry.location.lat);
         setLongitude(geometry.location.lng);
         setGoogleData(null);
@@ -97,9 +98,22 @@ export default function ChallengeCreateContainer({ navigation }) {
       return formattedTime;
     }
 
+    const clearChallengeCreate = () => {
+      setTeam(teams[1]);
+      setLocation('');
+      setLatitude(null);
+      setLongitude(null);
+      setDatetime('');
+      setWager(0);
+      setIsGoodWager(false);
+      setSport(teams[1].sport_id);
+      setMessage('');
+      setGoogleData(null);
+      setDatePickerVisibility(false);
+    }
+
     const postChallenge = async () => {
       if(sport && datetime && location && wager) {
-        try{
           const challengeObject = {
             challenge: {
                 sport_id: sport,
@@ -114,21 +128,22 @@ export default function ChallengeCreateContainer({ navigation }) {
             }
         }
           const url = `${URL}/challenges`
-          const response = await axios.post(url, challengeObject, {
+          axios.post(url, challengeObject, {
             headers: {
               "x-access-token": userToken
             }
-          });
-          navigation.navigate('Feed', {hasSignedUp:true});
-        }catch(err) {
+          }).then(() => {
+            clearChallengeCreate();
+            navigation.navigate('Feed', {hasSignedUp:true});
+          }).catch(() => {
             Toast.show({
-                text: "Unable to submit",
-                buttonText: "Okay"
-            })
-            setTimeout(() => {
-                navigation.navigate('Feed')
-            }, 3000)
-        }
+              text: "Unable to submit",
+              buttonText: "Okay"
+          })
+          setTimeout(() => {
+              navigation.navigate('Feed')
+          }, 3000)
+          })
       } else if (!isGoodWager) {
         Toast.show({
           text: "Must have a wager greater than zero to post challenge",
@@ -202,13 +217,14 @@ export default function ChallengeCreateContainer({ navigation }) {
               <Input
                 placeholder='(ex. Piedmont Park)'
                 name="location"
+                value={location}
                 onChangeText={text => setLocation(text)}
                 onSubmitEditing={async () => getGoogleLocation(location)}
                 onBlur={async () => getGoogleLocation(location)}
                 />
             </Item>
             {googleData ? 
-            <Item style={{flexDirection:"column"}}>
+            <Item style={{flexDirection:"column", height:"auto"}}>
               <H3 style={{paddingTop:10}}>Did you mean?</H3>
               {googleData.map((obj, i) => (
                 <Card key={uuid()} style={{height:120, minWidth: 350}} onPress={() => selectGoogleCard(obj)}>
