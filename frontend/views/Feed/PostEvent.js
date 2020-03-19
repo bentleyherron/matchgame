@@ -19,7 +19,6 @@ export default function PostEvent({ setPage, challenge }) {
         title,
         id
     } = challenge;
-
     // rename variables
     const date = datetime;
     const description = message;
@@ -31,26 +30,23 @@ export default function PostEvent({ setPage, challenge }) {
 
     // grab context from challenge context
     const {setEventData, setShowModal} = useContext(ChallengeContext);
-    const postEvent = async () => {
+    const postEvent = async (eventObject) => {
             // creates new event from challenge
             const eventUrl = `${URL}/events/`;
             axios.post(eventUrl, eventObject, {headers: {"x-access-token": userToken}})
                 .then(r => {
                     // updates challenge to be accepted
-                    axios.put(`${URL}/challenges/`, {challenge:{id, team_to_id, is_accepted: true}}, {headers: {"x-access-token": userToken}})
+                    axios.put(`${URL}/challenges/`, {challenge:{id, team_to_id: eventObject.eventTeams[1], is_accepted: true}}, {headers: {"x-access-token": userToken}})
                     .then(r => {
                         setPage(1);
                         // setShouldRefresh(currentState => !currentState);
                     })
                 })
-                .catch(() => {
+                .catch((err) => {
                     Toast.show({
                         text: "Unable to submit",
                         buttonText: "Okay"
                     })
-                    setTimeout(() => {
-                        navigation.navigate('Feed')
-                    }, 3000);
                 }
                 );
     }
@@ -58,7 +54,7 @@ export default function PostEvent({ setPage, challenge }) {
     const handlePost = () => {
         const teamList = userData.teams.filter(team => ((team.sport_id === sport_id) && (team.captain_id === userData.userInfo.id)))
         if (teamList.length === 1) {
-            const team_to_id = teamList[0];
+            const team_to_id = teamList[0].id
             const eventObject = {
                 eventTeams: [
                     team_from_id,
@@ -77,12 +73,11 @@ export default function PostEvent({ setPage, challenge }) {
                     title
                 }
             }
-            postEvent();
+            postEvent(eventObject);
         } else if (teamList.length > 1) {
             const eventObject = {
                 eventTeams: [
-                    team_from_id,
-                    team_to_id
+                    team_from_id
             ],
                 event: {
                     city_id,

@@ -10,13 +10,6 @@ export default function TeamCreateProfile({navigation}) {
     const {state, actions} = useContext(TeamContext);
     const {teamName, teamSport, teamPhoto} = state;
     const {setTeamName, setTeamSport, imagePickerAsync} = actions;
-    const [showSpinner, setShowSpinner] = useState(false);
-
-    useEffect(() => {
-        if(teamPhoto) {
-            setShowSpinner(false);
-        }
-    }, [teamPhoto])
     
     const styles = StyleSheet.create({
     pickPhotoButton: {
@@ -53,14 +46,9 @@ export default function TeamCreateProfile({navigation}) {
                 </Item>
                 <Item style={{paddingTop: 10, paddingBottom: 10}}>
                     <Body>
-                        <Left>
-                            <Button rounded style={styles.pickPhotoButton} onPress={() => {imagePickerAsync();setShowSpinner(true)}} >
-                                <Text>Pick a team photo</Text>
-                            </Button>
-                        </Left>
-                        <Right>
-                            {showSpinner && teamPhoto ? <Spinner /> : null}
-                        </Right>
+                        <Button rounded style={styles.pickPhotoButton} onPress={() => {imagePickerAsync();setShowSpinner(true)}} >
+                            <Text>Pick a team photo</Text>
+                        </Button>
                     </Body>
                     <Right>
                         {teamPhoto ? <Thumbnail large style={styles.teamPhoto} source={{uri: teamPhoto}} /> : null}

@@ -1,14 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { Text, Button, Picker, Toast} from 'native-base';
-import { Modal } from 'react-native';
+import { Container, Text, Button, Picker, Toast, Content, Icon} from 'native-base';
+import { Modal, StyleSheet } from 'react-native';
 import UserContext from '../../UserContext';
 import ChallengeContext from './ChallengeContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 
 export default function TeamSelectModal() {
     const [selectTeam, setSelectTeam] = useState(null);
-    const {eventData, setShowModal, setEventData} = useContext(ChallengeContext);
+    const {eventData, setShowModal, setEventData, showModal} = useContext(ChallengeContext);
     const {userData} = useContext(UserContext).state;
     const teamList = userData.teams.filter(team => ((team.sport_id === eventData.event.sport_id) && (team.captain_id === userData.userInfo.id)))
     const postEvent = async () => {
@@ -27,7 +28,7 @@ export default function TeamSelectModal() {
                     // updates challenge to be accepted
                     axios.put(`${URL}/challenges/`, {challenge:{id: eventData.event.id, team_to_id: selectTeam, is_accepted: true}}, {headers: {"x-access-token": userToken}})
                     .then(r => {
-                        setModalVisible(!modalVisible);
+                        setShowModal(false);
                         setPage(1);
                     })
                 })
@@ -36,9 +37,6 @@ export default function TeamSelectModal() {
                         text: "Unable to submit",
                         buttonText: "Okay"
                     })
-                    setTimeout(() => {
-                        navigation.navigate('Feed')
-                    }, 3000);
                 }
                 );
         } else {
@@ -50,36 +48,70 @@ export default function TeamSelectModal() {
         }
     }
 
+    const styles = StyleSheet.create({
+        modalContainer: {
+            paddingVertical: 40,
+            flexDirection: "column",
+            backgroundColor: 'black',
+            opacity: .5,
+            zIndex: 1
+        },
+        modalText: {
+            textAlign: "center",
+            backgroundColor: "white",
+            opacity: 1,
+            zIndex: 2
+        },
+        modalPicker: {
+            backgroundColor: "white",
+            opacity: 1,
+            zIndex: 2
+        },
+        modalButtons: {
+            padding: 15,
+            marginTop: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            justifyContent: "space-around",
+            opacity: 1,
+            zIndex: 2
+        },
+    });
+
     return (
-        <Modal
-          animationType="fade"
-          visible={modalVisible}
-        >
-            <Content>
-                <Text>Select a team</Text>
-                <Picker
-                    mode="dropdown"
-                    iosIcon={<Icon name="arrow-down" />}
-                    selectedValue={selectTeam}
-                    onValueChange={setSelectTeam}>
-                        {teamList.map(team => 
-                            <Picker.Item label={team.name} value={{eventTeam: {event_id:eventData.event.id, team_id: team.id}}} key={uuid()} />
-                        )}
-                </Picker>
-                <Button
-                onPress={() => {
-                    postEvent();
-                }}>
-                    <Text>Submit</Text>
-                </Button>
-                <Button
-                onPress={() => {
-                    setEventData(null);
-                    setModalVisible(!modalVisible);
-                }}>
-                    <Text>Cancel</Text>
-                </Button>
-            </Content>
-        </Modal>
+        <Container>
+            <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showModal}
+            >
+                <Content style={styles.modalContainer}>
+                    <Text style={styles.modalText}>Which team should accept the challenge?</Text>
+                    <Picker
+                        style={styles.modalPicker}
+                        mode="dropdown"
+                        iosIcon={<Icon name="arrow-down" />}
+                        selectedValue={selectTeam}
+                        onValueChange={setSelectTeam}>
+                            {teamList.map(team => 
+                                <Picker.Item style={{textAlign: "center"}} label={team.name} value={{eventTeam: {event_id:eventData.event.id, team_id: team.id}}} key={uuid()} />
+                            )}
+                    </Picker>
+                    <Button
+                    onPress={() => {
+                        postEvent();
+                    }}>
+                        <Text>Submit</Text>
+                    </Button>
+                    <Button
+                    onPress={() => {
+                        setEventData(null);
+                        setShowModal(false);
+                    }}>
+                        <Text>Cancel</Text>
+                    </Button>
+                </Content>          
+            </Modal>
+        </Container>
     );
   }

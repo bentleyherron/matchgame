@@ -73,7 +73,7 @@ export default function ChallengesContainer({setPage, route, page}) {
 
     return (
         <Container>
-            <ChallengeContext.Provider value={eventData, setEventData, setShowModal} >
+            <ChallengeContext.Provider value={{eventData, setEventData, setShowModal, showModal}} >
                 <Content>
                     <Picker
                         mode="dropdown"
