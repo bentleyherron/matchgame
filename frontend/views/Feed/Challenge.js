@@ -76,11 +76,11 @@ export default function Challenge({ challenge, setPage }) {
     return (
         <ListItem avatar>
               <Left>
-                <Button onPress={() => setShowIcon(!showIcon)}>
+                <Button style={{borderRadius: 15, backgroundColor: '#fafafa', justifyContent: "space-around"}}onPress={() => setShowIcon(!showIcon)}>
                   {showIcon ? 
-                  <Icon style={{fontSize:18}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
+                  <Icon style={{fontSize:18, color: "black"}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
                   :
-                  <Text>{sportData[sport_id - 1].name}</Text>
+                  <Text style={{color: "black"}}>{sportData[sport_id - 1].name}</Text>
                   }
                 </Button>
               </Left>

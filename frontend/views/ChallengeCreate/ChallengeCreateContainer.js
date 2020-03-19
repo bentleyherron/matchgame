@@ -13,7 +13,6 @@ export default function ChallengeCreateContainer({ navigation }) {
 
     const { userData, sportData, userToken } = useContext(UserContext).state;
     const userCityId = userData.userInfo.city_id;
-
     const {teams} = userData;
 
     const [team, setTeam] = useState(teams[1]);
@@ -192,7 +191,7 @@ export default function ChallengeCreateContainer({ navigation }) {
               <Picker
                     mode="dropdown"
                     iosIcon={<Icon name="arrow-down" />}
-                    style={{ width: undefined }}
+                    style={{ width: undefined, textAlign:"right" }}
                     placeholder="Select Team"
                     placeholderStyle={{ color: "#bfc6ea" }}
                     placeholderIconColor="#007aff"
@@ -210,24 +209,26 @@ export default function ChallengeCreateContainer({ navigation }) {
             </Item>
             <Item style={{paddingVertical:10, paddingRight:10}} fixedLabel >
                 <Label>Sport</Label>
-                {team ? team.sport_id ?  <Text>{sportData[team.sport_id - 1].name}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
+                    {team ? team.sport_id ?  <Text>{sportData[team.sport_id - 1].name}</Text> : <Text>Error, you need to add a sport to your team</Text> : null}
             </Item>
             <Item fixedLabel>
               <Label>Location</Label>
-              <Input
-                placeholder='(ex. Piedmont Park)'
-                name="location"
-                value={location}
-                onChangeText={text => setLocation(text)}
-                onSubmitEditing={async () => getGoogleLocation(location)}
-                onBlur={async () => getGoogleLocation(location)}
-                />
+              <Right>
+                <Input
+                  placeholder='(ex. Piedmont Park)'
+                  name="location"
+                  value={location}
+                  onChangeText={text => setLocation(text)}
+                  onSubmitEditing={async () => getGoogleLocation(location)}
+                  onBlur={async () => getGoogleLocation(location)}
+                  />
+              </Right>
             </Item>
             {googleData ? 
-            <Item style={{flexDirection:"column", height:"auto"}}>
+            <Item style={{flexDirection:"column", flex:1}}>
               <H3 style={{paddingTop:10}}>Did you mean?</H3>
               {googleData.map((obj, i) => (
-                <Card key={uuid()} style={{height:120, minWidth: 350}} onPress={() => selectGoogleCard(obj)}>
+                <Card key={uuid()} style={{flex:1, minWidth:300, minHeight:100}} onPress={() => selectGoogleCard(obj)}>
                   <CardItem button onPress={() => selectGoogleCard(obj)}>
                     <Left>
                       <Text>Name</Text>
@@ -276,6 +277,7 @@ export default function ChallengeCreateContainer({ navigation }) {
                   placeholder="0"
                   keyboardType={'numeric'}
                   placeHolderTextStyle={{ color: "#d3d3d3" }}
+                  value={wager}
                   onChangeText={text => setWager(text)}
                   onBlur={() => checkWager()}
                   ></Input>
@@ -284,6 +286,7 @@ export default function ChallengeCreateContainer({ navigation }) {
             <Item stackedLabel>
               <Label>Additional Information</Label>
               <Input placeholder="Specific game rules, etc." 
+                value={message}
                 onChangeText={text => setMessage(text)}
               />
             </Item>
