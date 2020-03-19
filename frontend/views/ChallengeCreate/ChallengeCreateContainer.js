@@ -8,7 +8,6 @@ import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 
-// add error handling on this (if no location selected, etc.)
 export default function ChallengeCreateContainer({ navigation }) {
 
     const { userData, sportData, userToken } = useContext(UserContext).state;

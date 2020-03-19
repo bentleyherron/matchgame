@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {StyleSheet} from 'react-native';
 import { Text, Button, Left, Right, Body, ListItem, Icon} from 'native-base';
 import UserContext from '../../UserContext';
@@ -11,8 +11,8 @@ export default function Event({eventObject, eventClick}) {
             sport_id,
             id,
          } = eventObject.event;
-    
-    const {sportIcons} = useContext(UserContext).state
+    const [showIcon, setShowIcon] = useState(true);
+    const {sportIcons, sportData} = useContext(UserContext).state
 
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const datetime = new Date(date);
@@ -53,7 +53,13 @@ export default function Event({eventObject, eventClick}) {
             avatar
             onPress={() => eventClick(id)}>
                  <Left>
-                    <Icon style={{fontSize:18}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
+                    <Button style={{borderRadius: 15, backgroundColor: '#fafafa', justifyContent: "space-around"}}onPress={() => setShowIcon(!showIcon)}>
+                        {showIcon ? 
+                        <Icon style={{fontSize:18, color: "black"}} type={sportIcons[sport_id -1].family} name={sportIcons[sport_id-1].icon} />
+                        :
+                        <Text style={{color: "black"}}>{sportData[sport_id - 1].name}</Text>
+                        }
+                    </Button>
                 </Left>
                  <Body>
                     <Text>{title}</Text>

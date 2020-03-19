@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import Event from './Event';
 import { FlatList, StyleSheet } from 'react-native';
-import { Content, Header, Tab, Tabs, Container, Spinner, Toast, Icon } from 'native-base';
+import { Content, Header, Tab, Tabs, Container, Spinner, Toast, Icon, Picker } from 'native-base';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import uuid from 'react-uuid';
@@ -11,13 +11,17 @@ import EventPage from './EventPage';
 export default function EventsContainer({page}) {
 
     const [eventArray, setEventArray] = useState('');
+    const [currentEventArray, setCurrentEventArray] = useState('')
     const [eventClicked, setEventClicked] = useState(false);
     const [eventIdClicked, setEventIdClicked] = useState(null);
     const [currentEventPageInfo, setCurrentEventPageInfo] = useState(null);
     const [resetPage, setResetPage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [sportSelected, setSportSelected] = useState("All");
 
-    const { userData, favoriteSports, userToken } = useContext(UserContext).state;
+    const { userData, userToken, sportData } = useContext(UserContext).state;
+    let {favoriteSports} = userData;
+    const pickerList = ["All", "Favorite Sports", ...favoriteSports];
 
     const getAllEventInfo = () => {
         setIsLoading(true);
@@ -27,7 +31,8 @@ export default function EventsContainer({page}) {
             }
             })
         .then((response) => {
-            setEventArray(response.data)
+            setEventArray(response.data);
+            setCurrentEventArray(response.data);
             setIsLoading(false);
         })
         .catch(() => {
@@ -65,12 +70,25 @@ export default function EventsContainer({page}) {
         getAllEventInfo();
     },[resetPage, page])
 
+    useEffect(() => {
+        if (eventArray) {
+            if (sportSelected === "All") {
+                setCurrentEventArray(eventArray);
+            } else if (sportSelected === "Favorite Sports") {
+                setCurrentEventArray(eventArray.filter(obj => favoriteSports.find(el => el.sport_id === obj.event.sport_id)))
+            } else {
+                setCurrentEventArray(eventArray.filter(obj => obj.event.sport_id === sportSelected))
+            }
+        }
+    }, [sportSelected]);
+
     const styles = StyleSheet.create({
         eventsContainer: {
             backgroundColor: '#fcfbfc'
         }
     });
-    console.log(eventArray);
+
+
     if(isLoading) {
         return (
             <Container>
@@ -81,27 +99,41 @@ export default function EventsContainer({page}) {
 
     return (
         <Container style={styles.eventsContainer}>
-            { eventArray && !eventClicked ? (
-                <FlatList
-                style={{padding: 5}}
-                data={eventArray}
-                renderItem={ ({ item }) => (
-                    <Event
-                    key={uuid()}
-                    eventObject={item}
-                    eventClick={handleEventClick}
+            <Content>
+                {currentEventArray && !eventClicked ? (
+                <Picker
+                    mode="dropdown"
+                    iosIcon={<Icon name="arrow-down" />}
+                    placeholder="Favorite Sport"
+                    selectedValue={sportSelected}
+                    onValueChange={setSportSelected}>
+                        {pickerList.map(sport => 
+                            <Picker.Item label={typeof sport === "string" ? sport : sportData[sport.sport_id - 1].name} value={typeof sport === "string" ? sport : sport.sport_id} key={uuid()} />
+                        )}
+                </Picker>
+                ) : null}
+                { currentEventArray && !eventClicked ? (
+                    <FlatList
+                    style={{padding: 5}}
+                    data={currentEventArray}
+                    renderItem={ ({ item }) => (
+                        <Event
+                        key={uuid()}
+                        eventObject={item}
+                        eventClick={handleEventClick}
+                        />
+                    )}
                     />
-                )}
-                />
-            ) : null}
-            { eventClicked && currentEventPageInfo ? (
-                <EventPage
-                    pageContent = {currentEventPageInfo[0]}
-                    eventClick={handleEventClick}
-                    resetPage={setResetPage}
-                />
-            ) : (null)
-            }
+                ) : null}
+                { eventClicked && currentEventPageInfo ? (
+                    <EventPage
+                        pageContent = {currentEventPageInfo[0]}
+                        eventClick={handleEventClick}
+                        resetPage={setResetPage}
+                    />
+                ) : (null)
+                }
+            </Content>
         </Container>
         
     );
