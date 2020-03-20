@@ -39,7 +39,7 @@ export default function Challenge({ challenge, setPage }) {
       })
       return teamObj;
     }
-
+    
     useEffect(() => {
       setisCaptain(checkCaptainAndSport());
       setDidCreateChallenge(createTeamObj());
@@ -67,7 +67,7 @@ export default function Challenge({ challenge, setPage }) {
       // const formattedTime = h + ":" + m;
       return formattedTime;
     }
-
+    
     const formattedTime = formatTime(date);
     if(is_accepted) {
       return null;
