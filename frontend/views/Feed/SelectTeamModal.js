@@ -7,13 +7,12 @@ import axios from 'axios';
 import {URL} from 'react-native-dotenv';
 import uuid from 'react-uuid';
 
-export default function TeamSelectModal() {
+export default function TeamSelectModal({setPage}) {
     const {eventData, setShowModal, setEventData, showModal} = useContext(ChallengeContext);
     const {userData, userToken} = useContext(UserContext).state;
     const teamList = userData.teams.filter(team => ((team.sport_id === eventData.event.sport_id) && (team.captain_id === userData.userInfo.id)))
     // must have selectTeam after teamList due to constructor
     const [selectTeam, setSelectTeam] = useState(teamList[0].id);
-    console.log(selectTeam);
     const postEvent = async () => {
         if (selectTeam) {
             // creates new event from challenge
@@ -23,15 +22,13 @@ export default function TeamSelectModal() {
                     eventData.eventTeams[0],
                     selectTeam
                 ],
-                event: eventData.event
+                event: {...eventData.event}
             };
-            console.log(eventObject);
             axios.post(eventUrl, eventObject, {headers: {"x-access-token": userToken}})
                 .then(r => {
                     // updates challenge to be accepted
                     axios.put(`${URL}/challenges/`, {challenge:{id: eventData.event.id, team_to_id: selectTeam, is_accepted: true}}, {headers: {"x-access-token": userToken}})
                     .then(r => {
-                        console.log(r);
                         setShowModal(false);
                         setPage(1);
                     })

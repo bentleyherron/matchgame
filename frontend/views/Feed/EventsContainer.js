@@ -40,15 +40,11 @@ export default function EventsContainer({page}) {
                 text: "Unable to access the database",
                 buttonText: "Okay"
             })
-            setTimeout(() => {
-                navigation.navigate('Profile')
-            }, 5000)
         })
     };
 
     const handleEventClick = (eventId) => {
         setEventClicked(!eventClicked);
-        console.log(`Event Id Clicked: ${eventId}`)
         setEventIdClicked(eventId);
         
     }

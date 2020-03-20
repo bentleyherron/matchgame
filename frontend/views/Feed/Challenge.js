@@ -11,6 +11,7 @@ export default function Challenge({ challenge, setPage }) {
             is_accepted,
             sport_id,
             title,
+            location,
             team_from_name
            } = challenge;
 
@@ -86,6 +87,7 @@ export default function Challenge({ challenge, setPage }) {
               </Left>
               <Body>
                 <Text>{team_from_name} Issued Challenge</Text>
+                <Text note>{title}</Text>
                 <Text note>{message}</Text>
                 <Text note>{wager} Pts · {formattedDate} · {formattedTime}</Text>
               </Body>

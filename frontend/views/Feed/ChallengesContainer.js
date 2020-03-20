@@ -95,7 +95,7 @@ export default function ChallengesContainer({setPage, route, page}) {
                             />
                         )}
                     />
-                    {showModal ? <SelectTeamModal /> : null}
+                    {showModal ? <SelectTeamModal setPage={setPage} /> : null}
                 </Content>
             </ChallengeContext.Provider>
         </Container>

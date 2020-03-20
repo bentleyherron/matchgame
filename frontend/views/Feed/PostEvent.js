@@ -69,7 +69,7 @@ export default function PostEvent({ setPage, challenge }) {
                     sport_id,
                     is_public: true,
                     wager,
-                    is_accepted: false,
+                    is_accepted: true,
                     title
                 }
             }
