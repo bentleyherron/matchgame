@@ -90,7 +90,8 @@ export default function PostEvent({ setPage, challenge }) {
                     wager,
                     is_accepted: false,
                     title
-                }};
+                },
+            challenge_id: id};
             setEventData(eventObject);
             setShowModal(true);
 

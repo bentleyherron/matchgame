@@ -123,6 +123,7 @@ export default function EventsContainer({page}) {
                 ) : null}
                 { eventClicked && currentEventPageInfo ? (
                     <EventPage
+                        key={uuid()}
                         pageContent = {currentEventPageInfo[0]}
                         eventClick={handleEventClick}
                         resetPage={setResetPage}

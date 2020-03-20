@@ -27,6 +27,7 @@ export default function SignupPageOne({ navigation }) {
           email,
           password
         }}).then(r => {
+          console.log(r.data.token);
           setUserToken(r.data.token);
           setHasSignedUp(true);
           setIsLoggingIn(false);

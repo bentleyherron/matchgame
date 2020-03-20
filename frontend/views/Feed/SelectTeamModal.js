@@ -27,7 +27,7 @@ export default function TeamSelectModal({setPage}) {
             axios.post(eventUrl, eventObject, {headers: {"x-access-token": userToken}})
                 .then(r => {
                     // updates challenge to be accepted
-                    axios.put(`${URL}/challenges/`, {challenge:{id: eventData.event.id, team_to_id: selectTeam, is_accepted: true}}, {headers: {"x-access-token": userToken}})
+                    axios.put(`${URL}/challenges/`, {challenge:{id: eventData.challenge_id, team_to_id: selectTeam, is_accepted: true}}, {headers: {"x-access-token": userToken}})
                     .then(r => {
                         setShowModal(false);
                         setPage(1);
