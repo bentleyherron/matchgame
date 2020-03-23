@@ -8,7 +8,7 @@ import UserContext from '../../../UserContext';
 
 export default function UserUpdate({ navigation }) {
     const {userData, userToken} = useContext(UserContext).state;
-    const { id, username, nickname, email, photo, city_state } = userData.userInfo;
+    const { id, username, nickname, email, photo, city_id } = userData.userInfo;
     const { setUserData } = useContext(UserContext).actions;
 
     const [newUsername, setNewUsername] = useState(username);
@@ -19,6 +19,7 @@ export default function UserUpdate({ navigation }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
     const [userId, setUserId] = useState(null);
+    const [cityState, setCityState] = useState(null);
 
     const openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -37,6 +38,17 @@ export default function UserUpdate({ navigation }) {
           setNewPhoto("data:image/png;base64," + pickerResult.base64);
           setShowSpinner(false);
     }
+
+    useEffect(() => {
+        axios.get(`${URL}/states/city/${city_id}`, {
+            headers: {
+                "x-access-token": userToken
+            }
+            })
+            .then(r => {
+                setCityState(r.data[0].city)
+            })
+    }, [])
 
     useEffect(() => {
         setUserId(id);
@@ -190,7 +202,7 @@ export default function UserUpdate({ navigation }) {
                             </Left>
                             <Body>
                                 <Text>
-                                    {userData.teams[0].city_state}
+                                    {cityState ? cityState : null}
                                 </Text>
                             </Body>
                         </Left>

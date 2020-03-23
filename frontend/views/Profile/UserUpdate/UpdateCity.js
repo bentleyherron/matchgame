@@ -7,12 +7,14 @@ import UserContext from '../../../UserContext';
 
 export default function UpdateCity({ navigation }) {
     const {userToken, userData} = useContext(UserContext).state;
+    const {setShouldRefresh} = useContext(UserContext).actions;
     const {id, city_id}= userData.userInfo;
     const [newCity_Id, setNewCity_Id] = useState(null);
     const [state, setState] = useState(null);
     const [stateList, setStateList] = useState([]);
     const [cityList, setCityList] = useState([]);
 
+    console.log(city_id);
     useEffect(() => {
         setNewCity_Id(city_id);
             axios.get(`${URL}/states/city/${city_id}`)
@@ -74,8 +76,13 @@ export default function UpdateCity({ navigation }) {
                 "x-access-token": userToken
             }
             })
-            .catch(() => {
-            Toast.show({
+            .then(() => {
+                setShouldRefresh(currentState => !currentState);
+                navigation.navigate('User Profile');
+            })
+            .catch((err) => {
+                console.log(err);
+                Toast.show({
                 text: "Unable to access the database",
                 buttonText: "Okay"
             })
@@ -83,7 +90,6 @@ export default function UpdateCity({ navigation }) {
                 navigation.navigate('Profile')
             }, 5000)
         })
-        navigation.navigate('User Profile');
     }
 
     if (!state) {
