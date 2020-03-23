@@ -23,7 +23,6 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
         longitude,
         winner_id
     } = pageContent.event;
-
     const {eventTeams} = pageContent;
 
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
@@ -121,6 +120,21 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
   useEffect(() => {
     setCanSelectWinner(maySelectWinner());
   }, [])
+
+  const deleteEvent = async () => {
+    axios.delete(`${URL}/events/${id}`, {headers:{"x-access-token": userToken}})
+    .then(r => {
+      eventClick();
+      resetPage(currentState => !currentState);
+    })
+    .catch(err => {
+      console.log(err);
+      Toast.show({
+        text: "Unable to delete event",
+        buttonText: "Okay"
+      })
+    })
+  }
   // make this a post score page
   const postResults = () => {
     if(isSubmitting) {
@@ -162,6 +176,11 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
         <Content padder showsVerticalScrollIndicator={false}>
           <Button bordered rounded style={styles.returnButton} onPress={() => eventClick()}><Text>Return to Event Feed</Text></Button>
           <Card style={styles.eventBody}>
+            {canSelectWinner ?
+            <CardItem header>
+              <Button rounded danger onPress={() => deleteEvent()}><Text>Delete Event</Text></Button>
+            </CardItem>
+            : null}
             <CardItem header bordered style={styles.eventCategoryContainer}>
               <Body>
                 <Text style={styles.eventCategoryTitle}>{title}</Text>
