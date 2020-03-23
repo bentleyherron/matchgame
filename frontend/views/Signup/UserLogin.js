@@ -4,6 +4,7 @@ import SignupContext from './SignupContext';
 import UserContext from '../../UserContext';
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import * as SecureStore from 'expo-secure-store';
 
 export default function SignupPageOne({ navigation }) {
 
@@ -18,6 +19,7 @@ export default function SignupPageOne({ navigation }) {
       if(hasSignedUp) {
         setUserToken(null);
         setHasSignedUp(false);
+        SecureStore.deleteItemAsync('token');
       }
     }, [])
 
@@ -27,8 +29,8 @@ export default function SignupPageOne({ navigation }) {
           email,
           password
         }}).then(r => {
-          console.log(r.data.token);
           setUserToken(r.data.token);
+          SecureStore.setItemAsync('token', r.data.token);
           setHasSignedUp(true);
           setIsLoggingIn(false);
           navigation.navigate('Profile');

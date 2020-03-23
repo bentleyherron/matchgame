@@ -1,17 +1,22 @@
 // GESTURE HANDLER MUST BE FIRST IMPORT
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
 
+// navigation and base components
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Root, Text, Container } from "native-base";
+
+// async
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import * as SecureStore from 'expo-secure-store';
 
+// custom components
 import MapPage from './views/Feed/MapPage';
 import ErrorPage from './views/Navigation/ErrorPage';
 import Nav from './views/Navigation/Nav';
@@ -59,6 +64,18 @@ export default function App() {
     {id: 19, name: "Lacrosse", family: "MaterialCommunityIcons", icon:"hockey-sticks"}
   ]
 
+  const getToken = async () => {
+    try {
+      const token = await SecureStore.getItemAsync('token');
+      if(token !== null) {
+        setHasSignedUp(true);
+        setUserToken(token);
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     Font.loadAsync({
       Roboto: require('native-base/Fonts/Roboto.ttf'),
@@ -71,7 +88,11 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if(hasSignedUp) {
+    getToken();
+  }, [])
+
+  useEffect(() => {
+    if(hasSignedUp && userToken) {
       setIsLoading(true);
       axios.get(`${URL}/profile/`, {
         headers: {
@@ -84,7 +105,7 @@ export default function App() {
         }).catch((err) => {
           console.log(err);
         })
-  }}, [hasSignedUp, shouldRefresh])
+  }}, [hasSignedUp, shouldRefresh, userToken])
 
   useEffect(() => {
     axios.get(`${URL}/sports`).then(
@@ -121,7 +142,7 @@ export default function App() {
       <NavigationContainer>
         <Root>
           <UserContext.Provider value={userContextValue}>
-            <Tab.Navigator initialRouteName={hasSignedUp ? "Profile" : "Signup"} tabBar={props => <Nav {...props} />}>
+            <Tab.Navigator initialRouteName={hasSignedUp || userToken ? "Profile" : "Signup"} tabBar={props => <Nav {...props} />}>
               <Tab.Screen name="Signup" options={{tabBarVisible: false, showLabel: false, showIcon: false}} component={SignupContainer} />
               <Tab.Screen name="Profile" component={Profile} />
               <Tab.Screen name="Challenge Create" component={ChallengeCreate} />
