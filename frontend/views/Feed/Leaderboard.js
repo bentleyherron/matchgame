@@ -12,7 +12,7 @@ import uuid from 'react-uuid';
 
 export default function Leaderboard() {
     const [teamData, setTeamData] = useState(null);
-    const[regionSportList, setRegionSportList] = useState(null);
+    const [regionSportList, setRegionSportList] = useState(null);
     const [currentSport, setCurrentSport] = useState(null);
     const [teamsFilteredBySport, setTeamsFilteredBySport] = useState(null);
     const [isLoading, setIsLoading] = useState(null);

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Text, Body, Left, Right,  ListItem, Avatar, Button, Icon } from 'native-base';
 import PostEvent from './PostEvent';
+import DeleteChallenge from './DeleteChallenge';
 import UserContext from '../../UserContext';
 
 export default function Challenge({ challenge, setPage }) {
@@ -100,6 +101,12 @@ export default function Challenge({ challenge, setPage }) {
                       challenge={challenge}
                       setPage={setPage}
                     />)
+                :
+                !is_accepted && didCreateChallenge[team_from_id] && isCaptain[sport_id] ? 
+                    (<DeleteChallenge
+                      challenge={challenge}
+                      setPage={setPage}
+                      />)
                 :
                 null
                 :
