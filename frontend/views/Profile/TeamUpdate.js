@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import {Container, Content, Form, Item, Input, Picker, Spinner, Text, Button, Icon, Footer, FooterTab, Body, Left, Right, Thumbnail} from 'native-base';
+import {Container, Content, Form, Item, Input, Picker, Spinner, Text, Button, Icon, Footer, FooterTab, Body, Left, Right, Thumbnail, Toast} from 'native-base';
 import {Image, StyleSheet} from 'react-native';
 
 import axios from 'axios';
@@ -8,7 +8,7 @@ import { URL } from 'react-native-dotenv';
 import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
 
-export default function TeamCreateProfile({route, navigation}) {
+export default function TeamUpdate({route, navigation}) {
     const { team } = route.params;
     const [teamName, setTeamName] = useState(team.team_name);
     const [teamSport, setTeamSport] = useState(team.sport_id);
@@ -17,11 +17,12 @@ export default function TeamCreateProfile({route, navigation}) {
     const {state, actions} = useContext(UserContext);
     const {sportData, userToken} = state;
     const {setShouldRefresh} = actions;
+    
 
     const postUpdatedTeam = async () => {
         if (!isSubmitting) {
             setIsSubmitting(true);
-            axios.put(`${URL}/teams/${team.team_id}`, {
+            axios.put(`${URL}/teams/`, {
                 "team": {
                     id: team.team_id,
                     name: teamName,
@@ -52,7 +53,7 @@ export default function TeamCreateProfile({route, navigation}) {
             alert("Permission to access camera roll is required!");
             return;
         }
-        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0.2, aspect:[100, 100]});
+        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true, quality: 0.1, aspect:[100, 100]});
         if(pickerResult.cancelled === true) {
             return;
         }
