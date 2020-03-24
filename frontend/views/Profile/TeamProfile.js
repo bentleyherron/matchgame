@@ -2,23 +2,30 @@ import React, { useState, useEffect, useContext } from 'react';
 import {StyleSheet} from 'react-native';
 import { Container, Content, Card, CardItem, Left, Right, Grid, Row, Col, Thumbnail, Body, Text, Button, H1, H2, H3, Accordion, Spinner, Item, Picker, Icon, Toast } from 'native-base';
 
-import { YellowBox } from 'react-native';
 import axios from 'axios';
 import { URL } from 'react-native-dotenv';
 import uuid from 'react-uuid';
 import UserContext from '../../UserContext';
-
-const dataArray = [
-    { title: "All Sports", content: "Games" },
-    { title: "Ice Hockey", content: "Games" },
-    { title: "Ultimate Frisbee", content: "Games" }
-  ];
 
 export default function TeamProfile({navigation}){
     const { userData, sportData, userToken } = useContext(UserContext).state;
     const [isCaptain, setIsCaptain] = useState(false);
     const [teamData, setTeamData] = useState(null);
     const [teamSelected, setTeamSelected] = useState(null);
+
+    const checkCaptainAndSport = () => {
+        const captainObj = {};
+        userData.teams.forEach((team) => {
+          if(team.captain_id === userData.userInfo.id) {
+            captainObj[team.id] = true ;
+          }
+        })
+        setIsCaptain(captainObj);
+    }
+
+    const deleteTeam = async () => {
+
+    }
 
     const getUniques = (arr, keyToCheck) => {
         return arr.filter((obj, i) => arr.findIndex(el => el[keyToCheck] === obj[keyToCheck]) === i) 
@@ -36,15 +43,14 @@ export default function TeamProfile({navigation}){
                     return teamProfile.data;
                 }));
                 setTeamData(dataResults);
+                setTeamSelected(dataResults[0]);
             } else {
-                const dataResults = await Promise.all(teamArr.map(async teamObj => {
-                    const teamProfile = await axios.get(`${URL}/profile/team/${teamObj.id}/`, {
+                const dataResults = await axios.get(`${URL}/profile/team/${teamArr[0].id}/`, {
                         headers: {
                           "x-access-token": userToken
                         }});
-                    return teamProfile.data;
-                }));
                 setTeamData(dataResults);
+                setTeamSelected(dataResults)
             }
         }catch(err) {
             Toast.show({
@@ -62,12 +68,11 @@ export default function TeamProfile({navigation}){
         fetchTeamProfileData();
     },[])
 
-    const captainAdd = 
-        <Col>
-            <Button rounded>
-                <Text>Add Team Member</Text>
-            </Button>
-        </Col>;
+    useEffect(() => {
+        checkCaptainAndSport();
+    }, [])
+
+
 
     if(!teamData) {
         return(
@@ -98,9 +103,11 @@ export default function TeamProfile({navigation}){
             borderRadius: 15,
             padding: 15,
             backgroundColor: '#ffffff',
-            
         },
-    
+        profileButtonContainer: {
+            marginVertical: 10,
+            borderBottomWidth: 0
+        },
         profileHeader: {
             borderRadius: 15,
             backgroundColor: '#ffffff',
@@ -146,12 +153,26 @@ export default function TeamProfile({navigation}){
                                 : null}
                         </Picker>
                     </Item>
-
+                    {teamSelected ? isCaptain[teamSelected.team_id] ?
+                    <Item style={styles.profileButtonContainer}>
+                        <Left>
+                            <Button rounded>
+                                <Text>Update Team</Text>
+                            </Button>
+                        </Left>
+                        <Right>
+                            <Button danger rounded>
+                                <Text>Delete Team</Text>
+                            </Button>
+                        </Right>
+                    </Item>
+                    : null : null}
                 {teamSelected ? <Card style={styles.profileHeaderContainer}>
                     <CardItem style={styles.profileHeader}>
-                        {teamSelected.photo ? <Left><Thumbnail large source={{uri: teamSelected.photo}} /></Left> : null}
+                        {teamSelected.team_photo ? <Left><Thumbnail large source={{uri: teamSelected.team_photo}} /></Left> : null}
                         <Body>
                             <Text style={{fontWeight: 'bold', marginBottom:2}}>{teamSelected.team_name}</Text>
+                            {teamSelected.sport_id ? <Text note>Sport: {sportData[teamSelected.sport_id - 1].name}</Text> : null }
                             <Text note>Members: {teamSelected.team_members.length}</Text>
                             <Text note>Team Score: {teamSelected.score}</Text>
                         </Body>
@@ -171,23 +192,10 @@ export default function TeamProfile({navigation}){
                             <Text note>{teamSelected.captain.nickname}</Text>
                         </Body>
                     </CardItem>
-                    {/* <CardItem>
-                        <Left>
-                            Sport:
-                        </Left>
-                        <Body>
-                            {sportData ? sportData[sport_id - 1].name : null}
-                        </Body>
-                    </CardItem> */}
-                    {/* <H1 style={{padding: 20}}>Record</H1>
-                    <CardItem>
-                        <Accordion dataArray={dataArray} expanded={0}/>
-                    </CardItem> */}
                     <Grid>
                         <Col>
                             <H3 style={styles.profileCategories}>Roster</H3>
                         </Col>
-                        {isCaptain ? captainAdd : null}
                     </Grid>
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
                         <CardItem key={uuid()}>
