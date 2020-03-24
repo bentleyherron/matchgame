@@ -23,6 +23,10 @@ export default function TeamProfile({navigation}){
         setIsCaptain(captainObj);
     }
 
+    const updateTeam = () => {
+        navigation.navigate("Team Update",{team: teamSelected});
+    }
+
     const deleteTeam = async () => {
         const deleteURL = `${URL}/teams/${teamSelected.team_id}`;
         axios.delete(deleteURL, {headers: {"x-access-token": userToken}})
@@ -165,12 +169,12 @@ export default function TeamProfile({navigation}){
                     {teamSelected ? isCaptain[teamSelected.team_id] ?
                     <Item style={styles.profileButtonContainer}>
                         <Left>
-                            <Button rounded>
+                            <Button rounded onPress={updateTeam}>
                                 <Text>Update Team</Text>
                             </Button>
                         </Left>
                         <Right>
-                            <Button danger rounded onPress={() => deleteTeam()}>
+                            <Button danger rounded onPress={deleteTeam}>
                                 <Text>Delete Team</Text>
                             </Button>
                         </Right>
