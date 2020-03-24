@@ -6,6 +6,7 @@ import UserUpdate from './UserUpdate/UserUpdate';
 import UpdateCity from './UserUpdate/UpdateCity';
 import UpdateSports from './UserUpdate/UpdateSports';
 import UpdateTeam from './TeamUpdate';
+import UpdateTeamMembers from './TeamMemberUpdate';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator()
@@ -20,6 +21,7 @@ export default function ProfileContainer() {
             <Stack.Screen name="City Update" component={UpdateCity} />
             <Stack.Screen name="Sport Update" component={UpdateSports} />
             <Stack.Screen name="Team Update" component={UpdateTeam} />
+            <Stack.Screen name="Member Update" component={UpdateTeamMembers} />
         </Stack.Navigator>
     );
 }

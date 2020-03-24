@@ -27,6 +27,14 @@ export default function TeamProfile({navigation}){
         navigation.navigate("Team Update",{team: teamSelected});
     }
 
+    const editMembers = () => {
+        if(teamSelected) {
+            const memberObj = {};
+            teamSelected.team_members.forEach(obj => {memberObj[obj.id] = obj.username});
+            navigation.navigate("Member Update", {teamId: teamSelected.team_id, members: memberObj})
+        }
+    }
+
     const deleteTeam = async () => {
         const deleteURL = `${URL}/teams/${teamSelected.team_id}`;
         axios.delete(deleteURL, {headers: {"x-access-token": userToken}})
@@ -208,6 +216,12 @@ export default function TeamProfile({navigation}){
                     <Grid>
                         <Col>
                             <H3 style={styles.profileCategories}>Roster</H3>
+                            {teamSelected ? isCaptain[teamSelected.team_id] ?
+                            <Right>
+                                <Button rounded onPress={editMembers}>
+                                    <Text>Edit Members</Text>
+                                </Button>
+                            </Right> : null : null}
                         </Col>
                     </Grid>
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
