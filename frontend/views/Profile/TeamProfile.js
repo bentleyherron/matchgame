@@ -24,7 +24,16 @@ export default function TeamProfile({navigation}){
     }
 
     const deleteTeam = async () => {
-
+        const deleteURL = `${URL}/teams/${teamSelected.team_id}`;
+        axios.delete(deleteURL, {headers: {"x-access-token": userToken}})
+        .then(navigation.navigate('User Profile'))
+        .catch(err => {
+            console.log(err);
+            Toast.show({
+                text: "Unable to delete team. Try again later",
+                buttonText: "Okay"
+            })
+        })
     }
 
     const getUniques = (arr, keyToCheck) => {
@@ -161,7 +170,7 @@ export default function TeamProfile({navigation}){
                             </Button>
                         </Left>
                         <Right>
-                            <Button danger rounded>
+                            <Button danger rounded onPress={() => deleteTeam()}>
                                 <Text>Delete Team</Text>
                             </Button>
                         </Right>

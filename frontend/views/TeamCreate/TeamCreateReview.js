@@ -21,14 +21,15 @@ export default function TeamCreateReview( {navigation}) {
     const postTeamMembers = async (teamId) => {
         let addTeamMembers = {teamMembers:Object.keys(teamMembers).map(item => {return {player_id: item, team_id:teamId}})};
         axios.post(`${URL}/team-members/`, addTeamMembers, {headers:{"x-access-token": userToken}})
-        .catch(() => {
+        .catch((err) => {
+            console.log(err);
             Toast.show({
                 text: "Error occurred. Try again later",
                 buttonText: "Okay"
             });
             setTimeout(() => {
-                navigation.navigate('Signup')
-            }, 5000);
+                navigation.navigate('Profile')
+            }, 3000);
         })
     }
 
@@ -57,14 +58,15 @@ export default function TeamCreateReview( {navigation}) {
                     )
                 }
             )
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 Toast.show({
                     text: "Error occurred. Try again later",
                     buttonText: "Okay"
                 });
                 setTimeout(() => {
-                    navigation.navigate('Signup')
-                }, 5000);
+                    navigation.navigate('Profile')
+                }, 3000);
             })
         }
 

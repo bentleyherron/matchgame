@@ -46,7 +46,7 @@ export default function TeamCreateProfile({navigation}) {
                 </Item>
                 <Item style={{paddingTop: 10, paddingBottom: 10}}>
                     <Body>
-                        <Button rounded style={styles.pickPhotoButton} onPress={() => {imagePickerAsync();setShowSpinner(true)}} >
+                        <Button rounded style={styles.pickPhotoButton} onPress={() => {imagePickerAsync()}} >
                             <Text>Pick a team photo</Text>
                         </Button>
                     </Body>
