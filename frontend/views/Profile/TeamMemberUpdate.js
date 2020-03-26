@@ -20,7 +20,7 @@ export default function TeamMemberUpdate({ route, navigation }) {
     const {state, actions} = useContext(UserContext);
     const {userToken, userData} = state;
     const {setShouldRefresh} = actions;
-    console.log(teamMembers);
+
     const handleTeamMemberAdd = (id, username) => {
         if(!teamMembers[id]) {
             const newTeamMembers = {...teamMembers};
@@ -70,8 +70,8 @@ export default function TeamMemberUpdate({ route, navigation }) {
     const handleSubmit = async () => {
         deleteTeamMembers();
         postTeamMembers();
-        navigation.navigate('User Profile');
-        setShouldRefresh(currentState => !currentState);
+        // navigation.navigate('User Profile');
+        // setShouldRefresh(currentState => !currentState);
     }
 
     const deleteTeamMembers = async () => {
@@ -79,7 +79,7 @@ export default function TeamMemberUpdate({ route, navigation }) {
         Object.keys(members).forEach(id => teamMembers[id] ? null : membersToDel.push(id)); 
         const delMembers = membersToDel.map(id => {return {teamMember: {player_id: parseInt(id, 10), team_id: teamId}}});
         console.log(delMembers);
-        Promise.all(delMembers.map(obj => axios.delete(`${URL}/team-members/`, obj, {headers: {"x-access-token": userToken}})))
+        axios.all(delMembers.map(obj => {return axios.delete(`${URL}/team-members/`, obj, {headers: {"x-access-token": userToken}})}))
         .catch(err => {console.log(err); console.log('member delete failed');Toast.show({text: "Team members not removed properly", buttonText: "Okay"})});
     }
 
@@ -87,8 +87,8 @@ export default function TeamMemberUpdate({ route, navigation }) {
         const membersToAdd = [];
         Object.keys(teamMembers).forEach(id => members[id] ? null : membersToAdd.push(id));
         const postMembers = membersToAdd.map(id => {return {teamMember: {player_id: parseInt(id, 10), team_id: teamId}}});
-        console.log(postMembers);
         axios.post(`${URL}/team-members/`, {teamMembers: postMembers}, {headers:{"x-access-token": userToken}})
+        .then(r => {console.log('this is the response');console.log(r)})
         .catch((err) => {
             console.log(err);
             console.log("Team member add failed")
