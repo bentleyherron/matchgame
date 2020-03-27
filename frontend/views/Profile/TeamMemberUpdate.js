@@ -8,6 +8,7 @@ import PlayerTeamCard from '../TeamCreate/PlayerTeamCard';
 
 import axios from 'axios';
 import {URL} from 'react-native-dotenv';
+import uuid from 'react-uuid';
 
 export default function TeamMemberUpdate({ route, navigation }) {
     const { members, teamId } = route.params;
@@ -20,6 +21,9 @@ export default function TeamMemberUpdate({ route, navigation }) {
     const {state, actions} = useContext(UserContext);
     const {userToken, userData} = state;
     const {setShouldRefresh} = actions;
+    // should not be able to delete captain
+    // should not be able to delete self
+    // people when added to the team shouldn't show up in the player list
 
     const handleTeamMemberAdd = (id, username) => {
         if(!teamMembers[id]) {
@@ -30,10 +34,19 @@ export default function TeamMemberUpdate({ route, navigation }) {
     }
 
     const handleTeamMemberDel = (id) => {
-        if(teamMembers[id]) {
+        console.log(id);
+        console.log(userData.userInfo.id);
+        console.log(parseInt(id, 10) === userData.userInfo.id);
+        if(parseInt(id, 10) === userData.userInfo.id) {
+            Toast.show({
+                text: "Cannot remove team captain",
+                buttonText: "Okay"
+            })
+            return null;
+        } else if (teamMembers[id]) {
             const newTeamMembers = {...teamMembers};
             delete newTeamMembers[id];
-            setTeamMembers(newTeamMembers)
+            setTeamMembers(newTeamMembers) 
         }
     }
 
@@ -78,7 +91,6 @@ export default function TeamMemberUpdate({ route, navigation }) {
         const membersToDel = [];
         Object.keys(members).forEach(id => teamMembers[id] ? null : membersToDel.push(id)); 
         const delMembers = membersToDel.map(id => {return {teamMember: {player_id: parseInt(id, 10), team_id: teamId}}});
-        console.log(delMembers);
         delMembers.forEach(obj => axios.delete(`${URL}/team-members/`, {data: obj, headers: {"x-access-token": userToken}})
         .catch(err => {console.log(err); console.log('member delete failed');Toast.show({text: "Team members not removed properly", buttonText: "Okay"})}));
     }
@@ -145,7 +157,7 @@ export default function TeamMemberUpdate({ route, navigation }) {
                             <FlatList
                                 data={convertTeamMembers(teamMembers)}
                                 renderItem={ ({ item }) => (
-                                    <Item keyExtractor={item.id} style={{marginTop: 10, paddingBottom: 10}}>
+                                    <Item keyExtractor={uuid()} style={{marginTop: 10, paddingBottom: 10}}>
                                         <Left>
                                             <Text>
                                                 {item.name}
@@ -168,7 +180,7 @@ export default function TeamMemberUpdate({ route, navigation }) {
                         data={currentUserList}
                         renderItem={ ({ item }) => (
                             <PlayerTeamCard
-                            keyExtractor={item.id}
+                            keyExtractor={uuid()}
                             cardData={item}
                             handleSelect={handleTeamMemberAdd}
                             />
