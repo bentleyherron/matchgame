@@ -111,6 +111,18 @@ export default function TeamProfile({navigation}){
             paddingRight: 15,
             backgroundColor: '#fafafa'
         },
+        profileButtons: {
+            padding: 15,
+            marginTop: 5,
+            borderRadius: 15,
+            backgroundColor: '#fafafa',
+            justifyContent: "space-around"
+        },
+        rosterRow: {
+            marginTop: 5,
+            justifyContent: "space-between",
+            alignItems: "center"
+        },
         pickerContainer : {
             marginBottom: 15,
             marginLeft: 10,
@@ -153,7 +165,15 @@ export default function TeamProfile({navigation}){
             justifyContent: 'center'
         }
     });
-
+    if (!teamSelected) {
+        return (
+            <Container style={styles.container}>
+                <Content padder showsVerticalScrollIndicator={false}>
+                    <Spinner />
+                </Content>
+            </Container>
+        )
+    }
     return (
         <Container style={styles.container}>
             <Content padder showsVerticalScrollIndicator={false}>
@@ -174,21 +194,19 @@ export default function TeamProfile({navigation}){
                                 : null}
                         </Picker>
                     </Item>
-                    {teamSelected ? isCaptain[teamSelected.team_id] ?
-                    <Item style={styles.profileButtonContainer}>
-                        <Left>
-                            <Button rounded onPress={updateTeam}>
-                                <Text>Update Team</Text>
+                    {isCaptain[teamSelected.team_id] ?
+                    <Grid>
+                        <Row style={styles.profileButtons}> 
+                            <Button light rounded small onPress={updateTeam}>
+                                    <Text>Update Team</Text>
                             </Button>
-                        </Left>
-                        <Right>
-                            <Button danger rounded onPress={deleteTeam}>
+                            <Button light rounded small onPress={deleteTeam}>
                                 <Text>Delete Team</Text>
                             </Button>
-                        </Right>
-                    </Item>
-                    : null : null}
-                {teamSelected ? <Card style={styles.profileHeaderContainer}>
+                        </Row>
+                    </Grid>
+                    : null}
+                <Card style={styles.profileHeaderContainer}>
                     <CardItem style={styles.profileHeader}>
                         {teamSelected.team_photo ? <Left><Thumbnail large source={{uri: teamSelected.team_photo}} /></Left> : null}
                         <Body>
@@ -198,9 +216,9 @@ export default function TeamProfile({navigation}){
                             <Text note>Team Score: {teamSelected.score}</Text>
                         </Body>
                     </CardItem>
-                </Card> : null}
+                </Card>
 
-                {teamSelected ? <Card style={styles.profileBody}>
+                <Card style={styles.profileBody}>
                     <H3 style={styles.profileCategories}>Captain</H3>
                     <CardItem bordered>
                         <Left>
@@ -215,13 +233,14 @@ export default function TeamProfile({navigation}){
                     </CardItem>
                     <Grid>
                         <Col>
-                            <H3 style={styles.profileCategories}>Roster</H3>
-                            {teamSelected ? isCaptain[teamSelected.team_id] ?
-                            <Right>
-                                <Button rounded onPress={editMembers}>
+                            <Row style={styles.rosterRow}>
+                                <H3 style={styles.profileCategories}>Roster</H3>
+                                {isCaptain[teamSelected.team_id] ? 
+                                <Button light rounded small onPress={editMembers}>
                                     <Text>Edit Members</Text>
                                 </Button>
-                            </Right> : null : null}
+                                : null}
+                            </Row>
                         </Col>
                     </Grid>
                     {teamSelected.team_members ? teamSelected.team_members.map((member, i) => (
@@ -237,7 +256,7 @@ export default function TeamProfile({navigation}){
                             </Body>
                         </CardItem>
                     )) : null}
-                </Card> : null}
+                </Card>
             </Content>
         </Container>
     );
