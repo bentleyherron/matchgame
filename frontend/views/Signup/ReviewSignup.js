@@ -44,7 +44,6 @@ export default function SignupPageFour({ navigation }) {
             password
             }}).then(
                 r => {
-                    console.log(r.data.token);
                     setUserToken(r.data.token);
                     const url = `${URL}/favorite-sports/`;
                     const sportsArrayObject = {favoriteSports:sportsArray.map(sport => {return {...sport, user_id: null}})};

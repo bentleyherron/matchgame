@@ -42,26 +42,33 @@ export default function UpdateSports({ navigation }) {
             }
         }
     }
+    console.log(userToken);
 
     const postFavSports = () => {
         // delete favorite sports
         const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
-        axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}, 
-            headers: {
-                "x-access-token": userToken
-            }
-            }).then(
-            r => navigation.navigate('User Profile')
-        )
-        .catch(() => {
-            Toast.show({
-                text: "Unable to access the database",
-                buttonText: "Okay"
-            })
-            setTimeout(() => {
-                navigation.navigate('Profile')
-            }, 5000)
-        })
+        const formattedSportsToDelete = sportsToDelete.map(obj => {return {sport_id: obj.sport_id, user_id: userInfo.id}});
+        axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
+        .catch((err) => console.log(err));
+        const favoriteSportsObj = {};
+        favoriteSports.forEach(obj => {favoriteSportsObj[obj.sport_id] = true});
+        console.log(favoriteSportsObj);
+        const sportsToAdd = sportData.filter(obj => sportsList[obj.sport_id] && !favoriteSportsObj[obj.sport_id]);
+        sportsToAdd.forEach(obj => {return {...obj, user_id: userInfo.id}});
+        console.log(sportsToAdd)
+        // axios.post(`${URL}/favorite-sports/`, {favoriteSports: sportsToAdd}, {headers: {"x-access-token": userToken}})
+        // .then(
+        //     r => navigation.navigate('User Profile')
+        // )
+        // .catch(() => {
+        //     Toast.show({
+        //         text: "Unable to access the database",
+        //         buttonText: "Okay"
+        //     })
+        //     setTimeout(() => {
+        //         navigation.navigate('Profile')
+        //     }, 5000)
+        // })
         // const sportsToAdd = sportsData.filter(obj => sportsList[obj.sport_id] && !favoriteSports.includ)
     }
 

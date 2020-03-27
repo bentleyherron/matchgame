@@ -212,18 +212,18 @@ export default function UserUpdate({ navigation }) {
                             </Button>
                         </Body>
                     </ListItem>
-                    {/* <ListItem>
+                    <ListItem>
                         <Left>
                             <Text>
                                 Favorite Sports:
                             </Text>
                         </Left>
                         <Body>
-                            <Button style={styles.LinkButtons} onPress={() => {navigation.navigate('Sport Update')}}>
+                            <Button onPress={() => {navigation.navigate('Sport Update')}}>
                                 <Text>Update Favorite Sports</Text>
                             </Button>
                         </Body>
-                    </ListItem> */}
+                    </ListItem>
                     {/* <ListItem>
                         <Left>
                             <Label>Delete Account</Label>
