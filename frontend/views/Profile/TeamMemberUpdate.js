@@ -21,32 +21,29 @@ export default function TeamMemberUpdate({ route, navigation }) {
     const {state, actions} = useContext(UserContext);
     const {userToken, userData} = state;
     const {setShouldRefresh} = actions;
-    // should not be able to delete captain
-    // should not be able to delete self
-    // people when added to the team shouldn't show up in the player list
 
     const handleTeamMemberAdd = (id, username) => {
         if(!teamMembers[id]) {
             const newTeamMembers = {...teamMembers};
             newTeamMembers[id] = username;
             setTeamMembers(newTeamMembers);
+            filterUsersBySelected(id);
         }
     }
 
     const handleTeamMemberDel = (id) => {
-        console.log(id);
-        console.log(userData.userInfo.id);
-        console.log(parseInt(id, 10) === userData.userInfo.id);
-        if(parseInt(id, 10) === userData.userInfo.id) {
+        // convert str to int for checking
+        id = parseInt(id, 10);
+        if(id === userData.userInfo.id) {
             Toast.show({
                 text: "Cannot remove team captain",
                 buttonText: "Okay"
             })
-            return null;
         } else if (teamMembers[id]) {
             const newTeamMembers = {...teamMembers};
             delete newTeamMembers[id];
-            setTeamMembers(newTeamMembers) 
+            setTeamMembers(newTeamMembers)
+            setCurrentUserList(currentState => [...currentState, userList.find(item => item.id === id)])
         }
     }
 
@@ -56,9 +53,10 @@ export default function TeamMemberUpdate({ route, navigation }) {
             axios.get(`${URL}/users/city/${userData.userInfo.city_id}`, {headers: {"x-access-token": userToken}})
             .then(
                 r => {
-                    const otherUsers = r.data.filter(obj => obj.id !== userData.userInfo.id)
+                    const otherUsers = r.data.filter(obj => (obj.id !== userData.userInfo.id))
                     setUserList(otherUsers);
-                    setCurrentUserList(otherUsers);
+                    const selectableUsers = otherUsers.filter(obj => !members[obj.id]);
+                    setCurrentUserList(selectableUsers);
                     setIsLoading(false);
                 }
             ).catch(() => {
@@ -71,7 +69,12 @@ export default function TeamMemberUpdate({ route, navigation }) {
     }, [])
 
     const filterUsers = (text) => {
-        const filteredResults = userList.filter((item) => item.username.includes(text))
+        const filteredResults = userList.filter(item => item.username.includes(text))
+        setCurrentUserList(filteredResults);
+    }
+
+    const filterUsersBySelected = (id) => {
+        const filteredResults = currentUserList.filter(item => item.id !== parseInt(id, 10));
         setCurrentUserList(filteredResults);
     }
 
@@ -84,7 +87,7 @@ export default function TeamMemberUpdate({ route, navigation }) {
         deleteTeamMembers();
         postTeamMembers();
         // navigation.navigate('User Profile');
-        // setShouldRefresh(currentState => !currentState);
+        setShouldRefresh(currentState => !currentState);
     }
 
     const deleteTeamMembers = async () => {
