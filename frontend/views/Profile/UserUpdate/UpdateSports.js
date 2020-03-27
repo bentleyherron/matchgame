@@ -44,9 +44,8 @@ export default function UpdateSports({ navigation }) {
     }
 
     const postFavSports = () => {
-
         // delete favorite sports
-        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id])[0];
+        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
         axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: sportsToDelete}, 
             headers: {
                 "x-access-token": userToken
@@ -63,6 +62,7 @@ export default function UpdateSports({ navigation }) {
                 navigation.navigate('Profile')
             }, 5000)
         })
+        // const sportsToAdd = sportsData.filter(obj => sportsList[obj.sport_id] && !favoriteSports.includ)
     }
 
     return(

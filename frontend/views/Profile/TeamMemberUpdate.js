@@ -79,16 +79,15 @@ export default function TeamMemberUpdate({ route, navigation }) {
         Object.keys(members).forEach(id => teamMembers[id] ? null : membersToDel.push(id)); 
         const delMembers = membersToDel.map(id => {return {teamMember: {player_id: parseInt(id, 10), team_id: teamId}}});
         console.log(delMembers);
-        axios.all(delMembers.map(obj => {return axios.delete(`${URL}/team-members/`, obj, {headers: {"x-access-token": userToken}})}))
-        .catch(err => {console.log(err); console.log('member delete failed');Toast.show({text: "Team members not removed properly", buttonText: "Okay"})});
+        delMembers.forEach(obj => axios.delete(`${URL}/team-members/`, {data: obj, headers: {"x-access-token": userToken}})
+        .catch(err => {console.log(err); console.log('member delete failed');Toast.show({text: "Team members not removed properly", buttonText: "Okay"})}));
     }
 
     const postTeamMembers = async () => {
         const membersToAdd = [];
         Object.keys(teamMembers).forEach(id => members[id] ? null : membersToAdd.push(id));
-        const postMembers = membersToAdd.map(id => {return {teamMember: {player_id: parseInt(id, 10), team_id: teamId}}});
+        const postMembers = membersToAdd.map(id => {return {player_id: parseInt(id, 10), team_id: teamId}});
         axios.post(`${URL}/team-members/`, {teamMembers: postMembers}, {headers:{"x-access-token": userToken}})
-        .then(r => {console.log('this is the response');console.log(r)})
         .catch((err) => {
             console.log(err);
             console.log("Team member add failed")
