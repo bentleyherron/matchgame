@@ -48,7 +48,7 @@ export default function UpdateSports({ navigation }) {
         // delete favorite sports
         const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
         const formattedSportsToDelete = sportsToDelete.map(obj => {return {sport_id: obj.sport_id, user_id: userInfo.id}});
-        axios.delete(`${URL}/favorite-sports/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
+        axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
         .catch((err) => console.log(err));
         const favoriteSportsObj = {};
         favoriteSports.forEach(obj => {favoriteSportsObj[obj.sport_id] = true});
