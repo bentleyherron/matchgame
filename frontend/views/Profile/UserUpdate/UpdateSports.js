@@ -42,17 +42,16 @@ export default function UpdateSports({ navigation }) {
             }
         }
     }
-    console.log(userToken);
+    // console.log(userToken);
 
     const postFavSports = () => {
         // delete favorite sports
-        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
-        const formattedSportsToDelete = sportsToDelete.map(obj => {return {sport_id: obj.sport_id, user_id: userInfo.id}});
-        axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
-        .catch((err) => console.log(err));
+        // const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
+        // const formattedSportsToDelete = sportsToDelete.map(obj => {return {id: favoriteSports.find(sport => sport.sport_id === obj.sport_id).id, user_id: userInfo.id}});
+        // axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
+        // .catch((err) => console.log(err));
         const favoriteSportsObj = {};
         favoriteSports.forEach(obj => {favoriteSportsObj[obj.sport_id] = true});
-        console.log(favoriteSportsObj);
         const sportsToAdd = sportData.filter(obj => sportsList[obj.sport_id] && !favoriteSportsObj[obj.sport_id]);
         sportsToAdd.forEach(obj => {return {...obj, user_id: userInfo.id}});
         console.log(sportsToAdd)
