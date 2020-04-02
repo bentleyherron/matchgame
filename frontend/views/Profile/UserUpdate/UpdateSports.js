@@ -46,29 +46,28 @@ export default function UpdateSports({ navigation }) {
 
     const postFavSports = () => {
         // delete favorite sports
-        // const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
-        // const formattedSportsToDelete = sportsToDelete.map(obj => {return {id: favoriteSports.find(sport => sport.sport_id === obj.sport_id).id, user_id: userInfo.id}});
-        // axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
-        // .catch((err) => console.log(err));
+        const sportsToDelete = favoriteSports.filter(obj => !sportsList[obj.sport_id]);
+        const formattedSportsToDelete = sportsToDelete.map(obj => {return {id: favoriteSports.find(sport => sport.sport_id === obj.sport_id).id, user_id: userInfo.id}});
+        if (formattedSportsToDelete.length) {
+            axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
+            .catch((err) => console.log(err));
+        }
+        
+        // post new favorite sports
         const favoriteSportsObj = {};
         favoriteSports.forEach(obj => {favoriteSportsObj[obj.sport_id] = true});
-        const sportsToAdd = sportData.filter(obj => sportsList[obj.sport_id] && !favoriteSportsObj[obj.sport_id]);
-        sportsToAdd.forEach(obj => {return {...obj, user_id: userInfo.id}});
-        console.log(sportsToAdd)
-        // axios.post(`${URL}/favorite-sports/`, {favoriteSports: sportsToAdd}, {headers: {"x-access-token": userToken}})
-        // .then(
-        //     r => navigation.navigate('User Profile')
-        // )
-        // .catch(() => {
-        //     Toast.show({
-        //         text: "Unable to access the database",
-        //         buttonText: "Okay"
-        //     })
-        //     setTimeout(() => {
-        //         navigation.navigate('Profile')
-        //     }, 5000)
-        // })
-        // const sportsToAdd = sportsData.filter(obj => sportsList[obj.sport_id] && !favoriteSports.includ)
+        const sportsToAdd = sportData.filter(obj => sportsList[obj.id] && !favoriteSportsObj[obj.id]);
+        const formattedSportsToAdd = sportsToAdd.map(obj => {return {sport_id: obj.id, user_id: userInfo.id}});
+        if (formattedSportsToAdd.length) {
+            axios.post(`${URL}/favorite-sports/`, {favoriteSports: formattedSportsToAdd}, {headers: {"x-access-token": userToken}})
+            .then(r => navigation.navigate('User Profile'))
+            .catch(() => {
+                Toast.show({
+                    text: "Unable to access the database",
+                    buttonText: "Okay"
+                })
+            })
+        }
     }
 
     return(
