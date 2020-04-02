@@ -7,6 +7,7 @@ import {URL} from 'react-native-dotenv';
 import uuid from 'react-uuid';
 
 export default function EventPage({pageContent, eventClick, resetPage}) {
+  // gathers data from context
   const {userToken, userData} = useContext(UserContext).state;
   const {setShouldRefresh} = useContext(UserContext).actions;
   const {teams, userInfo} = userData
@@ -25,6 +26,8 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
     } = pageContent.event;
     const {eventTeams} = pageContent;
 
+
+    // functions for formatting date
     const month = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec'];
     const datetime = new Date(date);
     const formattedDate = `${month[datetime.getMonth()]} ${datetime.getDate()}`;
@@ -48,6 +51,8 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
 
     const formattedTime = formatTime(datetime);
 
+
+    // style sheet for event page component
     const styles = StyleSheet.create({
       container: {
           paddingLeft: 15,
@@ -100,6 +105,12 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
       }
   });
 
+  // useStates and useEffects
+
+  const[winner, setWinner] = useState(null);
+  const [canSelectWinner, setCanSelectWinner] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const maySelectWinner = () => {
     if(pageContent.event.winner_id) {
       return false;
@@ -113,13 +124,12 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
     const userInEventArr = eventTeams.filter(obj => userCaptainTeamIds[obj.eventTeam.team_id]);
     return userInEventArr.length > 0;
   }
-  const[winner, setWinner] = useState(null);
-  const [canSelectWinner, setCanSelectWinner] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setCanSelectWinner(maySelectWinner());
   }, [])
+
+  // database functions
 
   const deleteEvent = async () => {
     axios.delete(`${URL}/events/${id}`, {headers:{"x-access-token": userToken}})
@@ -135,6 +145,7 @@ export default function EventPage({pageContent, eventClick, resetPage}) {
       })
     })
   }
+
   // make this a post score page
   const postResults = () => {
     if(isSubmitting) {

@@ -1,9 +1,9 @@
 {
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://2b-f2h.jmcwhorter150.frontend.exp.direct",
-  "packagerNgrokUrl": "https://packager.2b-f2h.jmcwhorter150.frontend.exp.direct",
-  "ngrokPid": 48986,
+  "expoServerPort": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 48967
+  "packagerPort": null,
+  "packagerPid": null
 }
