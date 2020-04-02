@@ -52,7 +52,7 @@ export default function UpdateSports({ navigation }) {
             axios.delete(`${URL}/favorite-sports/user/`, {data:{favoriteSports: formattedSportsToDelete}, headers: {"x-access-token": userToken}})
             .catch((err) => console.log(err));
         }
-        
+
         // post new favorite sports
         const favoriteSportsObj = {};
         favoriteSports.forEach(obj => {favoriteSportsObj[obj.sport_id] = true});
@@ -92,13 +92,6 @@ export default function UpdateSports({ navigation }) {
             <Footer>
                 <FooterTab>
                     <Button
-                    onPress={() => {navigation.goBack()}}
-                    >
-                    <Text>PREV</Text>
-                    </Button>
-                </FooterTab>
-                <FooterTab>
-                    <Button
                     onPress={() => {
                         if(Object.keys(sportsList)) {
                             postFavSports();
@@ -112,7 +105,7 @@ export default function UpdateSports({ navigation }) {
                         
                     }}
                     >
-                    <Text>NEXT</Text>
+                    <Text>Submit</Text>
                     </Button>
                 </FooterTab>
             </Footer>
